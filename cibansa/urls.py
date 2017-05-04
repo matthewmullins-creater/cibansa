@@ -15,7 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
+import  main.views as mv
+from django.conf.urls import include
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
+    url(r'^$',mv.index,name="home-page"),
+    url(r'^accounts/',include("accounts.urls")),
+    url(r'^social/', include('social_django.urls', namespace='social'))
 ]

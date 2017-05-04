@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% block title %}
+ <title>Cibansa - Signup</title>
+{% endblock %}
+
+{% block body %}
+<style>
+    form{
+        padding: 40px;
+        padding-bottom:20px;
+    }
+</style>
+<section class="body-container">
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+            <form action="{% url 'account-sign-up' %}" method="post">
+			   {% csrf_token %}
+                {{ form.non_field_errors}}
+			   <div class="form-group">
+			    <input type="text" name="first_name" class="form-control user-name" placeholder="Enter First Name">
+                   {{ form.first_name.errors }}
+				  </div>
+			   <div class="form-group">
+			    <input type="text" name="last_name" class="form-control user-name" placeholder="Enter Last Name">
+                   {{ form.last_name.errors }}
+				  </div>
+				  <div class="form-group">
+					<input type="number" name="phone" class="form-control" placeholder="Enter Mobile No.">
+                      {{ form.phone.errors }}
+				  </div>
+				  <div class="form-group">
+					<input type="email" name="email" class="form-control" placeholder="Email id">
+                      {{ form.email.errors }}
+				  </div>
+				  <div class="form-group">
+					<input type="password" name="password" class="form-control" placeholder="Create Password">
+                      {{ form.password.errors }}
+				  </div>
+
+				  <div class="login-btn">
+					<button type="submit" class="btn btn-primary btn-block" style="margin-top: 1em;margin-bottom: 1em;">signup</button>
+					<div class="row">
+						<div class="col-md-6">
+							<a href="{% url 'account-login' %}" >Already member? Login</a>
+						</div>
+					</div>
+				  </div>
+		   </form>
+        </div>
+    </div>
+
+</section>
+
+
+{% endblock %}

@@ -1,6 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import  AbstractBaseUser,PermissionsMixin
 from django.utils import timezone
+from django.contrib.auth.models import UserManager
+
 from django.utils.translation import ugettext_lazy as _
 
 # Create your models here.
@@ -18,7 +20,8 @@ class User(AbstractBaseUser,PermissionsMixin):
     is_active = models.BooleanField(_('active'), default=True,
         help_text=_('Designates whether this user should be treated as '
                     'active. Unselect this instead of deleting accounts.'))
-    date_joined = models.DateTimeField(_('date joined'), default=timezone.now())
+    date_joined = models.DateTimeField(_('date joined'), default=timezone.now)
+    objects = UserManager()
 
     class Meta:
         verbose_name = _('user')
