@@ -28,12 +28,10 @@ class CbCategoryForm(forms.ModelForm):
 
 class CbTopicAdminForm(forms.ModelForm):
     title = forms.CharField(max_length=100,widget=forms.TextInput)
-    # category = forms.Select(choices=CbCategory.objects.only("name"))
-    category = forms.Select(choices=[])
+    category = forms.Select(choices=CbCategory.objects.only("name"))
     image = forms.ImageField(required=False)
     description = forms.CharField(widget=forms.Textarea)
-    # owner = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
-    owner = forms.Select(choices=[])
+    owner = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
     tag = forms.CharField(
             label='Type tag name',
@@ -51,10 +49,10 @@ class CbQuestionAdminForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         # self.request = kwargs.pop("request")
         super(CbQuestionAdminForm,self).__init__(*args,**kwargs)
-        # CATEGORIES = [("","Select category")]
-        # for c in CbCategory.objects.only("name"):
-        #     CATEGORIES.append((c.id,c.name))
-        # self.fields["category"].choices = CATEGORIES
+        CATEGORIES = [("","Select category")]
+        for c in CbCategory.objects.only("name"):
+            CATEGORIES.append((c.id,c.name))
+        self.fields["category"].choices = CATEGORIES
 
 
     category = forms.ChoiceField()
@@ -65,8 +63,7 @@ class CbQuestionAdminForm(forms.ModelForm):
     )
     title = forms.CharField(widget=forms.TextInput)
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 200}))
-    # owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
-    owner = forms.Select(choices=[])
+    owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
     tag = forms.CharField(
         label='Type tag name',
         widget=AutoCompleteSelectMultipleWidget(TagLookup),
@@ -95,15 +92,14 @@ class CbQuestionForm(forms.ModelForm):
             CATEGORIES.append((c.id,c.name))
         self.fields["category"].choices = CATEGORIES
 
-    category = forms.ChoiceField()
-    # category = forms.Select(choices=CbCategory.objects.only("name"))
+    category = forms.Select(choices=CbCategory.objects.only("name"))
     topic = AutoCompleteSelectField(
         lookup_class=TopicLookup,
         widget=AutoComboboxSelectWidget
     )
     title = forms.CharField(widget=forms.TextInput)
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600}))
-    # owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
+    owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
     tag = forms.CharField(
         label='Type tag name',
         widget=AutoCompleteSelectMultipleWidget(TagLookup),
