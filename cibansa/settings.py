@@ -167,14 +167,24 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 #     }
 # }
 
-
+#
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'cibansa',
+#         'USER': 'CODE-WIZARD',
+#         'PASSWORD': '',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cibansa',
-        'USER': 'CODE-WIZARD',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
+        'NAME': 'd1kmb939e6u07e',
+        'USER': 'CODE-tpjyuqfvbkfjzk',
+        'PASSWORD': 'cb68ad15c3628d657cd49af95016f9ab4f2ec13a5f52a2033b153c64096fef83',
+        'HOST': 'ec2-107-20-141-145.compute-1.amazonaws.com',
         'PORT': '5432',
     }
 }
