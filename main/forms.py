@@ -32,7 +32,8 @@ class CbTopicAdminForm(forms.ModelForm):
     category = forms.Select(choices=[])
     image = forms.ImageField(required=False)
     description = forms.CharField(widget=forms.Textarea)
-    owner = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
+    # owner = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
+    owner = forms.Select(choices=[])
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
     tag = forms.CharField(
             label='Type tag name',
@@ -64,7 +65,8 @@ class CbQuestionAdminForm(forms.ModelForm):
     )
     title = forms.CharField(widget=forms.TextInput)
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 200}))
-    owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
+    # owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
+    owner = forms.Select(choices=[])
     tag = forms.CharField(
         label='Type tag name',
         widget=AutoCompleteSelectMultipleWidget(TagLookup),
