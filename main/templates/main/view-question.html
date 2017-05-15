@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %} Cibansa - {{ question.title }} {% endblock %}
+
+{% block body %}
+
+{% load js %}
+{% django_js %}
+
+    <section id="green-header" class="body-container">
+		<div class="container">
+		</div>
+	</section>
+
+	<section id="discussion" data-ng-controller="QuestionController as qObj" data-ng-cloak data-ng-init="init({{ question.id }})">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-8">
+					<h3 class="filter" style="color: #fff">view answer and discussion</h3>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-md-9">
+					<div class="well">
+						<div class="question-desc">
+							<h5 class="page-header">{$ qObj.title $}</h5>
+
+							<div class="answer-desc">
+							<p data-ng-bind-html="qObj.description">
+								</p>
+							</div>
+							<!--<div class="like-btn">-->
+								<!--<a href="#"><i class="fa fa-heart" aria-hidden="true"></i> <span>500</span></a>-->
+							<!--</div>-->
+						</div>
+
+						<div class="author">
+							<!--<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">-->
+							<div data-ng-if="qObj.owner.profile.has_photo">
+								{$ qObj.owner.profile_pix $}
+							</div>
+							<div data-ng-if="!qObj.owner.profile.has_photo" data-ng-bind-html="trustedHtml(qObj.owner.profile_pix)">
+							</div>
+
+							<ul class="detail">
+								<li><span>{$ qObj.user_full_name $}</span></li>
+								<li><span>{$ qObj.created_at|date:"MMM, dd yy" $}</span></li>
+							</ul>
+						</div>
+
+						<div class="comment-view">
+							<div class="comment-box">
+								<textarea rows="5" class="form-control" placeholder="type comment" data-ng-model="qObj.answerComment"></textarea>
+							</div>
+							<div class="post clearfix">
+								<button data-ng-click="postAnswer({{ question.id }})" class="btn btn-purple pull-right">
+									<i data-ng-show="qObj.answerSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+									<span class="sr-only">Loading...</span>post answer
+								</button>
+							</div>
+							<div class="top-brdr" data-ng-repeat="ans in qObj.question_answers track by $index">
+								<div class="row">
+									<div class="col-xs-2">
+										<!--<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">-->
+										<div data-ng-if="ans.user_data.profile.has_photo">
+											{$ ans.user_data.profile_pix $}
+										</div>
+										<div data-ng-if="!ans.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(ans.user_data.profile_pix)">
+										</div>
+									</div>
+									<div class="col-xs-10">
+										<p>{$ ans.comment $}</p>
+										<div class="like-btn">
+											<a style="cursor:pointer" data-ng-click="likeAnswer(ans)"><i class="fa fa-heart" data-ng-class="{'like-btn-i':ans.has_liked==true}" aria-hidden="true"></i> <span>{$ ans.answer_likes $}</span></a>
+										</div>
+
+									</div>
+								</div>
+								<div class="nested-comment clearfix" data-ng-repeat="rep in ans.answer_replies track by $index">
+									<div class="reply-box top-brdr">
+											<div class="row">
+												<div class="col-xs-2">
+													<div data-ng-if="rep.user_data.profile.has_photo">
+														{$ rep.user_data.profile_pix $}
+													</div>
+													<div data-ng-if="!rep.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)">
+													</div>
+												</div>
+												<div class="col-xs-10">
+													<p>{$ rep.comment $}</p>
+													<div class="like-btn">
+														<a style="cursor:pointer" data-ng-click="likeAnswerReply(rep)"><i class="fa fa-heart" data-ng-class="{'like-btn-i':rep.has_liked==true}" aria-hidden="true"></i> <span>{$ rep.answer_reply_likes $}</span></a>
+													</div>
+												</div>
+											</div>
+										</div>
+								</div>
+								<div class="reply clearfix">
+											<button class="btn btn-purple pull-right" data-ng-click="showReply($index,$event)" id="replyBtn{$ $index $}">reply</button>
+										</div>
+										<div class="reply-box" id="reply{$ $index $}" style="display:none">
+											<div class="comment-box">
+												<textarea rows="5" class="form-control" placeholder="type comment" id="replyComment{$ $index $}"></textarea>
+											</div>
+											<div class="post clearfix">
+												<button data-ng-click="postReply(ans,$index)" class="btn btn-purple pull-right">
+													<i data-ng-show="qObj.replySubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+													<span class="sr-only">Loading...</span>Reply
+												</button>
+											</div>
+										</div>
+						</div>
+					</div>
+				</div>
+				</div>
+				<div class="col-md-3">
+					<div class="related">
+						<h4 class="filter" style="color: #fff">related topics</h4>
+						{% for ques in related_topic %}
+							<blockquote class="blockquote">
+							  <a href="{% url 'view-question' id=ques.id %}"> <p class="mb-0">{{ ques.title }}</p> </a>
+							</blockquote>
+						{% endfor %}
+
+					</div>
+
+					<h4>Browse by tag</h4>
+					<div class="chip-container">
+						{% for t in question.question_tags.all %}
+								<div class="chip">
+									<a href="">{{ t.tag.name }}</a>
+							  </div>
+							{% endfor %}
+
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</section>
+{% block extras %}
+
+	<script src="{% static 'main/js/angularjs/service.question.js' %}"></script>
+	<script src="{% static 'main/js/angularjs/controller.question.js' %}"></script>
+{% endblock %}
+
+{% endblock %}

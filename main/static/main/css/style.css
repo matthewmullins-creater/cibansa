@@ -606,7 +606,7 @@ hr.style17:after {
 .answer-desc, .comment-box, .comment-view, .article-img, .more-article{
   margin-top: 2em;
 }
-.like-btn i{
+.like-btn-i{
   color: #ff2c2c;
 }
 .comment-view .top-brdr{

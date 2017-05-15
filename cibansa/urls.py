@@ -15,13 +15,29 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-import  main.views as mv
+import main.views as mv
 from django.conf.urls import include
+from filebrowser.sites import site
 
 
 urlpatterns = [
+
+    url(r'^accounts/', include("accounts.urls")),
+    # url(r'^/api/v1/',include(category,namespace="category-api")),
+    url(r'^admin/filebrowser/', include(site.urls)),
+    url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
     url(r'^admin/', admin.site.urls),
+    url(r'^category/(?P<slug>[\w|\W\-]+)/list-topic/',mv.list_topic,name="list-topic"),
+    url(r'^topic/(?P<slug>[\w|\W\-]+)/questions/',mv.list_topic_question,name="list-topic-questions"),
+    url(r'^category/',mv.list_categories,name="list-categories"),
+    url(r'^questions/post-new-question/',mv.post_question,name="post-new-question"),
+    url(r'^questions/tagged/(?P<slug>[\w|\W\-]+)/',mv.question_by_tag,name="question-by-tag"),
+    url(r'^questions/(?P<id>[0-9]+)/',mv.view_question,name="view-question"),
     url(r'^$',mv.index,name="home-page"),
-    url(r'^accounts/',include("accounts.urls")),
-    url(r'^social/', include('social_django.urls', namespace='social'))
+
+    url(r'^main/',include("main.urls")),
+    url(r'^social/', include('social_django.urls', namespace='social')),
+    url(r'^selectable/', include('selectable.urls')),
+    url(r'^tinymce/', include('tinymce.urls')),
+    url(r'^djangojs/', include('djangojs.urls')),
 ]

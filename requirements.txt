@@ -1,6 +1,28 @@
 appdirs==1.4.3
+defusedxml==0.5.0
 Django==1.11
+django-appconf==1.0.2
+django-autoslug==1.9.3
+django-cleanup==0.4.2
+django-filebrowser==3.7.2
+django-grappelli==2.8.3
+-e git+https://github.com/code-wizard/django.js.git@8d36987d73147d73402f80d994f245ff3a83fc42#egg=django_js
+-e git+https://github.com/code-wizard/django-selectable.git@41404b27423ce39d6809dcd9423dc06be500ffac#egg=django_selectable
+django-tinymce==2.6.0
+django-widget-tweaks==1.4.1
+djangorestframework==3.6.2
+oauthlib==2.0.2
+olefile==0.44
 packaging==16.8
+Pillow==4.1.1
+psycopg2==2.7.1
+PyJWT==1.5.0
 pyparsing==2.2.0
+python3-openid==3.1.0
 pytz==2017.2
+readline==6.2.4.1
+requests==2.13.0
+requests-oauthlib==0.8.0
 six==1.10.0
+social-auth-app-django==1.1.0
+social-auth-core==1.2.0

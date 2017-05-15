@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+
+{% block title %} Cibansa - {{ category.name }} topics  {% endblock %}
+{% block body %}
+
+
+
+<section class="body-container" id="list-topic">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="search-box">
+						<input type="text" class="form-control">
+						<i class="fa fa-search" aria-hidden="true"></i>
+					</div>
+				</div>
+				<div class="col-md-6 for-mobile">
+					<h3 class="filter">{{ category.name }}</h3>
+				</div>
+				<div class="col-md-3">
+					<!--<a href="#" class="btn btn-purple pull-right" data-toggle="modal"-->
+					   <!--data-target="#post-question">post a question-->
+					<!--</a>-->
+					<a href="{% url 'post-new-question' %}" class="btn btn-purple pull-right" >post a question
+					</a>
+				</div>
+			</div>
+			<div class="space"></div>
+			<div class="row">
+				<div class="col-md-3 for-mobile">
+					<h4 class="filter">filter by tags</h4>
+					<!-- <div class="chips chips-initial"></div> -->
+					<div class="chip-container">
+						<div class="chip">
+					    JavaScript
+					    <i class="close material-icons">close</i>
+					  </div>
+					  <div class="chip">
+					    Python
+					    <i class="close material-icons">close</i>
+					  </div>
+					  <div class="chip">
+					    Java
+					    <i class="close material-icons">close</i>
+					  </div>
+					</div>
+				</div>
+				<div class="col-md-9 border-left">
+					<div class="row">
+
+						{% for t in topics %}
+							<div class="col-md-4">
+								<a href="{% url 'list-topic-questions' slug=t.slug %}">
+									<div class="well round_container">
+										<div class="desc-category">
+											<div class="category-head clearfix">
+												<div class="pull-left"><h4>{{ t.title }}</h4></div>
+
+											</div>
+											<div class="category-info">
+												<ul class="detail">
+													<li>{{ t.category.name }}</li>
+													<li>question : <span>{{ t.topic_questions.count }}</span></li>
+													<li>discussion : <span>500</span></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+						{% endfor %}
+
+					</div>
+
+					<div class="row">
+						{% if topics.has_other_pages %}
+						  <ul class="pagination">
+							{% if topics.has_previous %}
+							  <li><a href="?page={{ topics.previous_page_number }}">&laquo;</a></li>
+							{% else %}
+							  <li class="disabled"><span>&laquo;</span></li>
+							{% endif %}
+							{% for i in topics.paginator.page_range %}
+							  {% if topics.number == i %}
+								<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+							  {% else %}
+								<li><a href="?page={{ i }}">{{ i }}</a></li>
+							  {% endif %}
+							{% endfor %}
+							{% if topics.has_next %}
+							  <li><a href="?page={{ topics.next_page_number }}">&raquo;</a></li>
+							{% else %}
+							  <li class="disabled"><span>&raquo;</span></li>
+							{% endif %}
+						  </ul>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block title %} Cibansa - {{ topic.name }} questions {% endblock %}
+
+{% block body %}
+
+<section id="green-header" class="body-container">
+		<div class="container">
+		</div>
+	</section>
+
+	<section id="question">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-8">
+					<h3 class="filter" style="color: #fff">{{ topic.title }}</h3>
+				</div>
+				<div class="col-xs-4">
+					<a href="{% url 'post-new-question' %}" class="btn btn-white pull-right">post a question</a>
+				</div>
+			</div>
+
+			{% for q in questions %}
+				<div class="well">
+				<div class="row">
+					<div class="col-md-10">
+						<div class="main-question">
+							<h5 class="clearfix">
+								<span class="prefix">Q:</span>
+								<span class="qus">{{ q.title }}</span>
+							</h5>
+							<p>{{ q.description|truncatechars:50  |safe }}</p>
+						</div>
+						<div class="chip-container">
+							{% for t in q.question_tags.all %}
+								<div class="chip">
+								{{ t.tag.name }}
+							  </div>
+							{% endfor %}
+
+						</div>
+						<div class="author">
+							<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">
+							<ul class="detail">
+								<li><span>{{ q.owner.get_full_name }}</span></li>
+								<li><span>{{ q.created_at |date:"M, d y" }}</span></li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-md-12">
+						<div class="view-answer clearfix">
+							<a href="{% url 'view-question' id=q.id %}" class="btn btn-purple pull-right">view answer and discussion</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+
+		</div>
+	</section>
+
+
+{% endblock %}

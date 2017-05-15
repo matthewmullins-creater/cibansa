@@ -18,6 +18,8 @@
 					<h1 class="upper">cibansa</h1>
 					<p class="text-center">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
 					tempor incididunt ut labore et dolore magna aliqua.</p>
+
+					<!--{% url 'topic-api:topic-get-category-topics' %}-->
 				</div>
 			</div>
 		</div>
@@ -27,87 +29,15 @@
 		<div class="overlay"></div>
 		<div class="container">
 			<div class="inside-padding">
+
 				<div class="row">
+					{% for card in category_cards %}
+
 					<div class="col-md-3">
-						<a href="#">
-							<div class="well round_container">
-								<div class="img-content">
-									<i class="devicon-python-plain"></i>
-								</div>
-								<div class="desc-content">
-									<h4 class="upper">python</h4>
-									<ul class="detail">
-										<li>topics : <span>10</span></li>
-										<li>questions : <span>10</span></li>
-										<li>discussion : <span>10</span></li>
-									</ul>
-								</div>
-								<div class="course-link">
-									<a href="#">read more</a>
-								</div>
-							</div>
-						</a>
+						{% include "../partials/category_card.html" %}
 					</div>
-					<div class="col-md-3">
-						<a href="#">
-							<div class="well round_container">
-								<div class="img-content">
-									<i class="devicon-python-plain"></i>
-								</div>
-								<div class="desc-content">
-									<h4 class="upper">python</h4>
-									<ul class="detail">
-										<li>topics : <span>10</span></li>
-										<li>questions : <span>10</span></li>
-										<li>discussion : <span>10</span></li>
-									</ul>
-								</div>
-								<div class="course-link">
-									<a href="#">read more</a>
-								</div>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-3">
-						<a href="#">
-							<div class="well round_container">
-								<div class="img-content">
-									<i class="devicon-python-plain"></i>
-								</div>
-								<div class="desc-content">
-									<h4 class="upper">python</h4>
-									<ul class="detail">
-										<li>topics : <span>10</span></li>
-										<li>questions : <span>10</span></li>
-										<li>discussion : <span>10</span></li>
-									</ul>
-								</div>
-								<div class="course-link">
-									<a href="#">read more</a>
-								</div>
-							</div>
-						</a>
-					</div>
-					<div class="col-md-3">
-						<a href="#">
-							<div class="well round_container">
-								<div class="img-content">
-									<i class="devicon-python-plain"></i>
-								</div>
-								<div class="desc-content">
-									<h4 class="upper">python</h4>
-									<ul class="detail">
-										<li>topics : <span>10</span></li>
-										<li>questions : <span>10</span></li>
-										<li>discussion : <span>10</span></li>
-									</ul>
-								</div>
-								<div class="course-link">
-									<a href="#">read more</a>
-								</div>
-							</div>
-						</a>
-					</div>
+					{% endfor %}
+
 				</div>
 			</div>
 		</div>

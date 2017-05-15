@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+{% block title %} Cibansa - Categories  {% endblock %}
+
+{% block body %}
+
+<section class="body-container" id="list">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="search-box">
+						<input type="text" class="form-control">
+						<i class="fa fa-search" aria-hidden="true"></i>
+					</div>
+				</div>
+			</div>
+			<div class="space"></div>
+			<div class="row">
+				<div class="col-md-3">
+					<h4 class="filter">categories</h4>
+					<div class="category">
+						<div class="checkbox">
+						  <label><input type="checkbox" value="">Option 1</label>
+						</div>
+						<div class="checkbox">
+						  <label><input type="checkbox" value="">Option 2</label>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-9 border-left">
+					<div class="row">
+						{% for c in category %}
+							<div class="col-md-4">
+								<a href="#">
+									<div class="well round_container">
+										<div class="img-category">
+											<img src="http://placehold.it/680x450" class="img-responsive">
+
+										</div>
+										<div class="desc-category">
+											<div class="category-head clearfix">
+												<div class="pull-left"><h4>{{ c.name }}</h4></div>
+												<div class="pull-right"><h5><i class="fa fa-heart" aria-hidden="true"></i> 100</h5></div>
+											</div>
+											<div class="category-info">
+												<ul class="detail">
+													<!--<li>name</li>-->
+													<li>question : <span>{{ c.category_questions.count }}</span></li>
+													<li>discussion : <span>500</span></li>
+												</ul>
+											</div>
+										</div>
+									</div>
+								</a>
+							</div>
+						{% endfor %}
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% endblock %}

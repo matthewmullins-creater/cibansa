@@ -34,6 +34,16 @@ class User(AbstractBaseUser,PermissionsMixin):
     def get_short_name(self):
         return self.username
 
+    def get_profile_pix(self):
+        if self.profile.has_photo:
+            return '<img src="http://placehold.it/35x35" alt="%s" class="img-circle" width="75" height="75">' % \
+                   self.profile.avatar.url
+
+        else:
+            return '<div style="width: 75px;height: 75px;background: #ccc;text-align: center;border-radius: 50%;">' \
+                   '<div style="padding-top: 27%;padding-bottom:' \
+                   ' 52%;font-size: 23px;">{0}{1}</div></div>'.format(self.profile.first_name[:1],self.profile.last_name[:1])
+
     def __str__(self):
         return "%s" % (self.get_full_name())
 

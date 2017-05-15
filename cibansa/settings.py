@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-# import dj_database_url
+import dj_database_url
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,15 +32,24 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'grappelli',
+    'filebrowser',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'rest_framework',
+    'djangojs',
+    'widget_tweaks',
+    'tinymce',
+    'selectable',
     'social_django',
+    'django_cleanup',
     "accounts",
-    "main"
+    "main",
+    "articles",
 ]
 
 MIDDLEWARE = [
@@ -68,6 +77,8 @@ TEMPLATES = [
                 'django.contrib.messages.context_processors.messages',
                 'social_django.context_processors.backends',
                 'social_django.context_processors.login_redirect',
+                'django.template.context_processors.media',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -155,19 +166,19 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-
-# db_from_env = dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(db_from_env)
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cibansa',
-        'USER': 'CODE-WIZARD',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
-}
+DATABASES=[]
+db_from_env = dj_database_url.config("'postgres://cibansa:@127.0.0.1:5432/cibansa'",conn_max_age=500)
+DATABASES['default'].update(db_from_env)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'cibansa',
+#         'USER': 'CODE-WIZARD',
+#         'PASSWORD': '',
+#         'HOST': '127.0.0.1',
+#         'PORT': '5432',
+#     }
+# }
 
 
 # Password validation
@@ -206,14 +217,74 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
+#Local host setting
+# PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+#
+# STATIC_ROOT = '/static/'
+# STATIC_URL = '/static/'
+#
+#
+# # Extra places for collectstatic to find static files.
+# STATICFILES_DIRS = (
+#     os.path.join(PROJECT_ROOT, 'static'),
+# )
+
+
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
 STATIC_URL = '/static/'
 
-# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-
 # Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
+
+MEDIA_ROOT =os.path.join(BASE_DIR,"media/")
+MEDIA_URL ='/media/'
+
+STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+
+
+
+TINYMCE_JS_URL = "/static/main/js/tinymce/tinymce.min.js"
+TINYMCE_JS_ROOT = "/static/main/js/tinymce"
+TINYMCE_EXTRA_MEDIA = {
+    # 'css': {
+    #     'all': [
+    #         ...
+    #     ],
+    # },
+    'js': [
+        "/static/main/js/tinymce/custom-config.js",
+        "/static/selectable/js/jquery.dj.selectable.js?v=1.1.0dev",
+    ],
+
+}
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    # 'DEFAULT_PAGINATION_CLASS': 'main.core.pagination.LinkHeaderPagination',
+    'PAGE_SIZE': 2
+}
+# TINYMCE_DEFAULT_CONFIG = {
+#     "plugins":"image imagetools,table, code",
+#     'theme': "modern",
+#     # 'toolbar': "image",
+#     'cleanup_on_startup': True,
+#     'custom_undo_redo_levels': 10,
+#     'images_upload_url': 'postAcceptor.php',
+#     'images_upload_base_path': '/some/basepath',
+#     'images_upload_credentials': True
+#     # 'image_title': True,
+#     # 'automatic_uploads': True,
+#     # 'images_upload_url': 'postAcceptor.php',
+#     # 'file_picker_types': 'image',
+#     # 'imagetools_toolbar': "rotateleft rotateright | flipv fliph | editimage imageoptions",
+#     # 'file_picker_callback': "function(cb, value, meta) { var input = document.createElement('input')"
+#     #                         ";input.setAttribute('type', 'file');input.setAttribute('accept', 'image/*');"
+#     #                         "input.onchange = function(){var file = this.files[0];"
+#     #                         "var id = 'blobid' + (new Date()).getTime();"
+#     #                         "var blobCache = tinymce.activeEditor.editorUpload.blobCache;"
+#     #                         "var blobInfo = blobCache.create(id, file);blobCache.add(blobInfo);"
+#     #                         "cb(blobInfo.blobUri(), {title: file.name});};input.click();}"
+# }
