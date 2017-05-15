@@ -88,10 +88,10 @@ class CbQuestionForm(forms.ModelForm):
     def __init__(self,*args,**kwargs):
         self.request = kwargs.pop("request")
         super(CbQuestionForm,self).__init__(*args,**kwargs)
-        # CATEGORIES = [("","Select category")]
-        # for c in CbCategory.objects.only("name"):
-        #     CATEGORIES.append((c.id,c.name))
-        # self.fields["category"].choices = CATEGORIES
+        CATEGORIES = [("","Select category")]
+        for c in CbCategory.objects.only("name"):
+            CATEGORIES.append((c.id,c.name))
+        self.fields["category"].choices = CATEGORIES
 
     category = forms.ChoiceField()
     # category = forms.Select(choices=CbCategory.objects.only("name"))

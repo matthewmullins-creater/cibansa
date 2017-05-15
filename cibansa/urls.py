@@ -24,9 +24,9 @@ urlpatterns = [
 
     url(r'^accounts/', include("accounts.urls")),
     # url(r'^/api/v1/',include(category,namespace="category-api")),
-    url(r'^admin/filebrowser/', include(site.urls)),
-    url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
-    url(r'^admin/', admin.site.urls),
+    # url(r'^admin/filebrowser/', include(site.urls)),
+    # url(r'^grappelli/', include('grappelli.urls')), # grappelli URLS
+    # url(r'^admin/', admin.site.urls),
     url(r'^category/(?P<slug>[\w|\W\-]+)/list-topic/',mv.list_topic,name="list-topic"),
     url(r'^topic/(?P<slug>[\w|\W\-]+)/questions/',mv.list_topic_question,name="list-topic-questions"),
     url(r'^category/',mv.list_categories,name="list-categories"),
