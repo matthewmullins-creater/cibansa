@@ -26,7 +26,7 @@ SECRET_KEY = 'ax63jw!ryvkv2^om_-ml$x9_%-8bx@a0wvi8egu1olcd-se3bt'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -166,19 +166,20 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 #         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
 #     }
 # }
-DATABASES=[]
-db_from_env = dj_database_url.config("'postgres://cibansa:@127.0.0.1:5432/cibansa'",conn_max_age=500)
+
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'cibansa',
+        'USER': 'CODE-WIZARD',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    }
+}
+db_from_env = dj_database_url.config(conn_max_age=500)
 DATABASES['default'].update(db_from_env)
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'cibansa',
-#         'USER': 'CODE-WIZARD',
-#         'PASSWORD': '',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
-#     }
-# }
 
 
 # Password validation
