@@ -4,6 +4,8 @@
 {% block title %} Cibansa - Post a Question {% endblock %}
 
 {% block body %}
+{% load js %}
+{% django_js %}
     <section id="green-header" class="body-container">
 		<div class="container">
 		</div>
@@ -19,48 +21,9 @@
 
 			<div class="well">
 				<div class="selection">
-					<form action="{% url 'post-new-question' %}" method="post">
-                        {% csrf_token %}
-						<div class="row">
-							<div class="col-md-3">
-								{% render_field form.category class+="form-control" %}
-							</div>
-							<div class="col-md-3">
-								{% render_field form.topic class+="form-control" %}
-							</div>
-                            <div>
-                                {{ form.category.errors }}
-                                {{ form.topic.errors }}
-                            </div>
-						</div>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                {% render_field form.title class+="form-control" placeholder="Enter question title" %}
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-xs-12" id="editor-container" style="margin-top:2em">
-                                {{ form.description }}
-                            </div>
+					{% include "../partials/question-form.html" %}
 
-                        </div>
-                        <div class="row" style="margin-top:3em">
-                                <div class="col-xs-12">
-                                        <div><label>Add tag to this question</label></div>
-                                        {% render_field form.tag placeholder="Type tag name" %}
-                                </div>
-                        </div>
 				</div>
-
-				<!--<div >-->
-                    <!---->
-                <!--</div>-->
-
-
-				<div class="post clearfix">
-					<button type="submit" class="btn btn-purple pull-right">post a question</button>
-				</div>
-                </form>
 			</div>
 		</div>
 	</section>

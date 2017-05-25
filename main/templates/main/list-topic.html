@@ -31,18 +31,17 @@
 					<h4 class="filter">filter by tags</h4>
 					<!-- <div class="chips chips-initial"></div> -->
 					<div class="chip-container">
-						<div class="chip">
-					    JavaScript
-					    <i class="close material-icons">close</i>
-					  </div>
-					  <div class="chip">
-					    Python
-					    <i class="close material-icons">close</i>
-					  </div>
-					  <div class="chip">
-					    Java
-					    <i class="close material-icons">close</i>
-					  </div>
+						<form>
+							{% for t in tags %}
+								<div class="chip">
+									<input type="hidden" name="tag" value="{{ t.name }}">
+								{{ t.name }}
+								<i class="close material-icons">close</i>
+								</div>
+							{% endfor %}
+						</form>
+
+
 					</div>
 				</div>
 				<div class="col-md-9 border-left">
@@ -61,7 +60,7 @@
 												<ul class="detail">
 													<li>{{ t.category.name }}</li>
 													<li>question : <span>{{ t.topic_questions.count }}</span></li>
-													<li>discussion : <span>500</span></li>
+													<li>discussion : <span>{{ t.get_no_of_discussion.discussion }}</span></li>
 												</ul>
 											</div>
 										</div>

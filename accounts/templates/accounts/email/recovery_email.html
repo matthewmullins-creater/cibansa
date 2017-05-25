@@ -1,0 +1,16 @@
+{% load i18n %}
+
+{% blocktrans %} <p>Dear {{ username }},</p>{% endblocktrans %}
+
+{% blocktrans with domain=site.domain %}<div>You -- or someone pretending to be you -- has requested a password reset on {{ domain }}.</div>{% endblocktrans %}
+
+<div>{% trans "You can set your new password by following this link:" %}</div>
+
+<div>http{% if secure %}s{% endif %}://{{ site.domain }}{% url "password_reset_reset" token %}</div>
+
+<div>{% trans "If you don't want to reset your password, simply ignore this email and it will stay unchanged." %}</div>
+
+<p>
+    Thanks
+    <br>Cibansa Team
+</p>

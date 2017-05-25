@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import  AbstractBaseUser,PermissionsMixin
 from django.utils import timezone
 from django.contrib.auth.models import UserManager
-
+import uuid
 from django.utils.translation import ugettext_lazy as _
 
 # Create your models here.
@@ -67,6 +67,7 @@ class CbUserProfile(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     avatar= models.ImageField(blank=True, default="default_avatar.jpg", upload_to=photo_upload_path)
     has_photo = models.BigIntegerField(default=0,null=True)
+    is_visible = models.BooleanField(default=True)
 
     def get_full_name(self):
         return "%s %s" %(self.first_name,self.last_name)
@@ -77,5 +78,16 @@ class CbUserProfile(models.Model):
     class Meta:
          # managed = False
         db_table = 'cb_user_profile'
+
+
+class CbTempPassword(models.Model):
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
+    token = models.UUIDField(default=uuid.uuid4, editable=False)
+    used = models.BooleanField(default=False)
+    created_at =models.DateField(auto_now_add=True)
+    updated_at = models.DateField(auto_now=True)
+
+    class Meta:
+        db_table="cb_temp_password"
 
 

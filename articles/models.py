@@ -5,13 +5,13 @@ from main.models import CbCategory,CbTag
 # Create your models here.
 
 
-
 def upload_article_image(instance,filename):
-    return ""
+    return "".join(["%s%s" % ("articles/", "/"), filename])
+    # return "".join(["%s%s%s" % ("category/", str(instance.name), "/"), filename])
 
 
 class CbArticle(models.Model):
-    title = models.CharField(max_length=200)
+    title = models.CharField(max_length=255)
     category = models.ForeignKey(CbCategory,on_delete=models.SET_NULL,null=True,related_name="category_article")
     content = models.TextField()
     image = models.ImageField(default="article_image.png",upload_to=upload_article_image)
@@ -19,6 +19,7 @@ class CbArticle(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     meta_data = JSONField()
+    is_visible = models.BooleanField(default=True)
 
     def __str__(self):
         return self.title
@@ -49,6 +50,7 @@ class CbArticleComment(models.Model):
 
 class CbArticleCommentReply(models.Model):
     comment = models.ForeignKey(CbArticleComment,related_name="comment_replies")
+    content = models.TextField()
     user = models.ForeignKey("accounts.User", related_name="user_article_cr")
     created_at = models.DateTimeField(auto_now_add=True)
 

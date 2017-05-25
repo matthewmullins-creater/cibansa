@@ -9,14 +9,15 @@ def category_image_path(instance,filename):
 
 
 class CbCategory(models.Model):
-    name = models.CharField(max_length=15,unique=True)
+    name = models.CharField(max_length=255,unique=True)
     image = models.ImageField(upload_to=category_image_path,default="default_category_img.png")
-    description = models.CharField(max_length=200,null=True,blank=True)
+    description = models.CharField(max_length=1024,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey("accounts.User",related_name="user_categories")
     updated_at = models.DateTimeField(auto_now=True)
-    slug = AutoSlugField(populate_from="name", max_length=200,always_update=True)
+    slug = AutoSlugField(populate_from="name", max_length=200,always_update=True,unique=True)
     meta_data = JSONField(null=True,blank=True)
+    is_visible = models.BooleanField(default=True)
 
     class Meta:
         db_table="cb_category"
@@ -25,20 +26,22 @@ class CbCategory(models.Model):
         return self.name
 
 
+
 def topic_image_path(instance,filename):
     return "".join(["%s" % "topic/", filename])
 
 
 class CbTopic(models.Model):
     category = models.ForeignKey(CbCategory,on_delete=models.CASCADE,related_name="category_topics")
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=255)
     image = models.ImageField(upload_to=topic_image_path, default="default_topic_img.png")
-    description = models.CharField(max_length=200, null=True, blank=True)
+    description = models.CharField(max_length=1024, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey("accounts.User",related_name="user_topic")
     updated_at = models.DateTimeField(auto_now=True)
-    slug = AutoSlugField(populate_from="title", max_length=200,always_update=True)
+    slug = AutoSlugField(populate_from="title", max_length=200,always_update=True,unique=True)
     meta_data = JSONField(null=True, blank=True)
+    is_visible = models.BooleanField(default=True)
 
     class Meta:
         db_table="cb_topic"
@@ -46,16 +49,40 @@ class CbTopic(models.Model):
     def __str__(self):
         return "%s -%s" %(self.id,self.title)
 
+    def get_no_of_discussion(self):
+        discussion=0
+        for q in self.topic_questions.all():
+            discussion += q.question_answers.count()
+            for k in q.question_answers.all():
+                discussion += k.answer_replies.count()
+
+        d = {"discussion":discussion}
+
+        return d
+
 
 class CbTag(models.Model):
-    name = models.CharField(max_length=15,unique=True)
-    slug = AutoSlugField(populate_from="name",max_length=200,always_update=True)
+    name = models.CharField(max_length=255,unique=True)
+    slug = AutoSlugField(populate_from="name",max_length=200,always_update=True,unique=True)
 
     def __str__(self):
         return "%s" %(self.name)
 
     class Meta:
         db_table="cb_tag"
+
+
+class CbCategoryTags(models.Model):
+    category = models.ForeignKey(CbCategory,on_delete=models.CASCADE,related_name="category_tags")
+    tag = models.ForeignKey(CbTag,on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return "%s-%s" %(self.category.name,self.tag.name)
+
+    class Meta:
+        db_table = "cb_category_tags"
 
 
 class CbTopicTags(models.Model):
@@ -80,7 +107,7 @@ class CbQuestion(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True)
-    slug = AutoSlugField(populate_from="title", max_length=200,always_update=True)
+    slug = AutoSlugField(populate_from="title", max_length=200,always_update=True,unique=True)
 
     def __str__(self):
         return "%s..." % self.title[:200]

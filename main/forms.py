@@ -9,30 +9,38 @@ from django.db import transaction
 
 
 class CbCategoryForm(forms.ModelForm):
-    name = forms.CharField(max_length=15)
-    image = forms.ImageField(required=False)
-    description = forms.CharField(max_length=200, required=False,widget=forms.Textarea)
+    name = forms.CharField(max_length=255)
+    image = forms.ImageField(required=True)
+    description = forms.CharField(max_length=1024, required=False,widget=forms.Textarea)
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
-    owner = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_superuser=True,is_staff=True))
+    # owner = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_superuser=True,is_staff=True))
+    owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
+    is_visible = forms.BooleanField()
+    tag = forms.CharField(
+        label='Type tag name',
+        widget=AutoCompleteSelectMultipleWidget(TagLookup),
+        required=False,
+    )
 
-    def clean_owner(self):
-        value = self.cleaned_data['owner']
-        if len(value) > 1:
-            raise forms.ValidationError("You can't select more than 1 owner.")
-        return value[0]
+    # def clean_owner(self):
+    #     value = self.cleaned_data['owner']
+    #     if len(value) > 1:
+    #         raise forms.ValidationError("You can't select more than 1 owner.")
+    #     return value[0]
 
     class Meta:
         model = CbCategory
-        fields =("name","image","description","meta_data","owner")
+        fields =("name","image","description","meta_data","owner","tag","is_visible")
 
 
 class CbTopicAdminForm(forms.ModelForm):
-    title = forms.CharField(max_length=100,widget=forms.TextInput)
+    title = forms.CharField(max_length=255,widget=forms.TextInput)
     category = forms.Select(choices=CbCategory.objects.only("name"))
     image = forms.ImageField(required=False)
-    description = forms.CharField(widget=forms.Textarea)
+    description = forms.CharField(widget=forms.Textarea,max_length=1024)
     owner = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
+    is_visible = forms.BooleanField()
     tag = forms.CharField(
             label='Type tag name',
             widget=AutoCompleteSelectMultipleWidget(TagLookup),
@@ -41,7 +49,7 @@ class CbTopicAdminForm(forms.ModelForm):
 
     class Meta:
         model = CbTopic
-        fields = ("title","category","image","description","owner","tag")
+        fields = ("title","category","image","description","owner","tag","is_visible")
 
 
 class CbQuestionAdminForm(forms.ModelForm):
@@ -62,7 +70,7 @@ class CbQuestionAdminForm(forms.ModelForm):
         widget=AutoComboboxSelectWidget
     )
     title = forms.CharField(widget=forms.TextInput)
-    description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 200}))
+    description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}))
     owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
     tag = forms.CharField(
         label='Type tag name',
@@ -93,48 +101,53 @@ class CbQuestionForm(forms.ModelForm):
         self.fields["category"].choices = CATEGORIES
 
     category = forms.Select(choices=CbCategory.objects.only("name"))
-    topic = AutoCompleteSelectField(
-        lookup_class=TopicLookup,
-        widget=AutoComboboxSelectWidget
-    )
+    topic = forms.Select(choices=[])
+    # topic = AutoCompleteSelectField(
+    #     lookup_class=TopicLookup,
+    #     widget=AutoComboboxSelectWidget
+    # )
     title = forms.CharField(widget=forms.TextInput)
-    description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600}))
-    owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
-    tag = forms.CharField(
-        label='Type tag name',
-        widget=AutoCompleteSelectMultipleWidget(TagLookup),
-        required=False,
-    )
+    description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}))
+    owner = forms.CharField(widget=forms.HiddenInput)
+    tag = forms.CharField(widget=forms.HiddenInput)
+    tag_auto = forms.CharField(widget=forms.TextInput(attrs={"class":"tag_field form-control"}),required=False)
+    # tag = forms.CharField(widget=forms.TextInput(attrs={"class":"tag_id"}))
+    # tag = forms.CharField(
+    #     label='Type tag name',
+    #     widget=AutoCompleteSelectMultipleWidget(TagLookup),
+    #     required=False,
+    # )
 
     def clean_category(self):
-        if not CbCategory.objects.filter(pk = self.cleaned_data.get("category")).exists():
+        if not CbCategory.objects.filter(pk=self.cleaned_data.get("category").id).exists():
             raise forms.ValidationError("Category does not exist")
             return self.cleaned_data.get("category")
         else:
-            return CbCategory.objects.get(pk=self.cleaned_data.get("category"))
+            return self.cleaned_data.get("category")#CbCategory.objects.get(pk=self.cleaned_data.get("category"))
 
-    def save(self, commit=True):
-        with transaction.atomic():
-            question = CbQuestion.objects.create(
-                topic=self.cleaned_data.get("topic"),
-                category=self.cleaned_data.get("category"),
-                title=self.cleaned_data.get("title"),
-                description=self.cleaned_data.get("description"),
-                owner=self.request.user
-            )
-
-            if self.cleaned_data.get("tag"):
-                question.question_tags.all().delete()
-                for tag in literal_eval(self.cleaned_data.get("tag")):
-                    CbQuestionTag.objects.create(
-                        question=question,
-                        tag=CbTag.objects.get(pk=tag)
-                    )
-
-            return question
-    # def save(self, *args, **kwargs):
+    # def save(self, commit=True):
+    #     with transaction.atomic():
+    #         question = CbQuestion.objects.create(
+    #             topic=self.cleaned_data.get("topic"),
+    #             category=self.cleaned_data.get("category"),
+    #             title=self.cleaned_data.get("title"),
+    #             description=self.cleaned_data.get("description"),
+    #             owner=self.request.user
+    #         )
+    #
+    #         # if self.cleaned_data.get("tag"):
+    #         #     question.question_tags.all().delete()
+    #         #     print(self.cleaned_data.get("tag"),"Hellow world")
+    #         #     for tag in self.cleaned_data.get("tag"):
+    #         #         CbQuestionTag.objects.create(
+    #         #             question=question,
+    #         #             tag=CbTag.objects.get(pk=tag)
+    #         #         )
+    #
+    #         return question
+    # # def save(self, *args, **kwargs):
 
     class Meta:
         model = CbQuestion
-        fields = ("topic","title","description","tag","category")
+        fields = ("topic","title","description","tag","category","tag_auto")
 

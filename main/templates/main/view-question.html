@@ -13,7 +13,7 @@
 		</div>
 	</section>
 
-	<section id="discussion" data-ng-controller="QuestionController as qObj" data-ng-cloak data-ng-init="init({{ question.id }})">
+	<section style="margin-top: 0" id="discussion" data-ng-controller="QuestionController as qObj" data-ng-cloak data-ng-init="init({{ question.id }})">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
@@ -25,7 +25,17 @@
 				<div class="col-md-9">
 					<div class="well">
 						<div class="question-desc">
-							<h5 class="page-header">{$ qObj.title $}</h5>
+							<div>
+								<h5 style="" class="page-header">{$ qObj.title $}
+									<a href="{% url 'edit-question' question=question.id %}">
+										{% if request.user == question.owner %}
+											<i  style="float:right" class="fa fa-pencil" aria-hidden="true"></i>
+										{% endif %}
+									</a>
+								</h5>
+
+								<div class="clearfix"></div>
+							</div>
 
 							<div class="answer-desc">
 							<p data-ng-bind-html="qObj.description">
@@ -39,14 +49,14 @@
 						<div class="author">
 							<!--<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">-->
 							<div data-ng-if="qObj.owner.profile.has_photo">
-								{$ qObj.owner.profile_pix $}
+								<span data-ng-bind-html="trustedHtml(qObj.owner.profile_pix)"></span>
 							</div>
 							<div data-ng-if="!qObj.owner.profile.has_photo" data-ng-bind-html="trustedHtml(qObj.owner.profile_pix)">
 							</div>
 
 							<ul class="detail">
 								<li><span>{$ qObj.user_full_name $}</span></li>
-								<li><span>{$ qObj.created_at|date:"MMM, dd yy" $}</span></li>
+								<li><span>{$ qObj.created_at|date:"MMM, dd yy h:mm a" $}</span></li>
 							</ul>
 						</div>
 
@@ -55,10 +65,17 @@
 								<textarea rows="5" class="form-control" placeholder="type comment" data-ng-model="qObj.answerComment"></textarea>
 							</div>
 							<div class="post clearfix">
-								<button data-ng-click="postAnswer({{ question.id }})" class="btn btn-purple pull-right">
-									<i data-ng-show="qObj.answerSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-									<span class="sr-only">Loading...</span>post answer
-								</button>
+								{% if request.user.is_authenticated %}
+									<button data-ng-click="postAnswer({{ question.id }})" class="btn btn-purple pull-right">
+										<i data-ng-show="qObj.answerSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<span class="sr-only">Loading...</span>post answer
+									</button>
+								{% else %}
+									<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
+										<i data-ng-show="qObj.answerSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<span class="sr-only">Loading...</span>post answer
+									</a>
+								{% endif %}
 							</div>
 							<div class="top-brdr" data-ng-repeat="ans in qObj.question_answers track by $index">
 								<div class="row">
@@ -73,7 +90,9 @@
 									<div class="col-xs-10">
 										<p>{$ ans.comment $}</p>
 										<div class="like-btn">
-											<a style="cursor:pointer" data-ng-click="likeAnswer(ans)"><i class="fa fa-heart" data-ng-class="{'like-btn-i':ans.has_liked==true}" aria-hidden="true"></i> <span>{$ ans.answer_likes $}</span></a>
+											<a style="cursor:pointer" data-ng-click="likeAnswer(ans)">
+												<i class="fa fa-heart" data-ng-class="{'like-btn-i':ans.has_liked==true}" aria-hidden="true"></i> <span>{$ ans.answer_likes $}</span></a>
+											{$ ans.created_at|date:"MMM, dd yy h:mm a" $}
 										</div>
 
 									</div>
@@ -91,14 +110,25 @@
 												<div class="col-xs-10">
 													<p>{$ rep.comment $}</p>
 													<div class="like-btn">
-														<a style="cursor:pointer" data-ng-click="likeAnswerReply(rep)"><i class="fa fa-heart" data-ng-class="{'like-btn-i':rep.has_liked==true}" aria-hidden="true"></i> <span>{$ rep.answer_reply_likes $}</span></a>
+														<a style="cursor:pointer" data-ng-click="likeAnswerReply(rep)">
+															<i class="fa fa-heart" data-ng-class="{'like-btn-i':rep.has_liked==true}" aria-hidden="true"></i>
+															<span>{$ rep.answer_reply_likes $}</span> |
+															<span>{$ rep.created_at|date:"MMM, dd yy h:mm a" $}</span>
+														</a>
 													</div>
 												</div>
 											</div>
 										</div>
 								</div>
 								<div class="reply clearfix">
+									{% if request.user.is_authenticated %}
 											<button class="btn btn-purple pull-right" data-ng-click="showReply($index,$event)" id="replyBtn{$ $index $}">reply</button>
+									{% else %}
+										<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
+										<i data-ng-show="qObj.answerSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<span class="sr-only">Loading...</span>reply
+									</a>
+									{% endif %}
 										</div>
 										<div class="reply-box" id="reply{$ $index $}" style="display:none">
 											<div class="comment-box">

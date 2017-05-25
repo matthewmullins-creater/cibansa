@@ -9,7 +9,7 @@
 		</div>
 	</section>
 
-	<section id="question">
+	<section id="question" style="margin-top: -11em;">
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
@@ -29,7 +29,7 @@
 								<span class="prefix">Q:</span>
 								<span class="qus">{{ q.title }}</span>
 							</h5>
-							<p>{{ q.description|truncatechars:50  |safe }}</p>
+							<p>{{ q.description|truncatechars:300  |safe }}</p>
 						</div>
 						<div class="chip-container">
 							{% for t in q.question_tags.all %}
@@ -40,10 +40,18 @@
 
 						</div>
 						<div class="author">
-							<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">
+							{% if q.owner.profile.has_photo %}
+								<div >
+									{{ q.owner.get_profile_pix | safe }}
+								</div>
+							{% else %}
+								<div>
+									{{ q.owner.get_profile_pix | safe }}
+								</div>
+							{% endif %}
 							<ul class="detail">
 								<li><span>{{ q.owner.get_full_name }}</span></li>
-								<li><span>{{ q.created_at |date:"M, d y" }}</span></li>
+								<li><span>{{ q.created_at |date:"M, d y P" }}</span></li>
 							</ul>
 						</div>
 					</div>
@@ -53,8 +61,32 @@
 						</div>
 					</div>
 				</div>
+
 			</div>
 			{% endfor %}
+			<div class="row">
+					{% if questions.has_other_pages %}
+						  <ul class="pagination">
+							{% if questions.has_previous %}
+							  <li><a href="?page={{ questions.previous_page_number }}">&laquo;</a></li>
+							{% else %}
+							  <li class="disabled"><span>&laquo;</span></li>
+							{% endif %}
+							{% for i in questions.paginator.page_range %}
+							  {% if questions.number == i %}
+								<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+							  {% else %}
+								<li><a href="?page={{ i }}">{{ i }}</a></li>
+							  {% endif %}
+							{% endfor %}
+							{% if questions.has_next %}
+							  <li><a href="?page={{ questions.next_page_number }}">&raquo;</a></li>
+							{% else %}
+							  <li class="disabled"><span>&raquo;</span></li>
+							{% endif %}
+						  </ul>
+						{% endif %}
+					</div>
 
 		</div>
 	</section>

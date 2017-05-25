@@ -22,12 +22,16 @@
 	<link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/4f6a4b08efdad6bb29f9cc801f5c07e263b39907/devicon.min.css">
 	<link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="{% static 'main/css/bootstrap.min.css' %}">
+
 	<link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+	<!--<script src="{% static 'main/js/jquery.min.js' %}"></script>-->
 	<script src="{% static 'grappelli/jquery/jquery-2.1.4.min.js' %}"></script>
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
 	<script src="{% static 'main/js/angularjs/angular-sanitize.js' %}"></script>
+
 	<script src="{% static 'main/js/angularjs/app.js' %}"></script>
 	<script src="{% static 'main/js/angularjs/app.config.js' %}"></script>
+	<link rel="stylesheet" href="{% static 'grappelli/jquery/ui/jquery-ui.min.css' %}">
 </head>
 
 <body>
@@ -93,7 +97,7 @@
           <div class="checkbox">
 				    <label><input type="checkbox" name="keep_me" > Keep me signed in</label>
 				  </div>
-          <a href="#" class="right">Forgot your password?</a>
+          <a href="{% url 'forgot-password' %}" class="right">Forgot your password?</a>
 
           <div class="login-btn">
             <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1em;margin-bottom: 1em;">Login</button>
@@ -102,7 +106,7 @@
             		<a href="#" id="toggle_signUp">Not a member? Sign Up</a>
             	</div>
             	<div class="col-md-6">
-            		<a href="#" id="toggle_signUp">Forgot password</a> <br>
+            		<a href="{% url 'forgot-password' %}" id="toggle_signUp">Forgot password</a> <br>
             		<a href="#">Problem loging in?</a>
             	</div>
             </div>
@@ -179,7 +183,7 @@
 
 	<script src="{% static 'grappelli/jquery/ui/jquery-ui.min.js' %}"></script>
 	<script src="{% static 'main/js/bootstrap.min.js' %}"></script>
-	<script src="{% static 'main/js/materialize.min.js' %}"></script>
+	<!--<script src="{% static 'main/js/materialize.min.js' %}"></script>-->
 	<script src="{% static 'main/js/main.js' %}"></script>
 	{{ form.media }}
 {% block extras %}

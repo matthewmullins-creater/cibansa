@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 {% block title %}
- <title>Cibansa - Login</title>
+ Cibansa - Login
 {% endblock %}
 
 {% block body %}
@@ -46,7 +46,7 @@
           <div class="checkbox">
 				    <label><input type="checkbox" name="keep_me" > Keep me signed in</label>
 				  </div>
-          <a href="#" class="right">Forgot your password?</a>
+          <a href="{% url 'forgot-password' %}" class="right">Forgot your password?</a>
 
           <div class="login-btn">
             <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1em;margin-bottom: 1em;">Login</button>
@@ -55,7 +55,7 @@
             		<a href="{% url 'account-sign-up' %}">Not a member? Sign Up</a>
             	</div>
             	<div class="col-md-6">
-            		<a href="#" id="toggle_signUp">Forgot password</a> <br>
+            		<a href="{% url 'forgot-password' %}" id="toggle_signUp">Forgot password</a> <br>
             		<a href="#">Problem loging in?</a>
             	</div>
             </div>

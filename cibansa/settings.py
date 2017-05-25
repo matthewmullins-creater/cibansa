@@ -54,7 +54,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -169,28 +169,28 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 # }
 
 #
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'cibansa',
-#         'USER': 'CODE-WIZARD',
-#         'PASSWORD': '',
-#         'HOST': '127.0.0.1',
-#         'PORT': '5432',
-#     }
-# }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'd1kmb939e6u07e',
-        'USER': 'tpjyuqfvbkfjzk',
-        'PASSWORD': 'cb68ad15c3628d657cd49af95016f9ab4f2ec13a5f52a2033b153c64096fef83',
-        'HOST': 'ec2-107-20-141-145.compute-1.amazonaws.com',
+        'NAME': 'cibansa',
+        'USER': 'CODE-WIZARD',
+        'PASSWORD': '',
+        'HOST': '127.0.0.1',
         'PORT': '5432',
     }
 }
-db_from_env = dj_database_url.config(conn_max_age=500)
-DATABASES['default'].update(db_from_env)
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'd1kmb939e6u07e',
+#         'USER': 'tpjyuqfvbkfjzk',
+#         'PASSWORD': 'cb68ad15c3628d657cd49af95016f9ab4f2ec13a5f52a2033b153c64096fef83',
+#         'HOST': 'ec2-107-20-141-145.compute-1.amazonaws.com',
+#         'PORT': '5432',
+#     }
+# }
+# db_from_env = dj_database_url.config(conn_max_age=500)
+# DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -244,6 +244,8 @@ USE_TZ = True
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
+
+# Heroku configuration
 PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
 
 STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
@@ -258,7 +260,15 @@ MEDIA_ROOT =os.path.join(BASE_DIR,"media/")
 MEDIA_URL ='/media/'
 
 
+EMAIL_HOST = 'sg2plcpnl0027.prod.sin2.secureserver.net'
 
+EMAIL_HOST_USER = 'iuloko@monchest.com'
+
+EMAIL_HOST_PASSWORD = 'Lovingly4'
+
+EMAIL_PORT = 465
+
+EMAIL_USE_SSL = True
 
 
 TINYMCE_JS_URL = "/static/main/js/tinymce/tinymce.min.js"
@@ -278,27 +288,9 @@ TINYMCE_EXTRA_MEDIA = {
 REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
     # 'DEFAULT_PAGINATION_CLASS': 'main.core.pagination.LinkHeaderPagination',
-    'PAGE_SIZE': 2
+    'PAGE_SIZE': 10
 }
-# TINYMCE_DEFAULT_CONFIG = {
-#     "plugins":"image imagetools,table, code",
-#     'theme': "modern",
-#     # 'toolbar': "image",
-#     'cleanup_on_startup': True,
-#     'custom_undo_redo_levels': 10,
-#     'images_upload_url': 'postAcceptor.php',
-#     'images_upload_base_path': '/some/basepath',
-#     'images_upload_credentials': True
-#     # 'image_title': True,
-#     # 'automatic_uploads': True,
-#     # 'images_upload_url': 'postAcceptor.php',
-#     # 'file_picker_types': 'image',
-#     # 'imagetools_toolbar': "rotateleft rotateright | flipv fliph | editimage imageoptions",
-#     # 'file_picker_callback': "function(cb, value, meta) { var input = document.createElement('input')"
-#     #                         ";input.setAttribute('type', 'file');input.setAttribute('accept', 'image/*');"
-#     #                         "input.onchange = function(){var file = this.files[0];"
-#     #                         "var id = 'blobid' + (new Date()).getTime();"
-#     #                         "var blobCache = tinymce.activeEditor.editorUpload.blobCache;"
-#     #                         "var blobInfo = blobCache.create(id, file);blobCache.add(blobInfo);"
-#     #                         "cb(blobInfo.blobUri(), {title: file.name});};input.click();}"
-# }
+
+TINYMCE_DEFAULT_CONFIG = {
+    "editor_deselector": "mceNoEditor",
+}

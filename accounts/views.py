@@ -1,9 +1,16 @@
-from django.shortcuts import render,redirect
-from accounts.forms import AuthenticationForm,RegistrationForm
+from django.shortcuts import render,redirect,get_object_or_404
+from accounts.forms import AuthenticationForm,RegistrationForm,ForgotPasswordForm,PasswordResetForm
 from django.contrib.auth import authenticate,login as django_login,authenticate,logout as django_logout
 from django.utils.http import is_safe_url
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
+from django.views import generic
+from django.core.urlresolvers import reverse,reverse_lazy
+from accounts.models import CbTempPassword,User
+from accounts.util import send_password_reset_token
+from django.http import Http404
+from django.views.decorators.debug import sensitive_post_parameters
+from django.utils.decorators import method_decorator
 from accounts.models import CbUserProfile
 
 # Create your views here.
@@ -68,6 +75,68 @@ def register(request):
     else:
         return redirect("/")
 
+
+class ForgetPassword(generic.FormView):
+    form_class=ForgotPasswordForm
+    template_name="accounts/forgot_password.html"
+
+    def get_success_url(self):
+        return reverse("reset-sent")
+
+    def get_context_data(self, **kwargs):
+        kwargs['url'] = self.request.get_full_path()
+        return super(ForgetPassword, self).get_context_data(**kwargs)
+
+    def form_valid(self,form):
+        self.user = User.objects.get(email=form.cleaned_data["email"])
+        self.temp=CbTempPassword.objects.create(user=self.user)
+        send_password_reset_token(self.user,self.request,self.temp)
+
+        return super(ForgetPassword,self).form_valid(form)
+
+
+def reset_sent(request):
+    return render(request,"accounts/reset_sent.html")
+
+
+def reset_done(request):
+    return render(request,"accounts/reset_done.html")
+
+
+class PasswordReset(generic.FormView):
+    template_name="accounts/reset_password.html"
+    form_class=PasswordResetForm
+    success_url = reverse_lazy("reset_done")
+
+    def invalid(self):
+        return self.render_to_response(self.get_context_data(invalid=True))
+
+    def get_form_kwargs(self):
+        kwargs = super(PasswordReset, self).get_form_kwargs()
+        kwargs['user'] = self.user
+        return kwargs
+
+    @method_decorator(sensitive_post_parameters('password1', 'password2'))
+    def dispatch(self, request, *args, **kwargs):
+        self.request = request
+        self.args = args
+        self.kwargs = kwargs
+        self.user = None
+        self.token= kwargs['token']
+        pk = get_object_or_404(CbTempPassword,token=kwargs['token'])
+
+        if pk.used:
+            raise Http404
+
+        self.user = get_object_or_404(User, pk=pk.user.id)
+        return super(PasswordReset, self).dispatch(request, *args, **kwargs)
+
+    def form_valid(self, form):
+        form.save()
+        temp = CbTempPassword.objects.get(token=self.token)
+        temp.used=True
+        temp.save()
+        return redirect(self.get_success_url())
 
 @login_required
 def logout(request):

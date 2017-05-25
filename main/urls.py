@@ -26,6 +26,11 @@ urlpatterns = [
     url(r'^api/v1/',include(questions.urls,namespace="question-api")),
     url(r'^api/v1/',include(answer_like.urls,namespace="answer-like-api")),
     url(r'^api/v1/',include(answer_reply_like.urls,namespace="answer-reply-like-api")),
+    url(r'^topic-by-category',views.get_topic_by_category,name="topic-by-category"),
+    url(r'^tag-auto-complete',views.tag_search,name="tag-auto-complete"),
+    url(r'^tag-auto-complete',views.tag_search,name="tag-auto-complete"),
+    url(r'^question-auto-complete',views.question_auto_complete,name="question-auto-complete"),
+
     # url(r'^category/(?P<slug>[\w|\W\-]+)/list-topic/',views.list_topic,name="list-topic"),
     # url(r'^$',views.index,name="home-page"),
 ]

@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{% block title %}
+ Cibansa - Password reset complete!
+{% endblock %}
+
+{% block body %}
+<style>
+    form{
+        padding: 40px;
+        padding-bottom:20px;
+    }
+</style>
+<section class="body-container">
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+            <div class="alert alert-success">
+                <h2>Your password has been recovered</h2>
+                 <p>Click <a href="{% url 'account-login' %}">here</a> to login</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+{% endblock %}

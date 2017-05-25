@@ -1,0 +1,217 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Cibansa - {{ article.title }}{% endblock %}
+
+{% block body %}
+{% load js %}
+{% django_js %}
+<section id="green-header" class="body-container">
+		<div class="container">
+		</div>
+	</section>
+
+	<section id="article-detail" data-ng-controller="ArticleController as aObj" data-ng-init="init({{ article.id }})" data-ng-cloak>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-8">
+					<h3 class="filter" style="color: #fff">{{ article.title }}</h3>
+				</div>
+			</div>
+
+			<div class="well">
+				<div class="article-container">
+					<div class="author">
+						{% if article.user.profile.has_photo %}
+							<div >
+								{{ article.user.get_profile_pix | safe }}
+							</div>
+						{% else %}
+							<div>
+								{{ article.user.get_profile_pix | safe }}
+							</div>
+						{% endif %}
+						<ul class="detail">
+							<li><span>{{ article.user }}</span></li>
+							<li>category: <span>{{ article.category }}</span></li>
+							<li>posted on: <span>{{ article.created_at |date:"M, d y" }}</span></li>
+						</ul>
+					</div>
+					<div class="article-img">
+						<img src="{{ article.image.url }}" class="img-responsive">
+					</div>
+					<div class="answer-desc">
+						{{ article.content|safe }}
+					</div>
+					<div class="row">
+						<div class="col-md-2">
+							<div class="like-btn" style="margin-top: 1em;">
+								<a style="cursor:pointer" data-ng-click="likeArticle()">
+									<i class="fa fa-heart" data-ng-class="{'like-btn-i':aObj.has_liked==true}" aria-hidden="true"></i>
+									<span>{$ aObj.article_likes $}</span></a>
+							</div>
+						</div>
+						<div class="col-md-10">
+							<div class="clearfix">
+								<div class="social-btn pull-right">
+				 					<i class="fa fa-share-alt" aria-hidden="true"></i>
+				 					<a href="https://www.facebook.com/sharer/sharer.php?u" class="facebook">
+										<i class="fa fa-facebook" aria-hidden="true"></i>
+									</a>
+									<a href="https://twitter.com/intent/tweet?text" class="tw">
+										<i class="fa fa-twitter" aria-hidden="true"></i>
+									</a>
+									<a href="" class="gp">
+										<i class="fa fa-google-plus" aria-hidden="true"></i>
+									</a>
+									<a href="https://www.linkedin.com/shareArticle?mini=true&url="+jobLink+"&title="+obj.job_title+"&summary="+description+"&source=www.handycv.com"" class="li">
+										<i class="fa fa-linkedin" aria-hidden="true"></i>
+									</a>
+				 				</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="comment-view">
+					<div class="comment-box">
+						<textarea rows="5" class="form-control" placeholder="type comment" data-ng-model="comment"></textarea>
+					</div>
+					<div class="post clearfix">
+						{% if request.user.is_authenticated %}
+									<button data-ng-click="postComment()" class="btn btn-purple pull-right">
+										<i data-ng-show="aObj.commentSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<span class="sr-only">Loading...</span>post comment
+									</button>
+								{% else %}
+									<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
+										<i data-ng-show="qObj.answerSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<span class="sr-only">Loading...</span>post comment
+									</a>
+						{% endif %}
+					</div>
+					<div class="top-brdr" data-ng-repeat="ac in aObj.article_comments track by $index">
+						<div class="row">
+							<div class="col-xs-2">
+								<div data-ng-if="ac.user_data.profile.has_photo">
+											{$ ac.user_data.profile_pix $}
+										</div>
+										<div data-ng-if="!ac.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(ac.user_data.profile_pix)">
+										</div>
+							</div>
+							<div class="col-xs-10">
+								<p>{$ ac.comment $}</p>
+								<div class="like-btn">
+									<a style="cursor:pointer" data-ng-click="likeArticleComment(ac)">
+										<i class="fa fa-heart" data-ng-class="{'like-btn-i':ac.has_liked==true}" aria-hidden="true"></i>
+										<span>{$ ac.comment_likes $}</span>
+									</a>
+									{$ ac.created_at|date:"MMM, dd yy h:mm a" $}
+								</div>
+								<div class="reply clearfix">
+									{% if request.user.is_authenticated %}
+											<button class="btn btn-purple pull-right" data-ng-click="showReply($index,$event)" id="replyBtn{$ $index $}">reply</button>
+									{% else %}
+										<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
+										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<span class="sr-only">Loading...</span>reply
+									</a>
+									{% endif %}
+								</div>
+								<div class="reply-box" id="reply{$ $index $}" style="display:none">
+											<div class="comment-box">
+												<textarea rows="5" class="form-control" placeholder="type comment" id="replyComment{$ $index $}"></textarea>
+											</div>
+											<div class="post clearfix">
+												<button data-ng-click="postReply(ac,$index)" class="btn btn-purple pull-right">
+													<i data-ng-show="aObj.replySubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+													<span class="sr-only">Loading...</span>Reply
+												</button>
+											</div>
+										</div>
+							</div>
+						</div>
+						<!-- nested comment -->
+						<div class="nested-comment clearfix">
+							<div class="reply-box top-brdr" data-ng-repeat="rep in ac.comment_replies track by $index">
+								<div class="row">
+									<div class="col-xs-2">
+										<div data-ng-if="rep.user_data.profile.has_photo">
+											{$ rep.user_data.profile_pix $}
+										</div>
+										<div data-ng-if="!rep.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)">
+										</div>
+									</div>
+									<div class="col-xs-10">
+										<p>{$ rep.content $}</p>
+										<div class="like-btn">
+											<a style="cursor:pointer" data-ng-click="likeCommentReply(rep)">
+												<i class="fa fa-heart" data-ng-class="{'like-btn-i':rep.has_liked==true}" aria-hidden="true"></i>
+												<span>{$ rep.comment_reply_likes $}</span> |
+												<span>{$ rep.created_at|date:"MMM, dd yy h:mm a" $}</span>
+											</a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</div>
+				<div class="more-article">
+					<div id="article">
+						<h4 class="page-header">more article</h4>
+						<div class="row">
+							{% for a in more_article %}
+				<div class="col-md-4">
+					<a href="{% url 'view-article' id=a.id %}">
+						<div class="well round_container">
+							<div class="img-content" style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ a.image.url }}')">
+								<h3>{{ a.title }}</h3>
+							</div>
+							<div class="desc-content">
+								<div class="row">
+									<div class="col-xs-3">
+										{% if a.user.profile.has_photo %}
+											<div >
+												{{ a.user.get_profile_pix | safe }}
+											</div>
+										{% else %}
+											<div>
+												{{ a.user.get_profile_pix | safe }}
+											</div>
+										{% endif %}
+									</div>
+									<div class="col-xs-8">
+										<ul class="detail">
+											<li>{{ a.user }}</li>
+											<li>category : <span>{{ a.category }}</span></li>
+											<li>posted on : <span>{{ a.created_at |date:"M, d y" }}</span></li>
+										</ul>
+									</div>
+								</div>
+								<div class="read">
+									<a href="#" class="btn btn-default">read more</a>
+									<ul class="visitor">
+										<li><i class="fa fa-heart" aria-hidden="true"></i></li>
+										<li>{{ a.article_likes.count }}</li>
+									</ul>
+									<div class="clear"></div>
+								</div>
+							</div>
+						</div>
+					</a>
+				</div>
+				{% endfor %}
+
+
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% block extras %}
+
+	<script src="{% static 'article/js/angularjs/service.article.js' %}"></script>
+	<script src="{% static 'article/js/angularjs/controller.article.js' %}"></script>
+{% endblock %}
+{% endblock %}

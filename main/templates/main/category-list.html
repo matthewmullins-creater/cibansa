@@ -55,6 +55,29 @@
 						{% endfor %}
 
 					</div>
+					<div class="row">
+						{% if category.has_other_pages %}
+						  <ul class="pagination">
+							{% if category.has_previous %}
+							  <li><a href="?page={{ category.previous_page_number }}">&laquo;</a></li>
+							{% else %}
+							  <li class="disabled"><span>&laquo;</span></li>
+							{% endif %}
+							{% for i in category.paginator.page_range %}
+							  {% if category.number == i %}
+								<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+							  {% else %}
+								<li><a href="?page={{ i }}">{{ i }}</a></li>
+							  {% endif %}
+							{% endfor %}
+							{% if category.has_next %}
+							  <li><a href="?page={{ category.next_page_number }}">&raquo;</a></li>
+							{% else %}
+							  <li class="disabled"><span>&raquo;</span></li>
+							{% endif %}
+						  </ul>
+						{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>

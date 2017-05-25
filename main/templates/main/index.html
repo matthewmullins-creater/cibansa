@@ -2,14 +2,19 @@
 
 
 {% block body %}
+{% load js %}
+{% django_js %}
 
 <section id="search" class="body-container">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-12">
 					<div id="input_container">
-						<input type="text" class="form-control">
-						<i class="fa fa-search" aria-hidden="true" id="input_img"></i>
+						<form action="{% url 'question-search' %}" id="search-form">
+							<input type="text" class="form-control q-search" name="q" >
+							<i class="fa fa-search" aria-hidden="true" id="input_img" style="cursor:pointer"></i>
+						</form>
+
 					</div>
 				</div>
 			</div>
@@ -47,22 +52,31 @@
 		<div class="container">
 			<div class="row">
 				<h2 class="content_head">articles</h2>
+				{% for a in articles %}
 				<div class="col-md-4">
-					<a href="#">
+					<a href="{% url 'view-article' id=a.id %}">
 						<div class="well round_container">
-							<div class="img-content">
-								<h3>article title</h3>
+							<div class="img-content" style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ a.image.url }}')">
+								<h3>{{ a.title }}</h3>
 							</div>
 							<div class="desc-content">
 								<div class="row">
 									<div class="col-xs-3">
-										<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">
+										{% if a.user.profile.has_photo %}
+											<div >
+												{{ a.user.get_profile_pix | safe }}
+											</div>
+										{% else %}
+											<div>
+												{{ a.user.get_profile_pix | safe }}
+											</div>
+										{% endif %}
 									</div>
 									<div class="col-xs-8">
 										<ul class="detail">
-											<li>name</li>
-											<li>category : <span>python</span></li>
-											<li>posted on : <span>april 2, 2017</span></li>
+											<li>{{ a.user }}</li>
+											<li>category : <span>{{ a.category }}</span></li>
+											<li>posted on : <span>{{ a.created_at |date:"M, d y" }}</span></li>
 										</ul>
 									</div>
 								</div>
@@ -70,7 +84,7 @@
 									<a href="#" class="btn btn-default">read more</a>
 									<ul class="visitor">
 										<li><i class="fa fa-heart" aria-hidden="true"></i></li>
-										<li>50</li>
+										<li>{{ a.article_likes.count }}</li>
 									</ul>
 									<div class="clear"></div>
 								</div>
@@ -78,68 +92,8 @@
 						</div>
 					</a>
 				</div>
-				<div class="col-md-4">
-					<a href="#">
-						<div class="well round_container">
-							<div class="img-content">
-								<h3>article title</h3>
-							</div>
-							<div class="desc-content">
-								<div class="row">
-									<div class="col-xs-3">
-										<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">
-									</div>
-									<div class="col-xs-8">
-										<ul class="detail">
-											<li>name</li>
-											<li>category : <span>python</span></li>
-											<li>posted on : <span>april 2, 2017</span></li>
-										</ul>
-									</div>
-								</div>
-								<div class="read">
-									<a href="#" class="btn btn-default">read more</a>
-									<ul class="visitor">
-										<li><i class="fa fa-heart" aria-hidden="true"></i></li>
-										<li>50</li>
-									</ul>
-									<div class="clear"></div>
-								</div>
-							</div>
-						</div>
-					</a>
-				</div>
-				<div class="col-md-4">
-					<a href="#">
-						<div class="well round_container">
-							<div class="img-content">
-								<h3>article title</h3>
-							</div>
-							<div class="desc-content">
-								<div class="row">
-									<div class="col-xs-3">
-										<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">
-									</div>
-									<div class="col-xs-8">
-										<ul class="detail">
-											<li>name</li>
-											<li>category : <span>python</span></li>
-											<li>posted on : <span>april 2, 2017</span></li>
-										</ul>
-									</div>
-								</div>
-								<div class="read">
-									<a href="#" class="btn btn-default">read more</a>
-									<ul class="visitor">
-										<li><i class="fa fa-heart" aria-hidden="true"></i></li>
-										<li>50</li>
-									</ul>
-									<div class="clear"></div>
-								</div>
-							</div>
-						</div>
-					</a>
-				</div>
+				{% endfor %}
+
 			</div>
 		</div>
 	</section>

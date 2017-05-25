@@ -1,0 +1,54 @@
+{% load widget_tweaks %}
+<form action="" method="post">
+                        {% csrf_token %}
+						<div class="row">
+							<div class="col-md-3">
+								{% render_field form.category class+="form-control" %}
+							</div>
+							<div class="col-md-3">
+								{% render_field form.topic class+="form-control" %}
+							</div>
+                            <div>
+                                {{ form.category.errors }}
+                                {{ form.topic.errors }}
+                            </div>
+						</div>
+                        <div class="row" style="    margin-top: 10px;">
+                            <div class="col-xs-6">
+                                {% render_field form.title class+="form-control" placeholder="Enter question title" %}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-xs-12" id="editor-container" style="margin-top:2em">
+                                {{ form.description }}
+                            </div>
+
+                        </div>
+                        <div class="row" style="margin-top:3em">
+                                <div class="col-xs-5">
+                                        <div><label>Add tag to this question</label></div>
+                                        {% render_field form.tag_auto placeholder="Type tag name" %}
+                                    <div class="chip-container" style="margin-top:1em">
+                                        {% for tag in question.question_tags.all %}
+                                        <div class="chip"><input type="hidden" name="tag" value="{{ tag.tag.id }}"/>
+                                            <a href="">{{ tag.tag.name }}</a><i class="close material-icons">close</i></div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                        </div>
+                        <input type="hidden" name="owner" value="{{ request.user.id }}">
+				</div>
+
+				<!--<div >-->
+                    <!---->
+                <!--</div>-->
+
+
+				<div class="post clearfix">
+                    {% if question %}
+					    <button type="submit" class="btn btn-purple pull-right">edit question</button>
+                    {% else %}
+                        <button type="submit" class="btn btn-purple pull-right">post a question</button>
+                    {% endif %}
+				</div>
+                </form>
