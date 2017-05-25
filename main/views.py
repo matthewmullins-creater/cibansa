@@ -89,7 +89,6 @@ def list_categories(request):
 def post_question(request):
 
     if request.method == "POST":
-        print(request.POST)
         form = CbQuestionForm(data=request.POST,request=request)
         if form.is_valid():
             question = form.save()

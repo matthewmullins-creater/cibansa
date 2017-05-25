@@ -96,6 +96,7 @@ class CbQuestionForm(forms.ModelForm):
         self.request = kwargs.pop("request")
         super(CbQuestionForm,self).__init__(*args,**kwargs)
         CATEGORIES = [("","Select category")]
+        # self.fields["owner"] = self.request.user.id
         for c in CbCategory.objects.only("name"):
             CATEGORIES.append((c.id,c.name))
         self.fields["category"].choices = CATEGORIES
@@ -108,8 +109,8 @@ class CbQuestionForm(forms.ModelForm):
     # )
     title = forms.CharField(widget=forms.TextInput)
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}))
-    owner = forms.CharField(widget=forms.HiddenInput)
-    tag = forms.CharField(widget=forms.HiddenInput)
+    owner = forms.IntegerField(widget=forms.HiddenInput(),required=False)
+    tag = forms.CharField(widget=forms.HiddenInput())
     tag_auto = forms.CharField(widget=forms.TextInput(attrs={"class":"tag_field form-control"}),required=False)
     # tag = forms.CharField(widget=forms.TextInput(attrs={"class":"tag_id"}))
     # tag = forms.CharField(
@@ -117,6 +118,9 @@ class CbQuestionForm(forms.ModelForm):
     #     widget=AutoCompleteSelectMultipleWidget(TagLookup),
     #     required=False,
     # )
+
+    def clean_owner(self):
+        return self.request.user
 
     def clean_category(self):
         if not CbCategory.objects.filter(pk=self.cleaned_data.get("category").id).exists():
@@ -149,5 +153,5 @@ class CbQuestionForm(forms.ModelForm):
 
     class Meta:
         model = CbQuestion
-        fields = ("topic","title","description","tag","category","tag_auto")
+        fields = ("topic","title","description","tag","category","tag_auto","owner")
 

@@ -1,6 +1,7 @@
 {% load widget_tweaks %}
 <form action="" method="post">
                         {% csrf_token %}
+                        {{ form.owner.errors }}
 						<div class="row">
 							<div class="col-md-3">
 								{% render_field form.category class+="form-control" %}
@@ -36,7 +37,7 @@
                                     </div>
                                 </div>
                         </div>
-                        <input type="hidden" name="owner" value="{{ request.user.id }}">
+
 				</div>
 
 				<!--<div >-->
