@@ -81,7 +81,7 @@
 									</div>
 								</div>
 								<div class="read">
-									<a href="#" class="btn btn-default">read more</a>
+									<a href="{% url 'view-article' id=a.id %}" class="btn btn-default">read more</a>
 									<ul class="visitor">
 										<li><i class="fa fa-heart" aria-hidden="true"></i></li>
 										<li>{{ a.article_likes.count }}</li>
