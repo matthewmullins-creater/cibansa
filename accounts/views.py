@@ -24,9 +24,10 @@ def login(request):
     redirect_to = request.POST.get("next",request.GET.get("next", 'home-page'))
     if not request.user.is_authenticated():
         if request.method == 'POST':
+            print(request.POST.get("next"))
             form = AuthenticationForm(data=request.POST)
             if form.is_valid():
-                print(request.POST)
+
                 user = authenticate(email=request.POST['email'],password=request.POST['password'])
 
                 if user is not None:
@@ -38,6 +39,8 @@ def login(request):
                             settings.SESSION_EXPIRE_AT_BROWSER_CLOSE=True
 
                         django_login(request,user)
+                        # if request.POST.get("next"):
+                        #     return redirect(request.POST.get("next"))
                         return redirect(redirect_to)
             else:
                 print(form.errors)

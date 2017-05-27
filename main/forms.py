@@ -110,7 +110,7 @@ class CbQuestionForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput)
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}))
     owner = forms.IntegerField(widget=forms.HiddenInput(),required=False)
-    tag = forms.CharField(widget=forms.HiddenInput())
+    tag = forms.CharField(widget=forms.HiddenInput(),required=False)
     tag_auto = forms.CharField(widget=forms.TextInput(attrs={"class":"tag_field form-control"}),required=False)
     # tag = forms.CharField(widget=forms.TextInput(attrs={"class":"tag_id"}))
     # tag = forms.CharField(
@@ -154,4 +154,15 @@ class CbQuestionForm(forms.ModelForm):
     class Meta:
         model = CbQuestion
         fields = ("topic","title","description","tag","category","tag_auto","owner")
+
+
+class ContactForm(forms.Form):
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    phone = forms.CharField(required=True)
+    contact_email = forms.EmailField(required=True)
+    content = forms.CharField(
+        required=True,
+        widget=forms.Textarea
+    )
 

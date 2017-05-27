@@ -154,7 +154,17 @@
 							</div>
 						</div>
 					</div>
+					<h5>Tags</h5>
+			<div class="chip-container">
 
+							{% for t in article.article_tags.all %}
+								<div class="chip">
+									{{ t.tag.name }}
+								</div>
+							{% endfor %}
+					</div>
+
+				</div>
 				</div>
 				<div class="more-article">
 					<div id="article">

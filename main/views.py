@@ -89,15 +89,17 @@ def list_categories(request):
 def post_question(request):
 
     if request.method == "POST":
+        print(request.POST.getlist("tag"),1234)
         form = CbQuestionForm(data=request.POST,request=request)
         if form.is_valid():
             question = form.save()
-            question.question_tags.all().delete()
-            for tag in request.POST.getlist("tag"):
-                CbQuestionTag.objects.create(
-                    question=question,
-                    tag=CbTag.objects.get(pk=tag)
-                )
+            if request.POST.getlist("tag"):
+                question.question_tags.all().delete()
+                for tag in request.POST.getlist("tag"):
+                    CbQuestionTag.objects.create(
+                        question=question,
+                        tag=CbTag.objects.get(pk=tag)
+                    )
             return redirect("view-question",question.id)
     else:
         form = CbQuestionForm(request=request)
@@ -115,11 +117,12 @@ def edit_question(request,question):
             if form.is_valid():
                 question = form.save()
                 question.question_tags.all().delete()
-                for tag in request.POST.getlist("tag"):
-                    CbQuestionTag.objects.create(
-                        question=question,
-                        tag=CbTag.objects.get(pk=tag)
-                    )
+                if request.POST.getlist("tag"):
+                    for tag in request.POST.getlist("tag"):
+                        CbQuestionTag.objects.create(
+                            question=question,
+                            tag=CbTag.objects.get(pk=tag)
+                        )
                 return redirect("view-question",question.id)
         else:
             form = CbQuestionForm(instance=question,request=request)
@@ -201,6 +204,26 @@ def question_search(request):
         "questions": questions,
     }
     return render(request, "main/list-topic-questions.html", context)
+
+
+def topic_search(request):
+    category = get_object_or_404(CbCategory,pk=request.GET.get("cat",""))
+    topics = CbTopic.objects.filter(title__icontains=request.GET.get("q",""),category=request.GET.get("cat"))
+    page = request.GET.get("page", 1)
+    paginator = Paginator(topics, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
+
+    try:
+        topics = paginator.page(page)
+    except PageNotAnInteger:
+        topics = paginator.page(1)
+    except EmptyPage:
+        topics = paginator.page(paginator.num_pages)
+
+    context = {
+        "topics": topics,
+        "category":category,
+    }
+    return render(request, "main/list-topic.html", context)
 
 
 def question_auto_complete(request):

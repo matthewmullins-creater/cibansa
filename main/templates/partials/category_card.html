@@ -1,7 +1,8 @@
 <a href="{% url 'list-topic' card.slug %}">
     <div class="well round_container">
-        <div class="img-content">
-            <i class="devicon-python-plain"></i>
+        <div class="img-content" style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+            url('{{ card.url }}')">
+            <!--<i class="devicon-python-plain"></i>-->
         </div>
         <div class="desc-content">
             <h4 class="upper">{{ card.category_name }}</h4>

@@ -283,10 +283,11 @@ hr.style17:after {
 }
 .round_container .img-content{
   text-align: center;
-  padding-top: 1em;
-  padding-bottom: 1em;
+  padding-top: 1.5em;
+  padding-bottom: 1.5em;
   font-size: 48px;
   background-color: rgba(136,136,136,0.8);
+  background-size:cover;
   border-radius: 10px 10px 0 0;
 }
 .round_container .desc-content{

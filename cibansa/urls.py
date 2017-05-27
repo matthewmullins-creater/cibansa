@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^category/(?P<slug>[\w|\W\-]+)/list-topic/',mv.list_topic,name="list-topic"),
     url(r'^topic/(?P<slug>[\w|\W\-]+)/questions/',mv.list_topic_question,name="list-topic-questions"),
+    url(r'^topic/search',mv.topic_search,name="topic-search"),
     url(r'^category/',mv.list_categories,name="list-categories"),
     url(r'^questions/post-new-question/',mv.post_question,name="post-new-question"),
     url(r'^questions/edit/(?P<question>[0-9]+)/',mv.edit_question,name="edit-question"),

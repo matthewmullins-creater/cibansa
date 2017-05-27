@@ -54,6 +54,7 @@
 				</ul>
 				{% else %}
 				<ul class="nav navbar-nav">
+					<li><a href=""> {{ request.user.get_full_name }}</a></li>
 					<li><a href="{% url 'account-logout' %}" ><i class="fa fa-lock" aria-hidden="true"></i> logout</a></li>
 				</ul>
 				{% endif %}
@@ -98,7 +99,7 @@
 				    <label><input type="checkbox" name="keep_me" > Keep me signed in</label>
 				  </div>
           <a href="{% url 'forgot-password' %}" class="right">Forgot your password?</a>
-
+		<input type="hidden" name="next" value="{{ request.get_full_path }}">
           <div class="login-btn">
             <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1em;margin-bottom: 1em;">Login</button>
             <div class="row">

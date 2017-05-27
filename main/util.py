@@ -17,7 +17,7 @@ def get_top_category():
                 discussion += k.answer_replies.count()
 
         d = {"topic_count": c.topic_count,"question_count":question,"category_name":c.name,"slug":c.slug,
-             "discussion":discussion}
+             "discussion":discussion,"url": c.image.url}
         a.append(d)
 
     a.sort(key=itemgetter("question_count","topic_count"), reverse=True)

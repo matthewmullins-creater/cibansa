@@ -29,7 +29,7 @@
 								<span class="prefix">Q:</span>
 								<span class="qus">{{ q.title }}</span>
 							</h5>
-							<p>{{ q.description|truncatechars:300  |safe }}</p>
+							<p>{{ q.description|truncatechars_html:200  |safe }}</p>
 						</div>
 						<div class="chip-container">
 							{% for t in q.question_tags.all %}

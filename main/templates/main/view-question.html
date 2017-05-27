@@ -10,6 +10,10 @@
 
     <section id="green-header" class="body-container">
 		<div class="container">
+			<h4 style="color:#fff">
+				<a style="color:#fff" href="{% url 'list-topic' slug=question.category.slug%}">{{ question.category }}</a> /
+				<a style="color:#fff"href="{% url 'list-topic-questions' slug=question.topic.slug %} ">{{ question.topic }}</a>
+				/ {{ question.title }}</h4>
 		</div>
 	</section>
 

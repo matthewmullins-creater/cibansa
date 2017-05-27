@@ -4,14 +4,17 @@
 {% block body %}
 
 
-
 <section class="body-container" id="list-topic">
 		<div class="container">
 			<div class="row">
 				<div class="col-md-3">
 					<div class="search-box">
-						<input type="text" class="form-control">
-						<i class="fa fa-search" aria-hidden="true"></i>
+						<form class="" action="{% url 'topic-search' %}">
+							<input type="text" class="form-control" name="q">
+							<input type="hidden" name="cat" value="{{ category.id }}">
+							<i class="fa fa-search search-btn" style="cursor:pointer" aria-hidden="true"></i>
+						</form>
+
 					</div>
 				</div>
 				<div class="col-md-6 for-mobile">
@@ -27,28 +30,26 @@
 			</div>
 			<div class="space"></div>
 			<div class="row">
-				<div class="col-md-3 for-mobile">
-					<h4 class="filter">filter by tags</h4>
-					<!-- <div class="chips chips-initial"></div> -->
-					<div class="chip-container">
-						<form>
-							{% for t in tags %}
-								<div class="chip">
-									<input type="hidden" name="tag" value="{{ t.name }}">
-								{{ t.name }}
-								<i class="close material-icons">close</i>
-								</div>
-							{% endfor %}
-						</form>
+				<!--<div class="col-md-3 for-mobile">-->
+					<!--&lt;!&ndash;<h4 class="filter">filter by tags</h4>&ndash;&gt;-->
+					<!--&lt;!&ndash; <div class="chips chips-initial"></div> &ndash;&gt;-->
+					<!--&lt;!&ndash;<div class="chip-container">&ndash;&gt;-->
 
+							<!--&lt;!&ndash;{ for t in tags }&ndash;&gt;-->
+								<!--&lt;!&ndash;<div class="chip">&ndash;&gt;-->
+									<!--&lt;!&ndash;<input type="hidden" name="tag" value="{ t.name }">&ndash;&gt;-->
+								<!--&lt;!&ndash;{ t.name }&ndash;&gt;-->
+								<!--&lt;!&ndash;<i class="close material-icons">close</i>&ndash;&gt;-->
+								<!--&lt;!&ndash;</div>&ndash;&gt;-->
+							<!--&lt;!&ndash;{ endfor }&ndash;&gt;-->
+					<!--&lt;!&ndash;</div>&ndash;&gt;-->
 
-					</div>
-				</div>
-				<div class="col-md-9 border-left">
+				<!--</div>-->
+				<div class="col-md-12 ">
 					<div class="row">
 
 						{% for t in topics %}
-							<div class="col-md-4">
+							<div class="col-md-3">
 								<a href="{% url 'list-topic-questions' slug=t.slug %}">
 									<div class="well round_container">
 										<div class="desc-category">
@@ -98,4 +99,10 @@
 			</div>
 		</div>
 	</section>
+
+<script>
+	$(".search-btn").click(function(){
+		$("form").submit()
+	})
+</script>
 {% endblock %}
