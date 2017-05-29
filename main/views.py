@@ -188,8 +188,9 @@ def tag_search(request):
 
 
 def question_search(request):
-
-    questions = CbQuestion.objects.filter(title__icontains=request.GET.get("q",""))
+    q = request.GET.get("q","")
+    questions = CbQuestion.objects.filter(Q(title__icontains=q)| Q(category__name__icontains=q)|
+                                          Q(topic__title__icontains=q))
     page = request.GET.get("page", 1)
     paginator = Paginator(questions, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
 
@@ -208,7 +209,8 @@ def question_search(request):
 
 def topic_search(request):
     category = get_object_or_404(CbCategory,pk=request.GET.get("cat",""))
-    topics = CbTopic.objects.filter(title__icontains=request.GET.get("q",""),category=request.GET.get("cat"))
+    q = request.GET.get("q","")
+    topics = CbTopic.objects.filter(title__icontains=q,category=request.GET.get("cat"))
     page = request.GET.get("page", 1)
     paginator = Paginator(topics, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
 
@@ -227,7 +229,9 @@ def topic_search(request):
 
 
 def question_auto_complete(request):
-    sqs = CbQuestion.objects.filter(title__icontains=request.GET.get("q"))[:10]
+    q = request.GET.get("q")
+    sqs = CbQuestion.objects.filter(Q(title__icontains=q)| Q(category__name__icontains=q)|
+                                          Q(topic__title__icontains=q))[:10]
     question_array = []
     for t in sqs:
         question_array.append({"id": t.id, "label": t.title, "value": t.title,"link":reverse("view-question",kwargs={"id":t.id})})

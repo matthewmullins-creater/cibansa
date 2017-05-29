@@ -67,7 +67,7 @@ class CbQuestionViewset(viewsets.ModelViewSet):
 
     @list_route(methods=["post"])
     def post_answer_reply(self,request):
-        serializer = CbAnswerReplySerializer(data=request.data)
+        serializer = CbAnswerReplySerializer(data=request.data,context={"request":request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)

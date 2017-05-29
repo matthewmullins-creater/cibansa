@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %} Cibansa - {{ topic.name }} questions {% endblock %}
-
+{% load remove_tag %}
 {% block body %}
 
 <section id="green-header" class="body-container">
@@ -29,7 +29,7 @@
 								<span class="prefix">Q:</span>
 								<span class="qus">{{ q.title }}</span>
 							</h5>
-							<p>{{ q.description|truncatechars_html:200  |safe }}</p>
+							<p>{{ q.description|remove_tag:"img" |truncatechars_html:200  |safe }}</p>
 						</div>
 						<div class="chip-container">
 							{% for t in q.question_tags.all %}
