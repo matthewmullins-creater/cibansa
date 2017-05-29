@@ -259,11 +259,11 @@ MEDIA_ROOT =os.path.join(BASE_DIR,"media/")
 MEDIA_URL ='/media/'
 
 
-EMAIL_HOST = 'sg2plcpnl0027.prod.sin2.secureserver.net'
+EMAIL_HOST = ''
 
-EMAIL_HOST_USER = 'iuloko@monchest.com'
+EMAIL_HOST_USER = ''
 
-EMAIL_HOST_PASSWORD = 'Lovingly4'
+EMAIL_HOST_PASSWORD = ''
 
 EMAIL_PORT = 465
 
