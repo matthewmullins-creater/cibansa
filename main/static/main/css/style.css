@@ -515,10 +515,11 @@ hr.style17:after {
 /* ---------------------------------------------------- questions ---------------------------------------------------- */
 #green-header{
   background-color: #99cc00;
-  padding: 10em;
+  padding: 2em;
+  padding-top: 4em;
 }
 #question, #discussion, #article-detail{
-  margin-top: -11em;
+  /*margin-top: -11em;*/
   margin-bottom: 3em;
 }
 #question .well{

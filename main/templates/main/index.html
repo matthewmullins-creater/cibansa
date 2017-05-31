@@ -126,33 +126,39 @@
 		<div class="container">
 			<div class="row">
 				<h2 class="content_head">contact us</h2>
-				<form class="mobile-padding">
+				<form class="mobile-padding" method="post" action="{% url 'home-page' %}">
+					{% csrf_token %}
 					<div class="row">
 						<div class="col-md-3">
 							<div class="form-group">
-						    <input type="text" class="form-control" placeholder="first name">
+						    <input type="text" class="form-control" placeholder="first name" name="first_name">
+								{{ form.first_name.errors }}
 						  </div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-						    <input type="text" class="form-control" placeholder="last name">
+						    <input type="text" class="form-control" placeholder="last name" name="last_name">
+								{{ form.last_name.errors }}
 						  </div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-						    <input type="email" class="form-control" placeholder="email">
+						    <input type="email" class="form-control" placeholder="email" name="email">
+								{{ form.email.errors }}
 						  </div>
 						</div>
 						<div class="col-md-3">
 							<div class="form-group">
-						    <input type="text" class="form-control" placeholder="phone">
+						    <input type="text" class="form-control" placeholder="phone" name="phone">
+								{{ form.phone.errors }}
 						  </div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-12">
 							<div class="form-group">
-								<textarea rows="5" class="form-control" placeholder="message"></textarea>
+								<textarea rows="5" class="form-control" placeholder="message" name="content"></textarea>
+								{{ form.content.errors }}
 							</div>
 						</div>
 					</div>

@@ -201,7 +201,7 @@ class ContactForm(forms.Form):
     first_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     phone = forms.CharField(required=True)
-    contact_email = forms.EmailField(required=True)
+    email = forms.EmailField(required=True)
     content = forms.CharField(
         required=True,
         widget=forms.Textarea

@@ -24,16 +24,19 @@
             }
 
             $scope.postComment = function(){
-                $scope.aObj.commentSubmitted =true
-                $http.post(Django.url("article-api:article-post-comment"),
-                        {article:$scope.aObj.id,user:Django.user.id,comment:$scope.comment})
-                .then(function(response){
-                    $scope.aObj.commentSubmitted =false
-                    $scope.aObj.article_comments.push(response.data)
-                    $scope.comment=""
-                },function(response){
-                    $scope.aObj.commentSubmitted =false
-                })
+                if($scope.comment){
+                    $scope.aObj.commentSubmitted =true
+                    $http.post(Django.url("article-api:article-post-comment"),
+                            {article:$scope.aObj.id,user:Django.user.id,comment:$scope.comment})
+                    .then(function(response){
+                        $scope.aObj.commentSubmitted =false
+                        $scope.aObj.article_comments.push(response.data)
+                        $scope.comment=""
+                    },function(response){
+                        $scope.aObj.commentSubmitted =false
+                    })
+                }
+
             }
 //
             $scope.showReply = function($index,$event){
@@ -44,18 +47,20 @@
             $scope.postReply = function(ac,$index){
                 $scope.aObj.replySubmitted =true
                 var replyComment = jQuery("#replyComment"+$index).val()
-
-                $http.post(Django.url("article-api:article-post-comment-reply"),
+                if(replyComment){
+                     $http.post(Django.url("article-api:article-post-comment-reply"),
                         {comment:ac.id,user:Django.user.id,content:replyComment})
-                .then(function(response){
-                    $scope.aObj.replySubmitted =false
-                    ac.comment_replies.push(response.data)
-                    jQuery("#replyComment"+$index).val("")
-                    jQuery("#reply"+$index).hide()
-                    jQuery("#replyBtn"+$index).show()
-                },function(response){
-                    $scope.aObj.replySubmitted =false
-                })
+                    .then(function(response){
+                        $scope.aObj.replySubmitted =false
+                        ac.comment_replies.push(response.data)
+                        jQuery("#replyComment"+$index).val("")
+                        jQuery("#reply"+$index).hide()
+                        jQuery("#replyBtn"+$index).show()
+                    },function(response){
+                        $scope.aObj.replySubmitted =false
+                    })
+                }
+
             }
 
 //            $scope.likeAnswer = function(answer){

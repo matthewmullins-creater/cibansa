@@ -11,17 +11,53 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from articles.util import new_articles
+from main.forms import ContactForm
+from django.template.loader import get_template
+from django.core.mail import EmailMessage
 from articles.models import CbArticle
 
 # Create your views here.
 
 
+def contact_thank_you(request):
+
+    return render(request,"main/contact-thank-you.html")
+
+
 def index(request):
     categories = util.get_top_category()
     articles = new_articles()
+    form_class = ContactForm
+
+    if request.method == 'POST':
+        form = form_class(data=request.POST)
+        if form.is_valid():
+            first_name = request.POST.get('first_name', '')
+            last_name = request.POST.get('last_name', '')
+            phone = request.POST.get("phone","")
+            email = request.POST.get('email', '')
+            form_content = request.POST.get('content', '')
+            # contact information
+            template =get_template('main/emails/contact_template.txt')
+            context ={
+                'contact_name': "{} {}".format(first_name,last_name),
+                'phone': phone,
+                'contact_email': email,
+                'form_content': form_content,
+            }
+            content = template.render(context)
+            email = EmailMessage(
+                "New contact form submission",
+                content,
+                to=[settings.CONTACT_FORM_EMAIL],
+                reply_to=[email]
+            )
+            email.send()
+            return redirect('contact-thank-you')
     context={
         "category_cards": categories,
-        "articles": articles
+        "articles": articles,
+        'form': form_class,
     }
     return render(request,"main/index.html",context)
 
@@ -158,13 +194,22 @@ def view_question(request,id):
 
 
 def question_by_tag(request,slug):
-    tag = get_object_or_404(CbTag,slug=slug)
-    questions = CbQuestion.objects.filter(tag=tag.id)
+    # tag = get_object_or_404(CbTag,slug=slug)
+    questions = CbQuestionTag.objects.filter(tag__slug=slug)
+    page = request.GET.get("page", 1)
+    paginator = Paginator(questions, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
+
+    try:
+        questions = paginator.page(page)
+    except PageNotAnInteger:
+        questions = paginator.page(1)
+    except EmptyPage:
+        questions = paginator.page(paginator.num_pages)
 
     context = {
         "questions":questions
     }
-    return render(request,"main/questions_by_tag",context)
+    return render(request,"main/questions_by_tag.html",context)
 
 
 def get_topic_by_category(request):
@@ -250,6 +295,24 @@ def question_auto_complete(request):
     return HttpResponse(json.dumps(question_array), content_type="application/json")
 
 #
+# def question_by_tag(request,tag):
+#     questions = CbQuestionTag.objects.filter(tag__slug=tag)
+#     page = request.GET.get("page", 1)
+#     paginator = Paginator(questions, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
+#
+#     try:
+#         questions = paginator.page(page)
+#     except PageNotAnInteger:
+#         questions = paginator.page(1)
+#     except EmptyPage:
+#         questions = paginator.page(paginator.num_pages)
+#
+#     context={
+#         "question": questions
+#     }
+#
+#     return render(request,"",context)
+
 # def contact_us(request):
 #
 #     return

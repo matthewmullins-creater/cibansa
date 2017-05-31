@@ -164,7 +164,7 @@
 					<div class="chip-container">
 						{% for t in question.question_tags.all %}
 								<div class="chip">
-									<a href="">{{ t.tag.name }}</a>
+									<a href="{% url 'question-by-tag' slug=t.tag.slug %}">{{ t.tag.name }}</a>
 							  </div>
 							{% endfor %}
 

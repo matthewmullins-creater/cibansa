@@ -22,7 +22,7 @@
 								{{ topic.category }}</a> /
 							<a style="color:#fff"href="{% url 'list-topic-questions' slug=topic.slug %} ">
 								{{ topic.title }}</a>
-						{% else %}
+						{% elif category %}
 							<a style="color:#fff" href="{% url 'list-topic' slug=category.slug %}">
 								{{ category.name }}</a>
 						{% endif %}

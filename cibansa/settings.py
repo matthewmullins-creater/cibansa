@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
+
 import os
 import dj_database_url
 
@@ -178,7 +179,7 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 #         'HOST': '127.0.0.1',
 #         'PORT': '5432',
 #     }
-# }
+#  }
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -239,7 +240,7 @@ USE_TZ = True
 # STATICFILES_DIRS = (
 #     os.path.join(PROJECT_ROOT, 'static'),
 # )
-#
+
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
@@ -259,11 +260,13 @@ MEDIA_ROOT =os.path.join(BASE_DIR,"media/")
 MEDIA_URL ='/media/'
 
 
-EMAIL_HOST = ''
+CONTACT_FORM_EMAIL = "achukwuebuka@regalix-inc.com"
 
-EMAIL_HOST_USER = ''
+EMAIL_HOST = 'sg2plcpnl0027.prod.sin2.secureserver.net'
 
-EMAIL_HOST_PASSWORD = ''
+EMAIL_HOST_USER = 'iuloko@monchest.com'
+
+EMAIL_HOST_PASSWORD = 'Lovingly4'
 
 EMAIL_PORT = 465
 

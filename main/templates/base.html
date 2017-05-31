@@ -126,6 +126,7 @@
         	<h3 class="modal-title signup-title">signup</h3>
 
            <form action="{% url 'account-sign-up' %}" method="post">
+			   	<input type="hidden" name="next" value="{{ request.get_full_path }}">
 			   {% csrf_token %}
 			   <div class="form-group">
 			    <input type="text" name="first_name" class="form-control user-name" placeholder="Enter First Name">

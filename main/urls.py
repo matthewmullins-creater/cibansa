@@ -30,6 +30,7 @@ urlpatterns = [
     url(r'^tag-auto-complete',views.tag_search,name="tag-auto-complete"),
     url(r'^tag-auto-complete',views.tag_search,name="tag-auto-complete"),
     url(r'^question-auto-complete',views.question_auto_complete,name="question-auto-complete"),
+    url(r'^contact-thank-you',views.contact_thank_you,name="contact-thank-you"),
 
     # url(r'^category/(?P<slug>[\w|\W\-]+)/list-topic/',views.list_topic,name="list-topic"),
     # url(r'^$',views.index,name="home-page"),

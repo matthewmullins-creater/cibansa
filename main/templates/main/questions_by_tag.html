@@ -11,7 +11,7 @@
 					<h3 class="" style="color: #fff">{{ topic.title }}</h3>
 				</div>
 				<div class="col-xs-4">
-					<a style="margin-top: 22px;" href="{% url 'post-new-question' %}?tp={{ topic.id }}" class="btn btn-white pull-right">post a question</a>
+					<a style="margin-top: 22px;" href="{% url 'post-new-question' %}" class="btn btn-white pull-right">post a question</a>
 				</div>
 			</div>
 		</div>
@@ -28,12 +28,12 @@
 						<div class="main-question">
 							<h5 class="clearfix">
 								<span class="prefix">Q:</span>
-								<span class="qus">{{ q.title }}</span>
+								<span class="qus">{{ q.question.title }}</span>
 							</h5>
-							<p>{{ q.description|remove_tag:"img" |truncatechars_html:200  |safe }}</p>
+							<p>{{ q.question.description|remove_tag:"img" |truncatechars_html:200  |safe }}</p>
 						</div>
 						<div class="chip-container">
-							{% for t in q.question_tags.all %}
+							{% for t in q.question.question_tags.all %}
 								<div class="chip">
 								{{ t.tag.name }}
 							  </div>
@@ -41,24 +41,24 @@
 
 						</div>
 						<div class="author">
-							{% if q.owner.profile.has_photo %}
+							{% if q.question.owner.profile.has_photo %}
 								<div >
-									{{ q.owner.get_profile_pix | safe }}
+									{{ q.question.owner.get_profile_pix | safe }}
 								</div>
 							{% else %}
 								<div>
-									{{ q.owner.get_profile_pix | safe }}
+									{{ q.question.owner.get_profile_pix | safe }}
 								</div>
 							{% endif %}
 							<ul class="detail">
-								<li><span>{{ q.owner.get_full_name }}</span></li>
-								<li><span>{{ q.created_at |date:"M, d y P" }}</span></li>
+								<li><span>{{ q.question.owner.get_full_name }}</span></li>
+								<li><span>{{ q.question.created_at |date:"M, d y P" }}</span></li>
 							</ul>
 						</div>
 					</div>
 					<div class="col-md-12">
 						<div class="view-answer clearfix">
-							<a href="{% url 'view-question' id=q.id %}" class="btn btn-purple pull-right">view answer and discussion</a>
+							<a href="{% url 'view-question' id=q.question.id %}" class="btn btn-purple pull-right">view answer and discussion</a>
 						</div>
 					</div>
 				</div>

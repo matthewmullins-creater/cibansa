@@ -24,7 +24,7 @@ def login(request):
     redirect_to = request.POST.get("next",request.GET.get("next", 'home-page'))
     if not request.user.is_authenticated():
         if request.method == 'POST':
-            print(request.POST.get("next"))
+
             form = AuthenticationForm(data=request.POST)
             if form.is_valid():
 
@@ -60,6 +60,8 @@ def register(request):
     """
         Register view
     """
+
+    redirect_to = request.POST.get("next",'home-page')
     if not request.user.is_authenticated():
         if request.method == "POST":
             form = RegistrationForm(data = request.POST)
@@ -67,7 +69,7 @@ def register(request):
                 form.save()
                 new_user=authenticate(email=form.cleaned_data["email"],password=form.cleaned_data["password"],)
                 django_login(request,new_user)
-                return redirect("home-page")
+                return redirect(redirect_to)
         else:
             form = RegistrationForm()
         context={
@@ -76,7 +78,7 @@ def register(request):
 
         return render(request,"accounts/signup.html",context)
     else:
-        return redirect("/")
+        return redirect(redirect_to)
 
 
 class ForgetPassword(generic.FormView):
