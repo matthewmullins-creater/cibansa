@@ -8,6 +8,7 @@
 {% django_js %}
     <section id="green-header" class="body-container">
 		<div class="container">
+
 		</div>
 	</section>
 
@@ -15,6 +16,18 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
+					<h4 style="color:#fff">
+						{% if topic %}
+							<a style="color:#fff" href="{% url 'list-topic' slug=topic.category.slug %}">
+								{{ topic.category }}</a> /
+							<a style="color:#fff"href="{% url 'list-topic-questions' slug=topic.slug %} ">
+								{{ topic.title }}</a>
+						{% else %}
+							<a style="color:#fff" href="{% url 'list-topic' slug=category.slug %}">
+								{{ category.name }}</a>
+						{% endif %}
+
+			</h4>
 					<h3 class="filter" style="color: #fff">post a question</h3>
 				</div>
 			</div>

@@ -4,8 +4,10 @@ from accounts.models import User
 from selectable.forms import AutoCompleteSelectMultipleWidget,AutoComboboxSelectWidget,AutoCompleteSelectField
 from main.lookups import TagLookup,TopicLookup
 from tinymce.widgets import TinyMCE
-from  ast import literal_eval
-from django.db import transaction
+from PIL import Image
+from django.utils.translation import ugettext as _
+# from  ast import literal_eval
+# from django.db import transaction
 
 
 class CbCategoryForm(forms.ModelForm):
@@ -15,7 +17,7 @@ class CbCategoryForm(forms.ModelForm):
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
     # owner = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_superuser=True,is_staff=True))
     owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
-    is_visible = forms.BooleanField()
+    is_visible = forms.BooleanField(required=False)
     tag = forms.CharField(
         label='Type tag name',
         widget=AutoCompleteSelectMultipleWidget(TagLookup),
@@ -34,22 +36,57 @@ class CbCategoryForm(forms.ModelForm):
 
 
 class CbTopicAdminForm(forms.ModelForm):
-    title = forms.CharField(max_length=255,widget=forms.TextInput)
     category = forms.Select(choices=CbCategory.objects.only("name"))
-    image = forms.ImageField(required=False)
+    title = forms.CharField(max_length=255, widget=forms.TextInput)
+    image = forms.ImageField(required=False,label="Image (max size 2MB, 500 x 500) ")
     description = forms.CharField(widget=forms.Textarea,max_length=1024)
     owner = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
-    is_visible = forms.BooleanField()
+    is_visible = forms.BooleanField(required=False)
     tag = forms.CharField(
             label='Type tag name',
             widget=AutoCompleteSelectMultipleWidget(TagLookup),
             required=False,
          )
 
+    def clean_title(self):
+        category = self.cleaned_data.get("category")
+        print(category)
+        title = self.cleaned_data.get("title")
+
+        if CbTopic.objects.filter(category=category.id,title=title):
+            raise forms.ValidationError(_("A category cannot have duplicate topic"))
+        return title
+
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+
+        if image:
+            img = Image.open(image)
+            w, h = img.size
+
+            # validate dimensions
+            max_width = max_height = 500
+            if w > max_width or h > max_height:
+                raise forms.ValidationError(
+                    _('Please use an image that is smaller or equal to '
+                      '%s x %s pixels.' % (max_width, max_height)))
+
+            # validate content type
+            main, sub = image.content_type.split('/')
+            if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
+                raise forms.ValidationError(_('Please use a JPEG or PNG image.'))
+
+            # validate file size
+            if len(image) > (2 * 1024 * 1024):
+                raise forms.ValidationError(_('Image file too large ( maximum 1mb )'))
+        # else:
+        #     raise forms.ValidationError(_("Couldn't read uploaded image"))
+        return image
+
     class Meta:
         model = CbTopic
-        fields = ("title","category","image","description","owner","tag","is_visible")
+        fields = ("category","title","image","description","owner","tag","is_visible")
 
 
 class CbQuestionAdminForm(forms.ModelForm):
@@ -89,6 +126,9 @@ class CbQuestionAdminForm(forms.ModelForm):
         model = CbQuestion
         fields = ("category","topic","title","description","owner","tag",)
 
+    class Media:
+        js = ("main/js/admin-question-form-chain-select.js",)
+
 
 class CbQuestionForm(forms.ModelForm):
 
@@ -100,9 +140,10 @@ class CbQuestionForm(forms.ModelForm):
         for c in CbCategory.objects.only("name"):
             CATEGORIES.append((c.id,c.name))
         self.fields["category"].choices = CATEGORIES
+        # self.fields["topic"].choices =[]
 
     category = forms.Select(choices=CbCategory.objects.only("name"))
-    topic = forms.Select(choices=[])
+    topic = forms.Select()
     # topic = AutoCompleteSelectField(
     #     lookup_class=TopicLookup,
     #     widget=AutoComboboxSelectWidget

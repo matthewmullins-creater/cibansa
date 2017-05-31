@@ -18,13 +18,13 @@ class TopicLookup(ModelLookup):
     def get_query(self, request, term):
         results = super(TopicLookup, self).get_query(request, term)
         category = request.GET.get('category', '')
-        print(category)
+        print(category,1234)
         if category:
-            results = results.filter(category=1)
+            results = results.filter(category=category)
         return results
 
     def get_item_label(self, item):
-        return "%s" % item.title
+        return "{title} - {category}".format(title=item.title,category=item.category)
 
     def get_item_value(self,item):
         return "%s" % item.title

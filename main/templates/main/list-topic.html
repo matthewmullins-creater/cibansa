@@ -24,7 +24,7 @@
 					<!--<a href="#" class="btn btn-purple pull-right" data-toggle="modal"-->
 					   <!--data-target="#post-question">post a question-->
 					<!--</a>-->
-					<a href="{% url 'post-new-question' %}" class="btn btn-purple pull-right" >post a question
+					<a href="{% url 'post-new-question' %}?c={{ category.id }}" class="btn btn-purple pull-right" >post a question
 					</a>
 				</div>
 			</div>
@@ -59,9 +59,9 @@
 											</div>
 											<div class="category-info">
 												<ul class="detail">
-													<li>{{ t.category.name }}</li>
-													<li>question : <span>{{ t.topic_questions.count }}</span></li>
-													<li>discussion : <span>{{ t.get_no_of_discussion.discussion }}</span></li>
+													<!--<li>{ t.category.name }</li>-->
+													<li>questions : <span>{{ t.topic_questions.count }}</span></li>
+													<li>discussions : <span>{{ t.get_no_of_discussion.discussion }}</span></li>
 												</ul>
 											</div>
 										</div>

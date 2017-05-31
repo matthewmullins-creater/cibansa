@@ -19,7 +19,7 @@ $(function() {
 
 
 window.onload = function(){
-
+    $("#id_topic").html("<option>Topic</option>")
     $("#id_category").change(function(){
 	$.ajax({
        url:Django.url("topic-by-category")+"?category="+$("#id_category").val(),

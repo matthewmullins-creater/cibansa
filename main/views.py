@@ -85,11 +85,21 @@ def list_categories(request):
     }
     return render(request,"main/category-list.html",context)
 
+
 @login_required
 def post_question(request):
+    try:
+        topic = CbTopic.objects.get(pk=request.GET.get("tp",""))
+    except:
+        topic=None
+
+    try:
+        category = CbCategory.objects.get(pk=request.GET.get("c",""))
+    except:
+        category = None
 
     if request.method == "POST":
-        print(request.POST.getlist("tag"),1234)
+
         form = CbQuestionForm(data=request.POST,request=request)
         if form.is_valid():
             question = form.save()
@@ -104,7 +114,9 @@ def post_question(request):
     else:
         form = CbQuestionForm(request=request)
     context = {
-        "form": form
+        "form": form,
+        "topic": topic,
+        "category": category
     }
     return render(request,"main/post-question.html",context)
 

@@ -8,7 +8,7 @@ from ast import  literal_eval
 
 
 class CbCategoryAdmin(admin.ModelAdmin):
-    list_display = ("name","owner","created_at","owner","slug")
+    list_display = ("id","name","owner","created_at","owner","slug")
     search_fields = ("name",)
     form = CbCategoryForm
 

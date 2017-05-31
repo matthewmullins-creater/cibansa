@@ -1,13 +1,14 @@
 {% extends "base.html" %}
 
 
-{% block title %} Cibansa - Post a Question {% endblock %}
+{% block title %} Cibansa - Edit a Question {% endblock %}
 
 {% block body %}
 {% load js %}
 {% django_js %}
     <section id="green-header" class="body-container">
 		<div class="container">
+
 		</div>
 	</section>
 
@@ -15,6 +16,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
+					<h4 style="color:#fff">
+				<a style="color:#fff" href="{% url 'list-topic' slug=question.category.slug%}">{{ question.category }}</a> /
+				<a style="color:#fff"href="{% url 'list-topic-questions' slug=question.topic.slug %} ">{{ question.topic.title }}</a>
+				/ {{ question.title }}</h4>
 					<h3 class="filter" style="color: #fff">post a question</h3>
 				</div>
 			</div>

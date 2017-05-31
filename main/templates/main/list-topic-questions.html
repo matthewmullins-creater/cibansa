@@ -16,7 +16,7 @@
 					<h3 class="filter" style="color: #fff">{{ topic.title }}</h3>
 				</div>
 				<div class="col-xs-4">
-					<a href="{% url 'post-new-question' %}" class="btn btn-white pull-right">post a question</a>
+					<a href="{% url 'post-new-question' %}?tp={{ topic.id }}" class="btn btn-white pull-right">post a question</a>
 				</div>
 			</div>
 

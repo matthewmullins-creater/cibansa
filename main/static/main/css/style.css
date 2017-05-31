@@ -402,7 +402,7 @@ hr.style17:after {
   height: 48px !important;
 }
 #contact input[type="text"],input[type="email"],textarea::placeholder{
-  text-transform: capitalize;
+  /*text-transform: capitalize;*/
 }
 #contact .btn-default{
   background-color: #996699;
