@@ -5,12 +5,13 @@ from operator import itemgetter
 
 def get_top_category():
     # c = CbCategory.objects.annotate().order_by("-topic_count")[:4]
-    cat = CbCategory.objects.annotate(topic_count=Count("category_topics")).order_by("-topic_count")[:4]
+    cat = CbCategory.objects.filter(is_visible=True).annotate(topic_count=Count("category_topics")).order_by("-topic_count")[:4]
+
     a = []
     for c in cat:
         question = c.category_questions.count()
         discussion = 0
-        for q in c.category_questions.all():
+        for q in c.category_questions.filter(is_deleted=False):
 
             discussion += q.question_answers.count()
             for k in q.question_answers.all():

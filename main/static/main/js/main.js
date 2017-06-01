@@ -17,9 +17,9 @@ $(function() {
 	
 });
 
-
 window.onload = function(){
-    $("#id_topic").html("<option>Topic</option>")
+    var t = $("#id_topic").val()
+
     $("#id_category").change(function(){
 	$.ajax({
        url:Django.url("topic-by-category")+"?category="+$("#id_category").val(),
@@ -28,16 +28,23 @@ window.onload = function(){
             $.each(JSON.parse(data),function(k,j){
                 $("#id_topic").append("<option value='"+j.id+"'>"+j.name+"</option>")
             })
+            if(t=="")
+                $("#id_topic").html("<option>Topic</option>")
+             else
+                $("#id_topic").val(t)
 
         }
 
-    })
+        })
     })
 
-    $(".chip .close").click(function(){
+    $( "#id_category" ).trigger("change");
+
+  $(".chip .close").click(function(){
         $(this).parents(".chip").remove()
-    })
+   })
 }
+
 
 $(document).on("keydown.autocomplete",".tag_field",function(){
         var _this=$(this)

@@ -3,12 +3,14 @@ from main.models import CbCategory,CbTag,CbTopic,CbTopicTags,CbQuestion,CbQuesti
 from django import forms
 from main.forms import CbCategoryForm,CbTopicAdminForm,CbQuestionAdminForm
 from ast import  literal_eval
+from django.contrib.admin.actions import delete_selected as delete_selected_
+from django.core.exceptions import PermissionDenied
 
 # Register your models here.
 
 
 class CbCategoryAdmin(admin.ModelAdmin):
-    list_display = ("id","name","owner","created_at","owner","slug")
+    list_display = ("id","id","name","owner","created_at","owner","slug")
     search_fields = ("name",)
     form = CbCategoryForm
 
@@ -17,6 +19,7 @@ class CbCategoryAdmin(admin.ModelAdmin):
             kwargs["widget"] = forms.Textarea
         if db_field.name == "owner":
             kwargs["initial"] = request.user
+            kwargs["label"] = "Owner *"
         return super(CbCategoryAdmin,self).formfield_for_dbfield(db_field,request,**kwargs)
 
     def save_model(self, request, obj, form, change):
@@ -42,20 +45,21 @@ class CbTagAdmin(admin.ModelAdmin):
 
 
 class CbCategoryTagsAdmin(admin.ModelAdmin):
-    list_display = ("tag","category")
+    list_display = ("id","tag","category")
 
 
 class CbTopicTagsAdmin(admin.ModelAdmin):
-    list_display = ("tag","topic")
+    list_display = ("id","tag","topic")
 
 
 class CbQuestionTagsAdmin(admin.ModelAdmin):
-    list_display = ("tag","question")
+    list_display = ("id","tag","question")
     search_fields = ("question",)
 
 
 class CbTopicAdmin(admin.ModelAdmin):
-    list_display = ("title","category","owner","slug")
+    list_display = ("id","title","category","owner","slug")
+    search_fields = ("title",)
     form = CbTopicAdminForm
 
     # def get_form(self, request, obj=None, **kwargs):
@@ -65,6 +69,9 @@ class CbTopicAdmin(admin.ModelAdmin):
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name == "owner":
             kwargs["initial"] = request.user
+            kwargs["label"] = "Owner *"
+        if db_field.name == "category":
+            kwargs["label"] = "Category *"
         return super(CbTopicAdmin,self).formfield_for_dbfield(db_field,request,**kwargs)
 
     def save_model(self, request, obj, form, change):
@@ -77,10 +84,24 @@ class CbTopicAdmin(admin.ModelAdmin):
                     tag=CbTag.objects.get(pk=tag)
                 )
 
+def delete_selected(modeladmin, request, queryset):
+    if not modeladmin.has_delete_permission(request):
+        raise PermissionDenied
+    if request.POST.get('post'):
+            for obj in queryset:
+                obj.is_deleted = True
+                obj.save()
+    else:
+        return delete_selected_(modeladmin, request, queryset)
+
+delete_selected.short_description = "Delete selected objects"
+
 
 class CbQuestionAdmin(admin.ModelAdmin):
     form=CbQuestionAdminForm
-    list_display = ("title","topic","owner","created_at","updated_at","status","category")
+    search_fields = ("title",)
+    actions = [delete_selected]
+    list_display = ("id","title","topic","owner","created_at","updated_at","category","is_deleted")
 
     def save_model(self, request, obj, form, change):
         super(CbQuestionAdmin, self).save_model(request, obj, form, change)
@@ -98,7 +119,12 @@ class CbQuestionAdmin(admin.ModelAdmin):
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name == "owner":
             kwargs["initial"] = request.user
+            kwargs["label"] = "Owner *"
         return super(CbQuestionAdmin,self).formfield_for_dbfield(db_field,request,**kwargs)
+
+    def delete_model(self, request, obj):
+        obj.is_deleted = True
+        obj.save()
 
 
     # def get_form(self, request, obj=None, **kwargs):
@@ -107,6 +133,7 @@ class CbQuestionAdmin(admin.ModelAdmin):
     #     form.owner = request.user.id
     #     return form
 
+    # def delete_selected(self):
 
 admin.site.register(CbCategory,CbCategoryAdmin)
 admin.site.register(CbTopic,CbTopicAdmin)

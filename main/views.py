@@ -64,7 +64,7 @@ def index(request):
 
 def list_topic(request,slug):
     category = get_object_or_404(CbCategory,slug=slug)
-    topics = CbTopic.objects.filter(category=category.id)
+    topics = CbTopic.objects.filter(category=category.id,is_visible=True)
     page = request.GET.get("page",1)
     tags = CbTag.objects.all()
     paginator = Paginator(topics,settings.REST_FRAMEWORK.get("PAGE_SIZE"))
@@ -85,7 +85,7 @@ def list_topic(request,slug):
 
 def list_topic_question(request,slug):
     topic = get_object_or_404(CbTopic,slug=slug)
-    questions = topic.topic_questions.all()
+    questions = topic.topic_questions.filter(is_deleted=False)
     page = request.GET.get("page",1)
     paginator = Paginator(questions,settings.REST_FRAMEWORK.get("PAGE_SIZE"))
 
@@ -104,7 +104,7 @@ def list_topic_question(request,slug):
 
 
 def list_categories(request):
-    category = CbCategory.objects.all()
+    category = CbCategory.objects.filter(is_visible=True)
 
     page = request.GET.get("page",1)
     paginator = Paginator(category,settings.REST_FRAMEWORK.get("PAGE_SIZE"))

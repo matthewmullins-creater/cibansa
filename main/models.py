@@ -101,16 +101,17 @@ class CbTopicTags(models.Model):
 class CbQuestion(models.Model):
     topic = models.ForeignKey(CbTopic,on_delete=models.CASCADE,related_name="topic_questions")
     category = models.ForeignKey(CbCategory, on_delete=models.CASCADE, related_name="category_questions")
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=1024)
     description = models.TextField()
     owner = models.ForeignKey("accounts.User", related_name="user_questions")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True)
     slug = AutoSlugField(populate_from="title", max_length=200,always_update=True,unique=True)
+    is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
-        return "%s..." % self.title[:200]
+        return "%s..." % self.title[:1024]
 
     class Meta:
         db_table = "cb_question"

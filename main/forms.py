@@ -6,13 +6,15 @@ from main.lookups import TagLookup,TopicLookup
 from tinymce.widgets import TinyMCE
 from PIL import Image
 from django.utils.translation import ugettext as _
+import os
+from django.db.models import Q
 # from  ast import literal_eval
 # from django.db import transaction
 
 
 class CbCategoryForm(forms.ModelForm):
-    name = forms.CharField(max_length=255)
-    image = forms.ImageField(required=True)
+    name = forms.CharField(max_length=255,label="Name *")
+    image = forms.ImageField(required=False, label="Image (max size 2MB, 500 x 280) ")
     description = forms.CharField(max_length=1024, required=False,widget=forms.Textarea)
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
     # owner = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_superuser=True,is_staff=True))
@@ -29,6 +31,32 @@ class CbCategoryForm(forms.ModelForm):
     #     if len(value) > 1:
     #         raise forms.ValidationError("You can't select more than 1 owner.")
     #     return value[0]
+    def clean_image(self):
+        image = self.cleaned_data.get('image', False)
+
+        if image:
+            img = Image.open(image)
+            w, h = img.size
+
+            # validate dimensions
+            max_width = 500
+            max_height = 280
+            if w > max_width or h > max_height:
+                raise forms.ValidationError(
+                    _('Please use an image that is smaller or equal to '
+                      '%s x %s pixels.' % (max_width, max_height)))
+            print(image.name)
+            # validate content type
+            fileName, fileExtension = os.path.splitext(image.name)
+            print(fileExtension)
+            if not fileExtension in ['.jpeg', '.pjpeg', '.png', '.jpg']:
+                raise forms.ValidationError(_('Please use a JPEG or PNG image.'))
+            # validate file size
+            if len(image) > (2 * 1024 * 1024):
+                raise forms.ValidationError(_('Image file too large ( maximum 2mb )'))
+        # else:
+        #     raise forms.ValidationError(_("Couldn't read uploaded image"))
+        return image
 
     class Meta:
         model = CbCategory
@@ -37,9 +65,9 @@ class CbCategoryForm(forms.ModelForm):
 
 class CbTopicAdminForm(forms.ModelForm):
     category = forms.Select(choices=CbCategory.objects.only("name"))
-    title = forms.CharField(max_length=255, widget=forms.TextInput)
-    image = forms.ImageField(required=False,label="Image (max size 2MB, 500 x 500) ")
-    description = forms.CharField(widget=forms.Textarea,max_length=1024)
+    title = forms.CharField(max_length=255, widget=forms.TextInput,label="Title *")
+    image = forms.ImageField(required=False,label="Image (max size 2MB, 500 x 280) ")
+    description = forms.CharField(widget=forms.Textarea,max_length=1024,label="Description *")
     owner = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
     is_visible = forms.BooleanField(required=False)
@@ -50,12 +78,15 @@ class CbTopicAdminForm(forms.ModelForm):
          )
 
     def clean_title(self):
-        category = self.cleaned_data.get("category")
-        print(category)
-        title = self.cleaned_data.get("title")
 
-        if CbTopic.objects.filter(category=category.id,title=title):
-            raise forms.ValidationError(_("A category cannot have duplicate topic"))
+        category = self.cleaned_data.get("category")
+        title = self.cleaned_data.get("title")
+        if not self.instance.id:
+            if CbTopic.objects.filter(category=category.id,title=title):
+                raise forms.ValidationError(_("A category cannot have duplicate topic"))
+        else:
+            if CbTopic.objects.filter(~Q(pk=self.instance.id),category=category.id,title=title):
+                raise forms.ValidationError(_("A category cannot have duplicate topic"))
         return title
 
     def clean_image(self):
@@ -66,20 +97,21 @@ class CbTopicAdminForm(forms.ModelForm):
             w, h = img.size
 
             # validate dimensions
-            max_width = max_height = 500
+            max_width = 500
+            max_height = 280
             if w > max_width or h > max_height:
                 raise forms.ValidationError(
                     _('Please use an image that is smaller or equal to '
                       '%s x %s pixels.' % (max_width, max_height)))
-
+            print(image.name)
             # validate content type
-            main, sub = image.content_type.split('/')
-            if not (main == 'image' and sub.lower() in ['jpeg', 'pjpeg', 'png', 'jpg']):
+            fileName, fileExtension = os.path.splitext(image.name)
+            print(fileExtension)
+            if not fileExtension in ['.jpeg', '.pjpeg', '.png', '.jpg']:
                 raise forms.ValidationError(_('Please use a JPEG or PNG image.'))
-
             # validate file size
             if len(image) > (2 * 1024 * 1024):
-                raise forms.ValidationError(_('Image file too large ( maximum 1mb )'))
+                raise forms.ValidationError(_('Image file too large ( maximum 2mb )'))
         # else:
         #     raise forms.ValidationError(_("Couldn't read uploaded image"))
         return image
@@ -100,14 +132,16 @@ class CbQuestionAdminForm(forms.ModelForm):
         self.fields["category"].choices = CATEGORIES
 
 
-    category = forms.ChoiceField()
+    category = forms.ChoiceField(label="Category *")
     # topic = forms.Select(choices=CbTopic.objects.only("title"))
     topic = AutoCompleteSelectField(
         lookup_class=TopicLookup,
-        widget=AutoComboboxSelectWidget
+        widget=AutoComboboxSelectWidget,
+        label = "Topic *"
     )
-    title = forms.CharField(widget=forms.TextInput)
-    description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}))
+    title = forms.CharField(widget=forms.TextInput,max_length=1024,label="Title *")
+    description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}),
+                                                            label="Description *")
     owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
     tag = forms.CharField(
         label='Type tag name',

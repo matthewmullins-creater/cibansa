@@ -42,7 +42,9 @@
 							</div>
 
 							<div class="answer-desc">
-							<p data-ng-bind-html="qObj.description">
+								<p>
+									{{ question.description |safe }}
+								</p>
 								</p>
 							</div>
 							<!--<div class="like-btn">-->
