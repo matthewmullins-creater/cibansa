@@ -12,6 +12,7 @@ urlpatterns = [
     url(r'^logout',views.logout,name="account-logout"),
     url(r'^forgot-password',views.ForgetPassword.as_view(),name="forgot-password"),
     url(r'^reset-sent/', views.reset_sent, name="reset-sent"),
+    url(r'^profile/',views.profile,name="account-profile"),
     url(r'^reset/(?P<token>[\w:-]+)/$', views.PasswordReset.as_view(), name='password-reset'),
     url(r'^reset-done/', views.reset_done, name="reset_done"),
 ]

@@ -8,7 +8,10 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
-					<h3 class="" style="color: #fff">{{ topic.title }}</h3>
+					<h4 style="color:#fff">
+						<a style="color:#fff" href="{% url 'list-topic' slug=topic.category.slug%}">{{ topic.category }}</a> /
+						/ {{ topic.title }}
+					</h4>
 				</div>
 				<div class="col-xs-4">
 					<a style="margin-top: 22px;" href="{% url 'post-new-question' %}?tp={{ topic.id }}" class="btn btn-white pull-right">post a question</a>

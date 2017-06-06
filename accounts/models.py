@@ -59,7 +59,7 @@ class CbUserProfile(models.Model):
     last_name = models.CharField(max_length=40)
     phone = models.CharField(max_length=16,null=True)
     dob = models.DateField(blank=True, null=True)
-    country =models.CharField(max_length=2,null=True,blank=True)
+    country =models.CharField(max_length=20,null=True,blank=True)
     city=models.CharField(null=True,blank=True,max_length=50)
 
     gender = models.CharField(max_length=10, blank=True, null=True)

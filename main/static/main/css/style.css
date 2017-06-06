@@ -945,3 +945,11 @@ hr.style17:after {
 .answer-desc img {
     max-width: 100%;
 }
+
+.alert-error {
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+}
+
+

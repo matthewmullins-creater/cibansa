@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% block title %}
+ Cibansa - {{ request.user }} Profile
+{% endblock %}
+
+{% block body %}
+<style>
+    form{
+        padding: 40px;
+        padding-bottom:20px;
+        padding-top:10px
+    }
+</style>
+<section class="body-container">
+    <div class="row">
+        <div class="col-xs-6 col-xs-offset-3">
+                    {% if messages %}
+
+                     <div class="{{ message.tags }}">
+                        {% for message in messages %}
+                        <div  {% if message.tags %} class="alert alert-{{ message.tags }}"{% endif %}>{{ message }}</div>
+                        {% endfor %}
+
+                         </div>
+                    {% endif %}
+            <!--<div><h3>{ request.user }} Profile</h3></div>-->
+            <div class="social">
+                <div class="row">
+                    <div class="col-xs-3 col-xs-offset-5 col-xs-offset-right-4">
+                        <img src="{{ request.user.profile.avatar.url }}" class="img-responsive thumbnail" width="100" height="100">
+                    </div>
+                </div>
+
+
+            <!--<p class="text-center">with your social account</p>-->
+            <!--<div class="row">-->
+            	<!--<div class="col-xs-4">-->
+            		<!--<a href='{% url "social:begin" "google-oauth2" %}' class="btn btn-default gplus"><i class="fa fa-google-plus" aria-hidden="true"></i> <span class="visible">google+</span></a>-->
+            	<!--</div>-->
+            	<!--<div class="col-xs-4">-->
+            		<!--<a href='{% url "social:begin" "facebook" %}' class="btn btn-default fb"><i class="fa fa-facebook" aria-hidden="true"></i> <span class="visible">facebook</span></a>-->
+            	<!--</div>-->
+            	<!--<div class="col-xs-4">-->
+            		<!--<a href='{% url "social:begin" "linkedin-oauth2" %}' class="btn btn-default linked"><i class="fa fa-linkedin" aria-hidden="true"></i> <span class="visible">linked in</span></a>-->
+            	<!--</div>-->
+            <!--</div>-->
+                <!--<hr class="style17">-->
+          </div>
+
+          <form action="{% url 'account-profile' %}" method="post">
+			  {% csrf_token %}
+			  {{ form.non_field_errors}}
+              <div class="form-group">
+                  <label>Change profile photo (max size = 2MB,recommend 100x100)</label>
+                  <input type="file" accept="image/jpeg|image/png">
+                  {{ form.avatar.errors }}
+              </div>
+              <div class="form-group">
+                   {{ form.first_name }}
+                   {{ form.first_name.errors }}
+              </div>
+
+              <div class="form-group">
+                  {{ form.last_name }}
+                  {{ form.last_name.errors }}
+              </div>
+              <div class="form-group">
+                  {{ form.phone }}
+                  {{ form.phone.errors }}
+              </div>
+               <div class="form-group">
+                   {{ form.dob }}
+                  {{ form.dob.errors }}
+              </div>
+              <div class="form-group">
+                  {{ form.country }}
+                  {{ form.country.errors }}
+              </div>
+              <div class="form-group">
+                  {{ form.city }}
+                  {{ form.city.errors }}
+              </div>
+              <div class="form-group">
+                  {{ form.gender }}
+                  {{ form.gender.errors }}
+              </div>
+
+          <div class="login-btn">
+            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1em;margin-bottom: 1em;">Save</button>
+          </div>
+		  </form>
+        </div>
+    </div>
+
+</section>
+
+
+{% endblock %}

@@ -69,6 +69,26 @@ class RegistrationForm(forms.ModelForm):
                 raise forms.ValidationError("Email already exist")
 
 
+class ProfileEditForm(forms.ModelForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder":"First Name"}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder":"Last Name"}))
+    phone = forms.IntegerField(required=False,widget=forms.TextInput(attrs={"class":"form-control",
+                                                                         "placeholder":"Phone"}))
+    dob = forms.DateField(input_formats=['%d/%m/%Y'],widget=forms.TextInput(attrs={"placeholder":"Date of birth, 25/10/2006",
+                                                                         "class":"form-control"}))
+    country = forms.CharField(required=False,widget=forms.TextInput(attrs={"class":"form-control",
+                                                                           "placeholder":"Country"}))
+    city = forms.CharField(required=False,widget=forms.TextInput(attrs={"class":"form-control",
+                                                                        "placeholder":"City"}))
+    gender = forms.ChoiceField(choices=[("male","Male"),("female","Female")],
+                                                                    widget=forms.Select(attrs={"class":"form-control"}))
+    avatar = forms.ImageField(label="Max size = 2MB",required=False)
+
+    class Meta:
+        model = CbUserProfile
+        fields = ["first_name","last_name","phone","dob","country","city","gender","avatar"]
+
+
 class ForgotPasswordForm(forms.Form):
     email = forms.EmailField(widget=forms.widgets.TextInput)
 
@@ -80,6 +100,7 @@ class ForgotPasswordForm(forms.Form):
             raise forms.ValidationError("Sorry, this user does not exist.")
 
         return email
+
 
 class PasswordResetForm(forms.Form):
     password1 = forms.CharField(

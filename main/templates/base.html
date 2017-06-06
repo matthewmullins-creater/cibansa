@@ -54,7 +54,7 @@
 				</ul>
 				{% else %}
 				<ul class="nav navbar-nav">
-					<li><a href=""> {{ request.user.get_full_name }}</a></li>
+					<li><a href="{% url 'account-profile' %}"> {{ request.user.get_full_name }}</a></li>
 					<li><a href="{% url 'account-logout' %}" ><i class="fa fa-lock" aria-hidden="true"></i> logout</a></li>
 				</ul>
 				{% endif %}

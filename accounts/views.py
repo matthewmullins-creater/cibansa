@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect,get_object_or_404
-from accounts.forms import AuthenticationForm,RegistrationForm,ForgotPasswordForm,PasswordResetForm
+from accounts.forms import AuthenticationForm,RegistrationForm,ForgotPasswordForm,PasswordResetForm,ProfileEditForm
 from django.contrib.auth import authenticate,login as django_login,authenticate,logout as django_logout
 from django.utils.http import is_safe_url
 from django.contrib.auth.decorators import login_required
@@ -11,6 +11,7 @@ from accounts.util import send_password_reset_token
 from django.http import Http404
 from django.views.decorators.debug import sensitive_post_parameters
 from django.utils.decorators import method_decorator
+from django.contrib import messages
 from accounts.models import CbUserProfile
 
 # Create your views here.
@@ -147,4 +148,26 @@ class PasswordReset(generic.FormView):
 def logout(request):
     django_logout(request)
     return redirect("/")
+
+
+@login_required
+def profile(request):
+    user_profile = get_object_or_404(CbUserProfile,user=request.user.id)
+    if request.method == "POST":
+        form = ProfileEditForm(request.POST,instance=user_profile)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request,messages.SUCCESS,"Your profile was updated successfully")
+            return redirect("account-profile")
+        else:
+            print(form.errors)
+            messages.add_message(request, messages.ERROR, "There was a problem while saving your changes")
+
+    else:
+        form = ProfileEditForm(instance=user_profile)
+    context = {
+        "form": form
+    }
+    return render(request,"accounts/profile.html",context)
+
 
