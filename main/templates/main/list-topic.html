@@ -48,7 +48,14 @@
 				<!--</div>-->
 				<div class="col-md-12 ">
 					<div class="row">
-
+						<div class="col-md-12">
+							{% if request.resolver_match.url_name == "topic-search" %}
+								<h5>
+									{{ topics|length }} result{{ topics|length|pluralize }} found
+									<a style="margin-left:40px" href="{% url 'list-topic' slug=category.slug %}">View all topics</a>
+								</h5>
+							{% endif %}
+						</div>
 						{% for t in topics %}
 							<div class="col-md-3">
 								<a href="{% url 'list-topic-questions' slug=t.slug %}">

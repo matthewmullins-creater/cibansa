@@ -36,8 +36,8 @@ class User(AbstractBaseUser,PermissionsMixin):
 
     def get_profile_pix(self):
         if self.profile.has_photo:
-            return '<img src="http://placehold.it/35x35" alt="%s" class="img-circle" width="75" height="75">' % \
-                   self.profile.avatar.url
+            return '<img src="{}" alt="{}" class="img-circle" width="75" height="75">'.format(self.profile.avatar.url,
+                                                                                              self.profile.first_name)
 
         else:
             return '<div style="width: 75px;height: 75px;background: #ccc;text-align: center;border-radius: 50%;">' \
@@ -65,7 +65,7 @@ class CbUserProfile(models.Model):
     gender = models.CharField(max_length=10, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    avatar= models.ImageField(blank=True, default="default_avatar.jpg", upload_to=photo_upload_path)
+    avatar = models.ImageField(blank=True, default="default_avatar.jpg", upload_to=photo_upload_path)
     has_photo = models.BigIntegerField(default=0,null=True)
     is_visible = models.BooleanField(default=True)
 

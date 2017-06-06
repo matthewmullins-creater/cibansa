@@ -3,6 +3,8 @@ from django.contrib.auth import authenticate
 from accounts.models import User,CbUserProfile
 from django.db import transaction,IntegrityError
 from django.utils.translation import ugettext_lazy as _
+from PIL import Image
+import  os
 
 
 my_default_errors = {
@@ -84,9 +86,36 @@ class ProfileEditForm(forms.ModelForm):
                                                                     widget=forms.Select(attrs={"class":"form-control"}))
     avatar = forms.ImageField(label="Max size = 2MB",required=False)
 
+    has_photo = forms.CharField(widget=forms.TextInput,required=False)
+
+    def clean_avatar(self):
+        image = self.cleaned_data.get('avatar', False)
+
+        if image:
+            img = Image.open(image)
+            w, h = img.size
+
+            # validate dimensions
+            # max_width = 500
+            # max_height = 280
+            # if w > max_width or h > max_height:
+            #     raise forms.ValidationError(
+            #         _('Please use an image that is smaller or equal to '
+            #           '%s x %s pixels.' % (max_width, max_height)))
+            # validate content type
+            fileName, fileExtension = os.path.splitext(image.name)
+            if not fileExtension in ['.jpeg', '.pjpeg', '.png', '.jpg']:
+                raise forms.ValidationError(_('Please use a JPEG or PNG image.'))
+            # validate file size
+            if len(image) > (2 * 1024 * 1024):
+                raise forms.ValidationError(_('Image file too large ( maximum 2mb )'))
+        # else:
+        #     raise forms.ValidationError(_("Couldn't read uploaded image"))
+        return image
+
     class Meta:
         model = CbUserProfile
-        fields = ["first_name","last_name","phone","dob","country","city","gender","avatar"]
+        fields = ["first_name","last_name","phone","dob","country","city","gender","avatar","has_photo"]
 
 
 class ForgotPasswordForm(forms.Form):

@@ -8,13 +8,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
-					<h4 style="color:#fff">
-						<a style="color:#fff" href="{% url 'list-topic' slug=topic.category.slug%}">{{ topic.category }}</a> /
-						{{ topic.title }}
-					</h4>
 				</div>
 				<div class="col-xs-4">
-					<a style="margin-top: 22px;" href="{% url 'post-new-question' %}?tp={{ topic.id }}" class="btn btn-white pull-right">post a question</a>
+					<a style="margin-top: 22px;" href="{% url 'post-new-question' %}" class="btn btn-white pull-right">post a question</a>
 				</div>
 			</div>
 		</div>
@@ -24,7 +20,7 @@
 		<div class="container">
 
 
-			{% for q in questions %}
+			{% for q in results %}
 				<div class="well">
 				<div class="row">
 					<div class="col-md-10">
@@ -69,22 +65,22 @@
 			</div>
 			{% endfor %}
 			<div class="row">
-					{% if questions.has_other_pages %}
+					{% if results.has_other_pages %}
 						  <ul class="pagination">
-							{% if questions.has_previous %}
-							  <li><a href="?page={{ questions.previous_page_number }}">&laquo;</a></li>
+							{% if results.has_previous %}
+							  <li><a href="?page={{ results.previous_page_number }}">&laquo;</a></li>
 							{% else %}
 							  <li class="disabled"><span>&laquo;</span></li>
 							{% endif %}
-							{% for i in questions.paginator.page_range %}
-							  {% if questions.number == i %}
+							{% for i in results.paginator.page_range %}
+							  {% if results.number == i %}
 								<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
 							  {% else %}
 								<li><a href="?page={{ i }}">{{ i }}</a></li>
 							  {% endif %}
 							{% endfor %}
-							{% if questions.has_next %}
-							  <li><a href="?page={{ questions.next_page_number }}">&raquo;</a></li>
+							{% if results.has_next %}
+							  <li><a href="?page={{ results.next_page_number }}">&raquo;</a></li>
 							{% else %}
 							  <li class="disabled"><span>&raquo;</span></li>
 							{% endif %}

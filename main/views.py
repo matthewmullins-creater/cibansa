@@ -220,12 +220,12 @@ def get_topic_by_category(request):
     return HttpResponse(json.dumps(topics_array))
 
 
-def search_questions(request):
-    result = CbQuestion.objects.filter(title__icontain=request.GET.get("q"))
-    context = {
-        "result": result
-    }
-    return render(request,"",result)
+# def search_questions(request):
+#     result = CbQuestion.objects.filter(title__icontain=request.GET.get("q",""))
+#     context = {
+#         "result": result
+#     }
+#     return render(request,"main/question-search-result.html",context)
 
 
 def search_topics(request):
@@ -246,22 +246,22 @@ def tag_search(request):
 
 def question_search(request):
     q = request.GET.get("q","")
-    questions = CbQuestion.objects.filter(Q(title__icontains=q)| Q(category__name__icontains=q)|
+    results = CbQuestion.objects.filter(Q(title__icontains=q)| Q(category__name__icontains=q)|
                                           Q(topic__title__icontains=q))
     page = request.GET.get("page", 1)
-    paginator = Paginator(questions, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
+    paginator = Paginator(results, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
 
     try:
-        questions = paginator.page(page)
+        results = paginator.page(page)
     except PageNotAnInteger:
-        questions = paginator.page(1)
+        results = paginator.page(1)
     except EmptyPage:
-        questions = paginator.page(paginator.num_pages)
+        results = paginator.page(paginator.num_pages)
 
     context = {
-        "questions": questions,
+        "results": results,
     }
-    return render(request, "main/list-topic-questions.html", context)
+    return render(request, "main/question-search-result.html", context)
 
 
 def topic_search(request):

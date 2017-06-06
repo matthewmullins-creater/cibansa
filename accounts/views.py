@@ -154,9 +154,14 @@ def logout(request):
 def profile(request):
     user_profile = get_object_or_404(CbUserProfile,user=request.user.id)
     if request.method == "POST":
-        form = ProfileEditForm(request.POST,instance=user_profile)
+
+        form = ProfileEditForm(request.POST,request.FILES,instance=user_profile)
+
         if form.is_valid():
-            form.save()
+            instance = form.save()
+            if request.FILES:
+                instance.has_photo = 1
+                instance.save()
             messages.add_message(request,messages.SUCCESS,"Your profile was updated successfully")
             return redirect("account-profile")
         else:
