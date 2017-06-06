@@ -47,7 +47,7 @@ class CbTopic(models.Model):
         db_table="cb_topic"
 
     def __str__(self):
-        return "%s -%s" %(self.id,self.title)
+        return "%s -%s" %(self.category.name,self.title)
 
     def get_no_of_discussion(self):
         discussion=0
