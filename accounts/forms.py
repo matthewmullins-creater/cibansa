@@ -40,7 +40,7 @@ class RegistrationForm(forms.ModelForm):
     first_name = forms.CharField(widget=forms.widgets.TextInput,error_messages=my_default_errors)
     last_name = forms.CharField(widget=forms.widgets.TextInput,error_messages=my_default_errors)
     password = forms.CharField(widget=forms.widgets.PasswordInput,error_messages=my_default_errors)
-    phone = forms.CharField(widget=forms.widgets.TextInput,error_messages=my_default_errors)
+    phone = forms.IntegerField(widget=forms.widgets.TextInput,error_messages=my_default_errors)
 
 
     class Meta:
