@@ -148,7 +148,14 @@ def post_question(request):
                     )
             return redirect("view-question",question.id)
     else:
-        form = CbQuestionForm(request=request)
+        try:
+            # Catch AttributeError Exception
+            if category:
+                form = CbQuestionForm(request=request, initial={"category": category.id})
+            else:
+                form = CbQuestionForm(request=request,initial={"category":topic.category.id,"topic":topic.id})
+        except:
+            form = CbQuestionForm(request=request)
     context = {
         "form": form,
         "topic": topic,

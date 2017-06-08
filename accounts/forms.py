@@ -76,7 +76,7 @@ class ProfileEditForm(forms.ModelForm):
     last_name = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder":"Last Name"}))
     phone = forms.IntegerField(required=False,widget=forms.TextInput(attrs={"class":"form-control",
                                                                          "placeholder":"Phone"}))
-    dob = forms.DateField(input_formats=['%d/%m/%Y'],widget=forms.TextInput(attrs={"placeholder":"Date of birth, 25/10/2006",
+    dob = forms.DateField(input_formats=['%Y-%m-%d'],widget=forms.TextInput(attrs={"placeholder":"Date of birth 1990-07-16",
                                                                          "class":"form-control"}))
     country = forms.CharField(required=False,widget=forms.TextInput(attrs={"class":"form-control",
                                                                            "placeholder":"Country"}))

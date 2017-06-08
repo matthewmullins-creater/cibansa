@@ -65,7 +65,7 @@ class CbUserProfile(models.Model):
     gender = models.CharField(max_length=10, blank=True, null=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    avatar = models.ImageField(blank=True, default="default_avatar.jpg", upload_to=photo_upload_path)
+    avatar = models.ImageField(blank=True, upload_to=photo_upload_path)
     has_photo = models.BigIntegerField(default=0,null=True)
     is_visible = models.BooleanField(default=True)
 

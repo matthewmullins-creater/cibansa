@@ -28,13 +28,11 @@ window.onload = function(){
             $.each(JSON.parse(data),function(k,j){
                 $("#id_topic").append("<option value='"+j.id+"'>"+j.name+"</option>")
             })
-            if(t=="")
+            if(t=="" && data == "")
                 $("#id_topic").html("<option>Topic</option>")
              else
                 $("#id_topic").val(t)
-
         }
-
         })
     })
 

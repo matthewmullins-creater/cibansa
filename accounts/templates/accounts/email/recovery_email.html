@@ -6,7 +6,7 @@
 
 <div>{% trans "You can set your new password by following this link:" %}</div>
 
-<div>http{% if secure %}s{% endif %}://{{ site.domain }}{% url "password_reset_reset" token %}</div>
+<div>http{% if secure %}s{% endif %}://{{ site.domain }}{% url "password-reset" token %}</div>
 
 <div>{% trans "If you don't want to reset your password, simply ignore this email and it will stay unchanged." %}</div>
 
