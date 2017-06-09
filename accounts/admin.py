@@ -46,4 +46,4 @@ class CbUserAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(CbUserProfile,CbUserProfileAdmin)
-admin.site.register(User,CbUserAdmin)
+# admin.site.register(User,CbUserAdmin)
