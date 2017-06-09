@@ -22,5 +22,7 @@ urlpatterns = [
     url(r'^api/v1/article-likes/', include(article_like.urls,namespace="article-likes-api")),
     url(r'^api/v1/article-comment-likes/', include(article_comment_like.urls,namespace="article-cl-api")),
     url(r'^api/v1/article-cr-likes/', include(a_com_reply.urls,namespace="article-crl-api")),
-    url(r'^view/(?P<id>[0-9]+)',views.view_article,name="view-article")
+    url(r'^view/(?P<id>[0-9]+)',views.view_article,name="view-article"),
+    url(r'^list/',views.list_article,name="list-article"),
+    url(r'^search/',views.search_article,name="search-article"),
 ]

@@ -1,10 +1,136 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+{% extends "base.html" %}
 
-</body>
-</html>
+{% block title %} Cibansa - Articles  {% endblock %}
+{% block body %}
+
+
+<section class="body-container" id="list-topic">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-3">
+					<div class="search-box">
+						<form class="" action="{% url 'topic-search' %}">
+							<input type="text" class="form-control" name="q">
+							<input type="hidden" name="cat" value="{{ category.id }}">
+							<i class="fa fa-search search-btn" style="cursor:pointer" aria-hidden="true"></i>
+						</form>
+
+					</div>
+				</div>
+				<div class="col-md-6 for-mobile">
+					<!--<h3 class="filter">{{ category.name }}</h3>-->
+
+				</div>
+				<div class="col-md-3">
+
+				</div>
+			</div>
+			<div class="space"></div>
+			<div class="row">
+				<!--<div class="col-md-3 for-mobile">-->
+					<!--&lt;!&ndash;<h4 class="filter">filter by tags</h4>&ndash;&gt;-->
+					<!--&lt;!&ndash; <div class="chips chips-initial"></div> &ndash;&gt;-->
+					<!--&lt;!&ndash;<div class="chip-container">&ndash;&gt;-->
+
+							<!--&lt;!&ndash;{ for t in tags }&ndash;&gt;-->
+								<!--&lt;!&ndash;<div class="chip">&ndash;&gt;-->
+									<!--&lt;!&ndash;<input type="hidden" name="tag" value="{ t.name }">&ndash;&gt;-->
+								<!--&lt;!&ndash;{ t.name }&ndash;&gt;-->
+								<!--&lt;!&ndash;<i class="close material-icons">close</i>&ndash;&gt;-->
+								<!--&lt;!&ndash;</div>&ndash;&gt;-->
+							<!--&lt;!&ndash;{ endfor }&ndash;&gt;-->
+					<!--&lt;!&ndash;</div>&ndash;&gt;-->
+
+				<!--</div>-->
+				<div class="col-md-12 ">
+					<div class="row">
+						<div class="col-md-12">
+							{ if request.resolver_match.url_name == "search-article" %}
+								<h5>
+									{{ results|length }} result{{ results|length|pluralize }} found
+									<a style="margin-left:40px" href="{ url 'list-article' %}">View all articles</a>
+								</h5>
+							{ endif %}
+						</div>
+						<section id="article">
+                            {% for a in articles %}
+                                <div class="col-md-4">
+                                    <a href="{% url 'view-article' id=a.id %}">
+                                        <div class="well round_container">
+                                            <div class="img-content" style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ a.image.url }}')">
+                                                <h3>{{ a.title }}</h3>
+                                            </div>
+                                            <div class="desc-content">
+                                                <div class="row">
+                                                    <div class="col-xs-3">
+                                                        {% if a.user.profile.has_photo %}
+                                                            <div >
+                                                                {{ a.user.get_profile_pix | safe }}
+                                                            </div>
+                                                        {% else %}
+                                                            <div>
+                                                                {{ a.user.get_profile_pix | safe }}
+                                                            </div>
+                                                        {% endif %}
+                                                    </div>
+                                                    <div class="col-xs-8">
+                                                        <ul class="detail">
+                                                            <li>{{ a.user }}</li>
+                                                            <li>category : <span>{{ a.category }}</span></li>
+                                                            <li>posted on : <span>{{ a.created_at |date:"M, d y" }}</span></li>
+                                                        </ul>
+                                                    </div>
+                                                </div>
+                                                <div class="read">
+                                                    <a href="{% url 'view-article' id=a.id %}" class="btn btn-default">read more</a>
+                                                    <ul class="visitor">
+                                                        <li><i class="fa fa-heart" aria-hidden="true"></i></li>
+                                                        <li>{{ a.article_likes.count }}</li>
+                                                    </ul>
+                                                    <div class="clear"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                 {% empty %}
+                                        <h4>No article found.</h4>
+                                {% endfor %}
+                        </section>
+
+					</div>
+
+					<div class="row">
+						{% if articles.has_other_pages %}
+						  <ul class="pagination">
+							{% if articles.has_previous %}
+							  <li><a href="?page={{ articles.previous_page_number }}">&laquo;</a></li>
+							{% else %}
+							  <li class="disabled"><span>&laquo;</span></li>
+							{% endif %}
+							{% for i in articles.paginator.page_range %}
+							  {% if articles.number == i %}
+								<li class="active"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+							  {% else %}
+								<li><a href="?page={{ i }}">{{ i }}</a></li>
+							  {% endif %}
+							{% endfor %}
+							{% if articles.has_next %}
+							  <li><a href="?page={{ articles.next_page_number }}">&raquo;</a></li>
+							{% else %}
+							  <li class="disabled"><span>&raquo;</span></li>
+							{% endif %}
+						  </ul>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+<script>
+	$(".search-btn").click(function(){
+		$("form").submit()
+	})
+</script>
+{% endblock %}

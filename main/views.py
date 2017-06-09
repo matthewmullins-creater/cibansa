@@ -5,7 +5,7 @@ from main.models import CbCategory,CbQuestion,CbTopic,CbTag,CbQuestionTag,CbTopi
 from main.forms import CbQuestionForm
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.db.models import Q
-from django.http import  HttpResponse,HttpResponseNotAllowed
+from django.http import HttpResponse,HttpResponseNotAllowed
 import json
 from django.core.urlresolvers import reverse
 from django.contrib.auth.decorators import login_required
