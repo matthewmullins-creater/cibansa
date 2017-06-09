@@ -170,28 +170,28 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 # }
 
 # #
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'cibansa',
-        'USER': 'CODE-WIZARD',
-        'PASSWORD': '',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
-    }
- }
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'd1kmb939e6u07e',
-#         'USER': 'tpjyuqfvbkfjzk',
-#         'PASSWORD': 'cb68ad15c3628d657cd49af95016f9ab4f2ec13a5f52a2033b153c64096fef83',
-#         'HOST': 'ec2-107-20-141-145.compute-1.amazonaws.com',
+#         'NAME': 'cibansa',
+#         'USER': 'CODE-WIZARD',
+#         'PASSWORD': '',
+#         'HOST': '127.0.0.1',
 #         'PORT': '5432',
 #     }
-# }
-# db_from_env = dj_database_url.config(conn_max_age=500)
-# DATABASES['default'].update(db_from_env)
+#  }
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'd1kmb939e6u07e',
+        'USER': 'tpjyuqfvbkfjzk',
+        'PASSWORD': 'cb68ad15c3628d657cd49af95016f9ab4f2ec13a5f52a2033b153c64096fef83',
+        'HOST': 'ec2-107-20-141-145.compute-1.amazonaws.com',
+        'PORT': '5432',
+    }
+}
+db_from_env = dj_database_url.config(conn_max_age=500)
+DATABASES['default'].update(db_from_env)
 
 
 # Password validation
@@ -231,30 +231,30 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 #Local host setting
-PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-STATIC_ROOT = '/static/'
-STATIC_URL = '/static/'
-
-# Extra places for collectstatic to find static files.
-STATICFILES_DIRS = (
-    os.path.join(PROJECT_ROOT, 'static'),
-)
-
-# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
-# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-
-# Heroku configuration
-# PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+# PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 #
-# STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+# STATIC_ROOT = '/static/'
 # STATIC_URL = '/static/'
 #
 # # Extra places for collectstatic to find static files.
 # STATICFILES_DIRS = (
 #     os.path.join(PROJECT_ROOT, 'static'),
 # )
+
+# STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Heroku configuration
+PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+
+STATIC_ROOT = os.path.join(PROJECT_ROOT, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
 
 MEDIA_ROOT =os.path.join(BASE_DIR,"media/")
 MEDIA_URL ='/media/'
