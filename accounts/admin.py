@@ -22,8 +22,12 @@ delete_selected.short_description = "Delete selected objects"
 
 class CbUserProfileAdmin(admin.ModelAdmin):
     search_fields = ["first_name","last_name","phone","country","city"]
-    list_display = ("user_id","first_name","last_name","phone","gender","country","city","has_photo","is_visible")
+    list_display = ("user_id","first_name","last_name","phone","gender","country","city","has_photo","is_visible",
+                    "get_email")
     actions = [delete_selected]
+
+    def get_email(self,obj):
+        return obj.user.email
 
     def delete_model(self, request, obj):
         obj.is_visible = False
