@@ -8,6 +8,9 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
+					<h4 style="    margin-top: 29px;" >
+						<a style="color:#fff" href="{% url 'home-page' %}">Home</a>
+					</h4>
 				</div>
 				<div class="col-xs-4">
 					<a style="margin-top: 22px;" href="{% url 'post-new-question' %}" class="btn btn-white pull-right">post a question</a>
@@ -63,6 +66,10 @@
 				</div>
 
 			</div>
+			{% empty %}
+				<div>
+					<h4>No result found.</h4>
+				</div>
 			{% endfor %}
 			<div class="row">
 					{% if results.has_other_pages %}

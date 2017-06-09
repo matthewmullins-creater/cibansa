@@ -60,6 +60,7 @@ class CbQuestionTagsAdmin(admin.ModelAdmin):
 class CbTopicAdmin(admin.ModelAdmin):
     list_display = ("id","title","category","owner","slug")
     search_fields = ("title",)
+    list_filter = ("category",)
     form = CbTopicAdminForm
 
     # def get_form(self, request, obj=None, **kwargs):
@@ -100,6 +101,7 @@ delete_selected.short_description = "Delete selected objects"
 class CbQuestionAdmin(admin.ModelAdmin):
     form=CbQuestionAdminForm
     search_fields = ("title",)
+    list_filter = ("topic","category")
     actions = [delete_selected]
     list_display = ("id","title","topic","owner","created_at","updated_at","category","is_deleted")
 

@@ -9,6 +9,7 @@ from articles.forms import CbArticleAdminForm
 class CbArticleAdmin(admin.ModelAdmin):
     list_display = ("title","category","created_at","user")
     form = CbArticleAdminForm
+    search_fields = ("title","category")
 
     def save_model(self, request, obj, form, change):
         super(CbArticleAdmin, self).save_model(request, obj, form, change)
