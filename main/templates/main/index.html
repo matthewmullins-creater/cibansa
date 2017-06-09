@@ -92,6 +92,8 @@
 						</div>
 					</a>
 				</div>
+				{% empty %}
+					<h4>No article</h4>
 				{% endfor %}
 				<div class="text-center"> <a href="{% url 'list-article' %}">View more articles</a></div>
 
