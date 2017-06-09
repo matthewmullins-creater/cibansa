@@ -10,7 +10,7 @@ def delete_selected(modeladmin, request, queryset):
         raise PermissionDenied
     if request.POST.get('post'):
             for obj in queryset:
-                obj.is_visible = True
+                obj.is_visible = False
                 obj.user.is_active = False
                 obj.save()
     else:
@@ -25,7 +25,7 @@ class CbUserAdmin(admin.ModelAdmin):
     actions = [delete_selected]
 
     def delete_model(self, request, obj):
-        obj.is_visible = True
+        obj.is_visible = False
         obj.user.is_active = False
         obj.save()
 
