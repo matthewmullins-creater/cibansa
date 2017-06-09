@@ -9,9 +9,8 @@
 			<div class="row">
 				<div class="col-md-3">
 					<div class="search-box">
-						<form class="" action="{% url 'topic-search' %}">
+						<form class="" action="{% url 'search-article' %}">
 							<input type="text" class="form-control" name="q">
-							<input type="hidden" name="cat" value="{{ category.id }}">
 							<i class="fa fa-search search-btn" style="cursor:pointer" aria-hidden="true"></i>
 						</form>
 
@@ -28,29 +27,36 @@
 			<div class="space"></div>
 			<div class="row">
 				<!--<div class="col-md-3 for-mobile">-->
-					<!--&lt;!&ndash;<h4 class="filter">filter by tags</h4>&ndash;&gt;-->
-					<!--&lt;!&ndash; <div class="chips chips-initial"></div> &ndash;&gt;-->
-					<!--&lt;!&ndash;<div class="chip-container">&ndash;&gt;-->
 
-							<!--&lt;!&ndash;{ for t in tags }&ndash;&gt;-->
-								<!--&lt;!&ndash;<div class="chip">&ndash;&gt;-->
-									<!--&lt;!&ndash;<input type="hidden" name="tag" value="{ t.name }">&ndash;&gt;-->
-								<!--&lt;!&ndash;{ t.name }&ndash;&gt;-->
-								<!--&lt;!&ndash;<i class="close material-icons">close</i>&ndash;&gt;-->
-								<!--&lt;!&ndash;</div>&ndash;&gt;-->
-							<!--&lt;!&ndash;{ endfor }&ndash;&gt;-->
-					<!--&lt;!&ndash;</div>&ndash;&gt;-->
 
 				<!--</div>-->
 				<div class="col-md-12 ">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <h4 class="filter">Filter by Category
+                                {% if request.resolver_match.url_name == "article-by-category" %}
+                                    ({{ slug }})
+                                {% endif %}
+                            </h4>
+                             <div class="chips chips-initial" style="min-height: 11px;"></div>
+                            <div class="chip-container">
+
+                                    {% for c in category %}
+                                        <div class="chip">
+                                        <a href="{% url 'article-by-category' slug=c.slug %}">{{ c.name }}</a>
+                                        </div>
+                                    {% endfor %}
+                            </div>
+                        </div>
+                    </div>
 					<div class="row">
 						<div class="col-md-12">
-							{ if request.resolver_match.url_name == "search-article" %}
+							{% if request.resolver_match.url_name == "search-article" %}
 								<h5>
-									{{ results|length }} result{{ results|length|pluralize }} found
-									<a style="margin-left:40px" href="{ url 'list-article' %}">View all articles</a>
+									{{ articles|length }} result{{ articles|length|pluralize }} found
+									<a style="margin-left:40px" href="{% url 'list-article' %}">View all articles</a>
 								</h5>
-							{ endif %}
+							{% endif %}
 						</div>
 						<section id="article">
                             {% for a in articles %}

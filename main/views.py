@@ -235,12 +235,12 @@ def get_topic_by_category(request):
 #     return render(request,"main/question-search-result.html",context)
 
 
-def search_topics(request):
-    result = CbTopic.objects.filter(title__icontain=request.GET.get("q"))
-    context = {
-        "result": result
-    }
-    return render(request,"main/list-topic.html",result)
+# def search_topics(request):
+#     result = CbTopic.objects.filter(title__icontain=request.GET.get("q"))
+#     context = {
+#         "result": result
+#     }
+#     return render(request,"main/list-topic.html",result)
 
 
 def tag_search(request):

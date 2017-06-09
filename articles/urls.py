@@ -25,4 +25,5 @@ urlpatterns = [
     url(r'^view/(?P<id>[0-9]+)',views.view_article,name="view-article"),
     url(r'^list/',views.list_article,name="list-article"),
     url(r'^search/',views.search_article,name="search-article"),
+    url(r'^category/(?P<slug>[\w|\W\-]+)/',views.by_category,name="article-by-category")
 ]
