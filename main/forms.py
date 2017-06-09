@@ -121,6 +121,20 @@ class CbTopicAdminForm(forms.ModelForm):
         fields = ("category","title","image","description","owner","tag","is_visible")
 
 
+class CbTagAdminForm(forms.ModelForm):
+    name = forms.CharField()
+
+    def clean_name(self):
+        name = self.cleaned_data.get("name")
+        if CbTag.objects.filter(name__iexact=name).exists():
+            raise forms.ValidationError("Tag already exist")
+        return name
+
+    class Meta:
+        model = CbTag
+        fields = ["name"]
+
+
 class CbQuestionAdminForm(forms.ModelForm):
 
     def __init__(self,*args,**kwargs):

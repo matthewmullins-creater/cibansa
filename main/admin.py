@@ -1,7 +1,7 @@
 from django.contrib import admin
 from main.models import CbCategory,CbTag,CbTopic,CbTopicTags,CbQuestion,CbQuestionTag,CbCategoryTags
 from django import forms
-from main.forms import CbCategoryForm,CbTopicAdminForm,CbQuestionAdminForm
+from main.forms import CbCategoryForm,CbTopicAdminForm,CbQuestionAdminForm,CbTagAdminForm
 from ast import  literal_eval
 from django.contrib.admin.actions import delete_selected as delete_selected_
 from django.core.exceptions import PermissionDenied
@@ -42,6 +42,7 @@ class CbCategoryAdmin(admin.ModelAdmin):
 
 class CbTagAdmin(admin.ModelAdmin):
     list_display = ("id","name","slug")
+    form = CbTagAdminForm
 
 
 class CbCategoryTagsAdmin(admin.ModelAdmin):
