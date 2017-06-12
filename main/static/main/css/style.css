@@ -110,7 +110,7 @@ a:hover, a:active, a:focus {
 .navbar-brand {
   font-family: 'Lato', sans-serif;
   font-weight: 400;
-  text-transform: uppercase;
+  /*text-transform: uppercase;*/
 }
 .navbar-brand i{
   color: #fe4641;
