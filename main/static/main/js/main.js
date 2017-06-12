@@ -41,6 +41,10 @@ window.onload = function(){
   $(".chip .close").click(function(){
         $(this).parents(".chip").remove()
    })
+
+   $(".reply-box").on("click",function(){
+        $(this).val(" ")
+    })
 }
 
 
