@@ -9,7 +9,7 @@ def get_top_category():
 
     a = []
     for c in cat:
-        question = c.category_questions.count()
+        question = c.category_questions.filter(is_deleted=False).count()
         discussion = 0
         for q in c.category_questions.filter(is_deleted=False):
 
