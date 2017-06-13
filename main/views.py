@@ -193,6 +193,7 @@ def edit_question(request,question):
 def view_question(request,id):
     question = get_object_or_404(CbQuestion,pk=id)
     related_topic = CbQuestion.objects.filter(~Q(pk=id),topic=question.topic.id)[:2]
+    request.session["lq"] = question.id
     context ={
         "question": question,
         "related_topic":related_topic
@@ -205,7 +206,10 @@ def question_by_tag(request,slug):
     questions = CbQuestionTag.objects.filter(tag__slug=slug)
     page = request.GET.get("page", 1)
     paginator = Paginator(questions, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
-
+    try:
+        last_question = CbQuestion.objects.get(pk = request.session["lq"])
+    except:
+        pass
     try:
         questions = paginator.page(page)
     except PageNotAnInteger:
@@ -214,7 +218,8 @@ def question_by_tag(request,slug):
         questions = paginator.page(paginator.num_pages)
 
     context = {
-        "questions":questions
+        "questions":questions,
+        "last_question":last_question
     }
     return render(request,"main/questions_by_tag.html",context)
 

@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %} Cibansa - {{ topic.name }} questions {% endblock %}
+{% block title %} CiBanSA - {{ topic.name }} questions {% endblock %}
 {% load remove_tag %}
 {% block body %}
 
@@ -8,7 +8,13 @@
 		<div class="container">
 			<div class="row">
 				<div class="col-xs-8">
-					<h3 class="" style="color: #fff">{{ topic.title }}</h3>
+					{% if last_question %}
+					<h4 class="" style="color: #fff;    margin-top: 27px">
+						<a style="color:#fff" href="{% url 'view-question' id=last_question.id %}">
+								{{ last_question.title }}/</a>
+
+					</h4>
+					{% endif %}
 				</div>
 				<div class="col-xs-4">
 					<a style="margin-top: 22px;" href="{% url 'post-new-question' %}" class="btn btn-white pull-right">post a question</a>
@@ -64,6 +70,8 @@
 				</div>
 
 			</div>
+			{% empty %}
+			<div class="text-center"><h5>No question found</h5></div>
 			{% endfor %}
 			<div class="row">
 					{% if questions.has_other_pages %}

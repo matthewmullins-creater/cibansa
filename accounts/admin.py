@@ -24,6 +24,7 @@ class CbUserProfileAdmin(admin.ModelAdmin):
     search_fields = ["first_name","last_name","phone","country","city"]
     list_display = ("user_id","first_name","last_name","phone","gender","country","city","has_photo","is_visible",
                     "get_email")
+    list_filter = ("country","city","gender")
     actions = [delete_selected]
 
     def get_email(self,obj):

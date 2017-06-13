@@ -952,4 +952,13 @@ hr.style17:after {
     border-color: #ebccd1;
 }
 
+errorlist{
+    padding-left:0;
+}
+.errorlist li{
+    list-style:none;
+    color:#ce6868;
+
+}
+
 

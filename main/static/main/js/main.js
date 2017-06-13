@@ -42,9 +42,7 @@ window.onload = function(){
         $(this).parents(".chip").remove()
    })
 
-   $(".reply-box").on("click",function(){
-        $(this).val(" ")
-    })
+
 }
 
 
@@ -129,4 +127,7 @@ $(document).on("keydown.autocomplete",".tag_field",function(){
     $("#search-form").submit()
  })
 
+$(document).on("click",".reply-box",function(){
+    $(this).val(" ")
+})
 

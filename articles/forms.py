@@ -8,7 +8,7 @@ from tinymce.widgets import TinyMCE
 
 
 class CbArticleAdminForm(forms.ModelForm):
-    title = forms.CharField(max_length=255,widget=forms.TextInput)
+    title = forms.CharField(max_length=255,widget=forms.TextInput(attrs={"style":"width: 300px;","autocomplete":"off"}))
     category = forms.Select(choices=CbCategory.objects.only("name"))
     image = forms.ImageField(required=False)
     content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}))

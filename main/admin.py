@@ -10,8 +10,9 @@ from django.core.exceptions import PermissionDenied
 
 
 class CbCategoryAdmin(admin.ModelAdmin):
-    list_display = ("id","id","name","owner","created_at","owner","slug")
+    list_display = ("id","id","name","owner","created_at","owner","slug","is_visible")
     search_fields = ("name",)
+    list_filter = ("name",)
     form = CbCategoryForm
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
@@ -59,7 +60,7 @@ class CbQuestionTagsAdmin(admin.ModelAdmin):
 
 
 class CbTopicAdmin(admin.ModelAdmin):
-    list_display = ("id","title","category","owner","slug")
+    list_display = ("id","title","category","owner","slug","is_visible")
     search_fields = ("title",)
     list_filter = ("category",)
     form = CbTopicAdminForm

@@ -51,7 +51,7 @@ class CbTopic(models.Model):
 
     def get_no_of_discussion(self):
         discussion=0
-        for q in self.topic_questions.all():
+        for q in self.topic_questions.filter(is_deleted=False):
             discussion += q.question_answers.count()
             for k in q.question_answers.all():
                 discussion += k.answer_replies.count()
@@ -59,6 +59,9 @@ class CbTopic(models.Model):
         d = {"discussion":discussion}
 
         return d
+
+    def get_no_questions(self):
+        return self.topic_questions.filter(is_deleted=False).count()
 
 
 class CbTag(models.Model):
