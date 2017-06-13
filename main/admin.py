@@ -61,8 +61,8 @@ class CbQuestionTagsAdmin(admin.ModelAdmin):
 
 class CbTopicAdmin(admin.ModelAdmin):
     list_display = ("id","title","category","owner","slug","is_visible")
-    search_fields = ("title",)
-    list_filter = ("category",)
+    search_fields = ("title","owner")
+    list_filter = ("category","owner")
     form = CbTopicAdminForm
 
     # def get_form(self, request, obj=None, **kwargs):
