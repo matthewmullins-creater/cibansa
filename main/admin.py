@@ -10,9 +10,9 @@ from django.core.exceptions import PermissionDenied
 
 
 class CbCategoryAdmin(admin.ModelAdmin):
-    list_display = ("id","id","name","owner","created_at","owner","slug","is_visible")
-    search_fields = ("name",)
-    list_filter = ("name",)
+    list_display = ("id","name","owner","created_at","slug","is_visible")
+    search_fields = ("name","owner")
+    list_filter = ("name","owner","is_visible","created_at")
     form = CbCategoryForm
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):

@@ -15,7 +15,7 @@ class CbCategory(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey("accounts.User",related_name="user_categories")
     updated_at = models.DateTimeField(auto_now=True)
-    slug = AutoSlugField(populate_from="name", max_length=200,always_update=True,unique=True)
+    slug = AutoSlugField(populate_from="name",always_update=True,unique=True)
     meta_data = JSONField(null=True,blank=True)
     is_visible = models.BooleanField(default=True)
 
@@ -39,7 +39,7 @@ class CbTopic(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey("accounts.User",related_name="user_topic")
     updated_at = models.DateTimeField(auto_now=True)
-    slug = AutoSlugField(populate_from="title", max_length=200,always_update=True,unique=True)
+    slug = AutoSlugField(populate_from="title",always_update=True,unique=True)
     meta_data = JSONField(null=True, blank=True)
     is_visible = models.BooleanField(default=True)
 
@@ -66,7 +66,7 @@ class CbTopic(models.Model):
 
 class CbTag(models.Model):
     name = models.CharField(max_length=255,unique=True)
-    slug = AutoSlugField(populate_from="name",max_length=200,always_update=True,unique=True)
+    slug = AutoSlugField(populate_from="name",always_update=True,unique=True)
 
     def __str__(self):
         return "%s" %(self.name)
@@ -110,7 +110,7 @@ class CbQuestion(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     status = models.BooleanField(default=True)
-    slug = AutoSlugField(populate_from="title", max_length=200,always_update=True,unique=True)
+    slug = AutoSlugField(populate_from="title",always_update=True,unique=True)
     is_deleted = models.BooleanField(default=False)
 
     def __str__(self):
