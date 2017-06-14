@@ -25,7 +25,19 @@ class CbCategory(models.Model):
     def __str__(self):
         return self.name
 
+    def get_no_of_discussion(self):
+        discussion=0
+        for q in self.category_questions.filter(is_deleted=False):
+            discussion += q.question_answers.count()
+            for k in q.question_answers.all():
+                discussion += k.answer_replies.count()
 
+        d = {"discussion":discussion}
+
+        return d
+
+    def get_no_questions(self):
+        return self.category_questions.filter(is_deleted=False).count()
 
 def topic_image_path(instance,filename):
     return "".join(["%s" % "topic/", filename])
@@ -109,7 +121,7 @@ class CbQuestion(models.Model):
     owner = models.ForeignKey("accounts.User", related_name="user_questions")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    status = models.BooleanField(default=True)
+    # status = models.BooleanField(default=True)
     slug = AutoSlugField(populate_from="title",always_update=True,unique=True)
     is_deleted = models.BooleanField(default=False)
 

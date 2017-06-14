@@ -11,9 +11,10 @@ from django.core.exceptions import PermissionDenied
 
 class CbCategoryAdmin(admin.ModelAdmin):
     list_display = ("id","name","owner","created_at","slug","is_visible")
-    search_fields = ("name","owner")
+    search_fields = ("name","owner__profile__first_name","owner__profile__last_name")
     list_filter = ("name","owner","is_visible","created_at")
     form = CbCategoryForm
+    list_display_links = list_display
 
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name == "description" or db_field.name == "meta_data":
@@ -26,7 +27,7 @@ class CbCategoryAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super(CbCategoryAdmin, self).save_model(request, obj, form, change)
         if form.cleaned_data.get("tag"):
-            obj.category_tags.all().delete()
+            # obj.category_tags.all().delete()
             for tag in literal_eval(form.cleaned_data.get("tag")):
                 CbCategoryTags.objects.create(
                     category=obj,
@@ -44,26 +45,35 @@ class CbCategoryAdmin(admin.ModelAdmin):
 class CbTagAdmin(admin.ModelAdmin):
     list_display = ("id","name","slug")
     form = CbTagAdminForm
+    search_fields = ("name",)
+    list_display_links = list_display
 
 
 class CbCategoryTagsAdmin(admin.ModelAdmin):
     list_display = ("id","tag","category")
+    list_display_links = list_display
 
 
 class CbTopicTagsAdmin(admin.ModelAdmin):
     list_display = ("id","tag","topic")
+    list_display_links = list_display
 
 
 class CbQuestionTagsAdmin(admin.ModelAdmin):
-    list_display = ("id","tag","question")
+    list_display = ("id","tag","question","is_deleted")
     search_fields = ("question",)
+    list_filter = ("tag","question")
+    list_display_links = list_display
 
+    def is_deleted(self,obj):
+        return obj.question.is_deleted
 
 class CbTopicAdmin(admin.ModelAdmin):
     list_display = ("id","title","category","owner","slug","is_visible")
-    search_fields = ("title","owner")
-    list_filter = ("category","owner")
+    search_fields = ("title","owner__profile__first_name","owner__profile__last_name")
+    list_filter = ("category","owner","is_visible")
     form = CbTopicAdminForm
+    list_display_links = list_display
 
     # def get_form(self, request, obj=None, **kwargs):
     #     form = super(CbTopicAdmin,self).get_form(request,obj,**kwargs)
@@ -80,7 +90,7 @@ class CbTopicAdmin(admin.ModelAdmin):
     def save_model(self, request, obj, form, change):
         super(CbTopicAdmin, self).save_model(request, obj, form, change)
         if form.cleaned_data.get("tag"):
-            obj.topic_tags.all().delete()
+            # obj.topic_tags.all().delete()
             for tag in literal_eval(form.cleaned_data.get("tag")):
                 CbTopicTags.objects.create(
                     topic=obj,
@@ -102,15 +112,16 @@ delete_selected.short_description = "Delete selected objects"
 
 class CbQuestionAdmin(admin.ModelAdmin):
     form=CbQuestionAdminForm
-    search_fields = ("title",)
-    list_filter = ("topic","category")
+    search_fields = ("title","category__name","topic__title","owner__profile__first_name","owner__profile__last_name")
+    list_filter = ("topic","category","is_deleted","created_at","owner")
     actions = [delete_selected]
     list_display = ("id","title","topic","owner","created_at","updated_at","category","is_deleted")
+    list_display_links = list_display
 
     def save_model(self, request, obj, form, change):
         super(CbQuestionAdmin, self).save_model(request, obj, form, change)
         if form.cleaned_data.get("tag"):
-            obj.question_tags.all().delete()
+            # obj.question_tags.all().delete()
             for tag in literal_eval(form.cleaned_data.get("tag")):
                 CbQuestionTag.objects.create(
                     question=obj,

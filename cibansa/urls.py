@@ -33,6 +33,7 @@ urlpatterns = [
     url(r'^topic/(?P<slug>[\w|\W\-]+)/questions/',mv.list_topic_question,name="list-topic-questions"),
     url(r'^topic/search',mv.topic_search,name="topic-search"),
     url(r'^category/',mv.list_categories,name="list-categories"),
+    url(r'^search/category/',mv.category_search,name="category-search"),
     url(r'^questions/post-new-question/',mv.post_question,name="post-new-question"),
     url(r'^questions/edit/(?P<question>[0-9]+)/',mv.edit_question,name="edit-question"),
     url(r'^questions/tagged/(?P<slug>[\w|\W\-]+)/',mv.question_by_tag,name="question-by-tag"),

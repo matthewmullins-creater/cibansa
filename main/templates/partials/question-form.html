@@ -1,4 +1,5 @@
 {% load widget_tweaks %}
+
 <form action="" method="post">
                         {% csrf_token %}
                         {{ form.owner.errors }}
@@ -54,3 +55,7 @@
                     {% endif %}
 				</div>
                 </form>
+
+<script>
+    $("#id_topic").html("<option>Select Topics </option>")
+</script>

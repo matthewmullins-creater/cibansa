@@ -144,6 +144,14 @@ class CbQuestionAdminForm(forms.ModelForm):
         for c in CbCategory.objects.only("name"):
             CATEGORIES.append((c.id,c.name))
         self.fields["category"].choices = CATEGORIES
+        self.fields['attached_tags'].widget.attrs['readonly'] = True
+        if self.instance.pk:
+            tags = []
+            for t in self.instance.question_tags.all():
+                tags.append(t.tag.name)
+            self.fields["attached_tags"].initial = ", ".join(tags)
+
+
 
 
     category = forms.ChoiceField(label="Category *")
@@ -157,11 +165,13 @@ class CbQuestionAdminForm(forms.ModelForm):
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}),
                                                             label="Description *")
     owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
+    is_deleted = forms.BooleanField(required=False)
     tag = forms.CharField(
         label='Type tag name',
         widget=AutoCompleteSelectMultipleWidget(TagLookup),
         required=False,
     )
+    attached_tags = forms.CharField(widget=forms.Textarea,required=False)
 
     def clean_category(self):
         if not CbCategory.objects.filter(pk = self.cleaned_data.get("category")).exists():
@@ -172,7 +182,7 @@ class CbQuestionAdminForm(forms.ModelForm):
 
     class Meta:
         model = CbQuestion
-        fields = ("category","topic","title","description","owner","tag",)
+        fields = ("category","topic","title","description","owner","tag","is_deleted","attached_tags")
 
     class Media:
         js = ("main/js/admin-question-form-chain-select.js",)
@@ -181,17 +191,29 @@ class CbQuestionAdminForm(forms.ModelForm):
 class CbQuestionForm(forms.ModelForm):
 
     def __init__(self,*args,**kwargs):
+
         self.request = kwargs.pop("request")
+        # cat=0
+        # try:
+        #     cat = kwargs.get("initial").get("category")
+        # except:
+        #     pass
+        print(args,kwargs)
+        # cat = kwargs.get("initial")["category"]
         super(CbQuestionForm,self).__init__(*args,**kwargs)
         CATEGORIES = [("","Select category")]
         # self.fields["owner"] = self.request.user.id
-        for c in CbCategory.objects.only("name"):
+        for c in CbCategory.objects.filter(is_visible=True).only("name"):
             CATEGORIES.append((c.id,c.name))
         self.fields["category"].choices = CATEGORIES
-        # self.fields["topic"].choices =[]
+        TOPICS=[("","Select Topics")]
+        topics = CbTopic.objects.filter(is_visible=True).only("title")
+        for t in topics:
+            TOPICS.append((t.id,t.title))
+        self.fields["topic"].choices =TOPICS
 
-    category = forms.Select(choices=CbCategory.objects.only("name"))
-    topic = forms.Select()
+    category = forms.Select(choices=CbCategory.objects.filter(is_visible=True).only("name"))
+    topic = forms.ChoiceField(error_messages={'required': 'Please select a topic'})
     # topic = AutoCompleteSelectField(
     #     lookup_class=TopicLookup,
     #     widget=AutoComboboxSelectWidget
@@ -217,6 +239,13 @@ class CbQuestionForm(forms.ModelForm):
             return self.cleaned_data.get("category")
         else:
             return self.cleaned_data.get("category")#CbCategory.objects.get(pk=self.cleaned_data.get("category"))
+
+    def clean_topic(self):
+            if not CbTopic.objects.filter(pk=self.cleaned_data.get("topic")).exists():
+                raise forms.ValidationError("Topic does not exist")
+                return self.cleaned_data.get("topic")
+            else:
+                return CbTopic.objects.get(pk=self.cleaned_data.get("topic"))
 
     # def save(self, commit=True):
     #     with transaction.atomic():

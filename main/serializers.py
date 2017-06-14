@@ -90,4 +90,4 @@ class CbQuestionSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = CbQuestion
-        fields = ("topic","title","description","owner","created_at","status","slug","question_answers","user_full_name")
+        fields = ("topic","title","description","owner","created_at","slug","question_answers","user_full_name")

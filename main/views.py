@@ -122,6 +122,26 @@ def list_categories(request):
     return render(request,"main/category-list.html",context)
 
 
+def category_search(request):
+    q = request.GET.get("q", "")
+    print(q,123)
+    category = CbCategory.objects.filter(name__icontains=q, is_visible=True)
+    page = request.GET.get("page", 1)
+    paginator = Paginator(category, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
+
+    try:
+        category = paginator.page(page)
+    except PageNotAnInteger:
+        category = paginator.page(1)
+    except EmptyPage:
+        category = paginator.page(paginator.num_pages)
+
+    context = {
+        "category": category,
+    }
+    return render(request, "main/category-list.html", context)
+
+
 @login_required
 def post_question(request):
     try:
@@ -192,7 +212,7 @@ def edit_question(request,question):
 
 def view_question(request,id):
     question = get_object_or_404(CbQuestion,pk=id)
-    related_topic = CbQuestion.objects.filter(~Q(pk=id),topic=question.topic.id)[:2]
+    related_topic = CbQuestion.objects.filter(~Q(pk=id),topic=question.topic.id,is_deleted=False)[:2]
     request.session["lq"] = question.id
     context ={
         "question": question,
@@ -203,7 +223,7 @@ def view_question(request,id):
 
 def question_by_tag(request,slug):
     # tag = get_object_or_404(CbTag,slug=slug)
-    questions = CbQuestionTag.objects.filter(tag__slug=slug)
+    questions = CbQuestionTag.objects.filter(tag__slug=slug,is_delete=False)
     page = request.GET.get("page", 1)
     paginator = Paginator(questions, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
     try:
@@ -225,7 +245,7 @@ def question_by_tag(request,slug):
 
 
 def get_topic_by_category(request):
-    topics = CbTopic.objects.filter(category=request.GET.get("category"))
+    topics = CbTopic.objects.filter(category=request.GET.get("category"),is_visible=True)
     topics_array=[]
     for t in topics:
         topics_array.append({"id":t.id,"name":t.title})
@@ -259,7 +279,7 @@ def tag_search(request):
 def question_search(request):
     q = request.GET.get("q","")
     results = CbQuestion.objects.filter(Q(title__icontains=q)| Q(category__name__icontains=q)|
-                                          Q(topic__title__icontains=q))
+                                          Q(topic__title__icontains=q),is_deleted=False)
     page = request.GET.get("page", 1)
     paginator = Paginator(results, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
 
@@ -279,7 +299,7 @@ def question_search(request):
 def topic_search(request):
     category = get_object_or_404(CbCategory,pk=request.GET.get("cat",""))
     q = request.GET.get("q","")
-    topics = CbTopic.objects.filter(title__icontains=q,category=request.GET.get("cat"))
+    topics = CbTopic.objects.filter(title__icontains=q,category=request.GET.get("cat"),is_visible=True)
     page = request.GET.get("page", 1)
     paginator = Paginator(topics, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
 
@@ -300,7 +320,7 @@ def topic_search(request):
 def question_auto_complete(request):
     q = request.GET.get("q")
     sqs = CbQuestion.objects.filter(Q(title__icontains=q)| Q(category__name__icontains=q)|
-                                          Q(topic__title__icontains=q))[:10]
+                                          Q(topic__title__icontains=q),is_deleted=False)[:10]
     question_array = []
     for t in sqs:
         question_array.append({"id": t.id, "label": t.title, "value": t.title,"link":reverse("view-question",kwargs={"id":t.id})})
