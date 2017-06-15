@@ -36,6 +36,13 @@ class CbUserProfileAdmin(admin.ModelAdmin):
         obj.user.save()
         obj.save()
 
+    def save_model(self, request, obj, form, change):
+        if change and "is_visible" in form.changed_data:
+            obj.user.is_active = obj.is_visible
+            obj.user.save()
+        super(CbUserProfileAdmin, self).save_model(request, obj, form, change)
+
+
 
 class CbUserAdmin(admin.ModelAdmin):
     list_display = ("email","is_active","is_staff","date_joined")
@@ -47,4 +54,4 @@ class CbUserAdmin(admin.ModelAdmin):
         obj.save()
 
 admin.site.register(CbUserProfile,CbUserProfileAdmin)
-# admin.site.register(User,CbUserAdmin)
+admin.site.register(User,CbUserAdmin)

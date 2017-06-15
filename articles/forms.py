@@ -8,13 +8,13 @@ from tinymce.widgets import TinyMCE
 
 
 class CbArticleAdminForm(forms.ModelForm):
-    title = forms.CharField(max_length=255,widget=forms.TextInput(attrs={"style":"width: 300px;","autocomplete":"off"}))
+    title = forms.CharField(label="Title *",max_length=255,widget=forms.TextInput(attrs={"style":"width: 300px;","autocomplete":"off"}))
     category = forms.Select(choices=CbCategory.objects.only("name"))
     image = forms.ImageField(required=False)
-    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}))
+    content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}),label="Content *")
     user = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
     meta_data = forms.CharField(required=False,widget=forms.Textarea(attrs={"class": "mceNoEditor"}))
-    is_visible = forms.BooleanField()
+    is_visible = forms.BooleanField(required=False)
     tag = forms.CharField(
             label='Type tag name',
             widget=AutoCompleteSelectMultipleWidget(TagLookup),

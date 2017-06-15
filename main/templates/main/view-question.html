@@ -88,10 +88,12 @@
 								<div class="row">
 									<div class="col-xs-2">
 										<!--<img src="http://placehold.it/35x35" class="img-circle" width="75" height="75">-->
-										<div data-ng-if="ans.user_data.profile.has_photo">
-											{$ ans.user_data.profile_pix $}
-										</div>
-										<div data-ng-if="!ans.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(ans.user_data.profile_pix)">
+										<!--<div data-ng-if="!ans.user_data.profile.has_photo">-->
+											<!--&lt;!&ndash;{$ ans.user_data.profile_pix $}&ndash;&gt;-->
+											<!--&lt;!&ndash;<span data-ng-bind-html="trustedHtml(ans.user_data.profile_pix)"></span>&ndash;&gt;-->
+										<!--</div>-->
+										<div  data-ng-bind-html="trustedHtml(ans.user_data.profile_pix)">
+
 										</div>
 									</div>
 									<div class="col-xs-10">
@@ -108,10 +110,10 @@
 									<div class="reply-box top-brdr">
 											<div class="row">
 												<div class="col-xs-2">
-													<div data-ng-if="rep.user_data.profile.has_photo">
-														{$ rep.user_data.profile_pix $}
-													</div>
-													<div data-ng-if="!rep.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)">
+													<!--<div data-ng-if="!rep.user_data.profile.has_photo">-->
+														<!--{$ rep.user_data.profile_pix $}-->
+													<!--</div>-->
+													<div  data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)">
 													</div>
 												</div>
 												<div class="col-xs-10">

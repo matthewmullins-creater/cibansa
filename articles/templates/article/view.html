@@ -7,7 +7,7 @@
 {% django_js %}
 <section id="green-header" class="body-container">
 		<div class="container">
-			<h3 class="filter" style="color: #fff">{{ article.title }}</h3>
+			<h3 class="filter" style="color: #fff"><a style="color: #fff" href="/">Home</a>/{{ article.title }}</h3>
 		</div>
 	</section>
 
@@ -92,10 +92,10 @@
 					<div class="top-brdr" data-ng-repeat="ac in aObj.article_comments track by $index">
 						<div class="row">
 							<div class="col-xs-2">
-								<div data-ng-if="ac.user_data.profile.has_photo">
-											{$ ac.user_data.profile_pix $}
-										</div>
-										<div data-ng-if="!ac.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(ac.user_data.profile_pix)">
+								<!--<div data-ng-if="!ac.user_data.profile.has_photo">-->
+											<!--&lt;!&ndash;{$ ac.user_data.profile_pix $}&ndash;&gt;-->
+										<!--</div>-->
+										<div style="" data-ng-bind-html="trustedHtml(ac.user_data.profile_pix)">
 										</div>
 							</div>
 							<div class="col-xs-10">
@@ -107,27 +107,8 @@
 									</a>
 									{$ ac.created_at|date:"MMM, dd yy h:mm a" $}
 								</div>
-								<div class="reply clearfix">
-									{% if request.user.is_authenticated %}
-											<button class="btn btn-purple pull-right" data-ng-click="showReply($index,$event)" id="replyBtn{$ $index $}">reply</button>
-									{% else %}
-										<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
-										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-										<span class="sr-only">Loading...</span>reply
-									</a>
-									{% endif %}
-								</div>
-								<div class="reply-box" id="reply{$ $index $}" style="display:none">
-											<div class="comment-box">
-												<textarea rows="5" class="form-control" placeholder="type comment" id="replyComment{$ $index $}"></textarea>
-											</div>
-											<div class="post clearfix">
-												<button data-ng-click="postReply(ac,$index)" class="btn btn-purple pull-right">
-													<i data-ng-show="aObj.replySubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-													<span class="sr-only">Loading...</span>Reply
-												</button>
-											</div>
-										</div>
+
+
 							</div>
 						</div>
 						<!-- nested comment -->
@@ -135,10 +116,10 @@
 							<div class="reply-box top-brdr" data-ng-repeat="rep in ac.comment_replies track by $index">
 								<div class="row">
 									<div class="col-xs-2">
-										<div data-ng-if="rep.user_data.profile.has_photo">
-											{$ rep.user_data.profile_pix $}
+										<div style="padding-left: 29px;" data-ng-if="!rep.user_data.profile.has_photo">
+											<span  data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)"></span>
 										</div>
-										<div data-ng-if="!rep.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)">
+										<div data-ng-if="rep.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)">
 										</div>
 									</div>
 									<div class="col-xs-10">
@@ -154,6 +135,27 @@
 								</div>
 							</div>
 						</div>
+						<div class="reply-box" id="reply{$ $index $}" style="display:none">
+											<div class="comment-box">
+												<textarea rows="5" class="form-control" placeholder="type comment" id="replyComment{$ $index $}"></textarea>
+											</div>
+											<div class="post clearfix">
+												<button data-ng-click="postReply(ac,$index)" class="btn btn-purple pull-right">
+													<i data-ng-show="aObj.replySubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+													<span class="sr-only">Loading...</span>Reply
+												</button>
+											</div>
+								</div>
+						<div class="reply clearfix">
+									{% if request.user.is_authenticated %}
+											<button class="btn btn-purple pull-right" data-ng-click="showReply($index,$event)" id="replyBtn{$ $index $}">reply</button>
+									{% else %}
+										<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
+										<i class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+										<span class="sr-only">Loading...</span>reply
+									</a>
+									{% endif %}
+								</div>
 					</div>
 					<h5>Tags</h5>
 			<div class="chip-container">

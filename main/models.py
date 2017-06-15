@@ -25,6 +25,9 @@ class CbCategory(models.Model):
     def __str__(self):
         return self.name
 
+    def get_no_topic(self):
+        return self.category_topics.filter(is_visible=True).count()
+
     def get_no_of_discussion(self):
         discussion=0
         for q in self.category_questions.filter(is_deleted=False):

@@ -10,7 +10,7 @@ from main.models import CbCategory
 
 def view_article(request,id):
     article = get_object_or_404(CbArticle,pk=id)
-    similar_articles = CbArticle.objects.filter(~Q(id=id),category=article.category).order_by("-created_at")[:3]
+    similar_articles = CbArticle.objects.filter(~Q(id=id),category=article.category,is_visible=True).order_by("-created_at")[:3]
     context = {
         "article": article,
         "more_article":similar_articles

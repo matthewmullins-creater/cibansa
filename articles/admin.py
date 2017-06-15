@@ -7,9 +7,10 @@ from articles.forms import CbArticleAdminForm
 
 
 class CbArticleAdmin(admin.ModelAdmin):
-    list_display = ("title","category","created_at","user")
+    list_display = ("title","category","created_at","user","is_visible")
     form = CbArticleAdminForm
-    search_fields = ("title","category")
+    search_fields = ("title","category","user__profile__first_name","user__profile__last_name")
+    list_filter = ("user","category","created_at")
 
     def save_model(self, request, obj, form, change):
         super(CbArticleAdmin, self).save_model(request, obj, form, change)
@@ -27,6 +28,9 @@ class CbArticleAdmin(admin.ModelAdmin):
     def formfield_for_dbfield(self, db_field, request, **kwargs):
         if db_field.name == "user":
             kwargs["initial"] = request.user
+            kwargs["label"] = "User *"
+        if db_field.name == "category":
+            kwargs["label"] = "Category *"
         return super(CbArticleAdmin,self).formfield_for_dbfield(db_field,request,**kwargs)
 
 

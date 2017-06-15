@@ -30,7 +30,7 @@
                         <div class="row" style="margin-top:3em">
                                 <div class="col-xs-5">
                                         <div><label>Add tag to this question</label></div>
-                                        {% render_field form.tag_auto placeholder="Type tag name" %}
+                                        {% render_field form.tag_auto placeholder="Type at least 3 letters to search" %}
                                     <div class="chip-container" style="margin-top:1em">
                                         {% for tag in question.question_tags.all %}
                                         <div class="chip"><input type="hidden" name="tag" value="{{ tag.tag.id }}"/>

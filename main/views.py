@@ -223,7 +223,7 @@ def view_question(request,id):
 
 def question_by_tag(request,slug):
     # tag = get_object_or_404(CbTag,slug=slug)
-    questions = CbQuestionTag.objects.filter(tag__slug=slug,is_delete=False)
+    questions = CbQuestionTag.objects.filter(tag__slug=slug,question__is_deleted=False)
     page = request.GET.get("page", 1)
     paginator = Paginator(questions, settings.REST_FRAMEWORK.get("PAGE_SIZE"))
     try:

@@ -27,8 +27,13 @@ class AuthenticationForm(forms.Form):
         email = self.cleaned_data.get('email')
         password = self.cleaned_data.get('password')
         user = authenticate(email=email, password=password)
+
+        # if user is None:
+        #     raise forms.ValidationError("This account has be deactivated")
+
         if not user or not user.is_active:
             raise forms.ValidationError("Invalid email or password")
+
         return self.cleaned_data
 
 

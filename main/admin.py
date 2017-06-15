@@ -70,7 +70,7 @@ class CbQuestionTagsAdmin(admin.ModelAdmin):
 
 class CbTopicAdmin(admin.ModelAdmin):
     list_display = ("id","title","category","owner","slug","is_visible")
-    search_fields = ("title","owner__profile__first_name","owner__profile__last_name")
+    search_fields = ("title","owner__profile__first_name","owner__profile__last_name","category__name")
     list_filter = ("category","owner","is_visible")
     form = CbTopicAdminForm
     list_display_links = list_display
