@@ -40,7 +40,9 @@
                             </h4>
                              <div class="chips chips-initial" style="min-height: 11px;"></div>
                             <div class="chip-container">
-
+                                     <div class="chip">
+                                        <a href="{% url 'list-article' %}">All Articles</a>
+                                        </div>
                                     {% for c in category %}
                                         <div class="chip">
                                         <a href="{% url 'article-by-category' slug=c.slug %}">{{ c.name }}</a>

@@ -231,15 +231,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 #Local host setting
-# PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#
-# STATIC_ROOT = '/static/'
-# STATIC_URL = '/static/'
-#
-# # Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = (
-#     os.path.join(PROJECT_ROOT, 'static'),
-# )
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+STATIC_ROOT = '/static/'
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
 
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
@@ -260,13 +260,13 @@ MEDIA_ROOT =os.path.join(BASE_DIR,"media/")
 MEDIA_URL ='/media/'
 
 
-CONTACT_FORM_EMAIL = "achukwuebuka@regalix-inc.com"
+CONTACT_FORM_EMAIL = "webmaster@cibansa.com"
 
-EMAIL_HOST = 'sg2plcpnl0027.prod.sin2.secureserver.net'
+EMAIL_HOST = ''
 
-EMAIL_HOST_USER = 'iuloko@monchest.com'
+EMAIL_HOST_USER = ''
 
-EMAIL_HOST_PASSWORD = 'Lovingly4'
+EMAIL_HOST_PASSWORD = ''
 
 EMAIL_PORT = 465
 
