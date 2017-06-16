@@ -40,7 +40,7 @@
 					<div class="article-img">
 						<img src="{{ article.image.url }}" class="img-responsive">
 					</div>
-					<div class="answer-desc">
+					<div class="answer-desc ">
 						{{ article.content|safe }}
 					</div>
 					<div class="row">
@@ -99,7 +99,7 @@
 										</div>
 							</div>
 							<div class="col-xs-10">
-								<p>{$ ac.comment $}</p>
+								<p class="comment-desc">{$ ac.comment $}</p>
 								<div class="like-btn">
 									<a style="cursor:pointer" data-ng-click="likeArticleComment(ac)">
 										<i class="fa fa-heart" data-ng-class="{'like-btn-i':ac.has_liked==true}" aria-hidden="true"></i>
@@ -123,7 +123,7 @@
 										</div>
 									</div>
 									<div class="col-xs-10">
-										<p>{$ rep.content $}</p>
+										<p class="comment-desc">{$ rep.content $}</p>
 										<div class="like-btn">
 											<a style="cursor:pointer" data-ng-click="likeCommentReply(rep)">
 												<i class="fa fa-heart" data-ng-class="{'like-btn-i':rep.has_liked==true}" aria-hidden="true"></i>

@@ -97,7 +97,7 @@
 										</div>
 									</div>
 									<div class="col-xs-10">
-										<p>{$ ans.comment $}</p>
+										<p class="comment-desc">{$ ans.comment $}</p>
 										<div class="like-btn">
 											<a style="cursor:pointer" data-ng-click="likeAnswer(ans)">
 												<i class="fa fa-heart" data-ng-class="{'like-btn-i':ans.has_liked==true}" aria-hidden="true"></i> <span>{$ ans.answer_likes $}</span></a>
@@ -117,7 +117,7 @@
 													</div>
 												</div>
 												<div class="col-xs-10">
-													<p>{$ rep.comment $}</p>
+													<p class="comment-desc">{$ rep.comment $}</p>
 													<div class="like-btn">
 														<a style="cursor:pointer" data-ng-click="likeAnswerReply(rep)">
 															<i class="fa fa-heart" data-ng-class="{'like-btn-i':rep.has_liked==true}" aria-hidden="true"></i>

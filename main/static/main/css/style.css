@@ -961,4 +961,6 @@ errorlist{
 
 }
 
-
+.comment-desc{
+   white-space: pre-line;
+}
