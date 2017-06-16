@@ -151,9 +151,6 @@ class CbQuestionAdminForm(forms.ModelForm):
                 tags.append(t.tag.name)
             self.fields["attached_tags"].initial = ", ".join(tags)
 
-
-
-
     category = forms.ChoiceField(label="Category *")
     # topic = forms.Select(choices=CbTopic.objects.only("title"))
     topic = AutoCompleteSelectField(
