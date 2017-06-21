@@ -156,7 +156,9 @@
 				</div>
 				<div class="col-md-3">
 					<div class="related">
-						<h4 class="filter" style="color: #fff">related topics</h4>
+						{% if related_topic.count %}
+							<h4 class="filter" style="">related topics</h4>
+						{% endif %}
 						{% for ques in related_topic %}
 							<blockquote class="blockquote">
 							  <a href="{% url 'view-question' id=ques.id %}"> <p class="mb-0">{{ ques.title }}</p> </a>
@@ -164,8 +166,9 @@
 						{% endfor %}
 
 					</div>
-
-					<h4>Browse by tag</h4>
+					{% if question.question_tags.count %}
+						<h4>Browse by tag</h4>
+					{% endif %}
 					<div class="chip-container">
 						{% for t in question.question_tags.all %}
 								<div class="chip">

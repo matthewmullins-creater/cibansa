@@ -103,11 +103,12 @@
 						<h4>No article</h4>
 					</div>
 				{% endfor %}
-				{% if articles %}
+
+			</div>
+			{% if articles %}
 				<div class="text-center"> <a href="{% url 'list-article' %}">View more articles</a></div>
 
 				{% endif %}
-			</div>
 		</div>
 	</section>
 
