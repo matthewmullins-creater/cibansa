@@ -56,7 +56,7 @@
 							{% if request.resolver_match.url_name == "search-article" %}
 								<h5>
 									{{ articles|length }} result{{ articles|length|pluralize }} found
-									<a style="margin-left:40px" href="{% url 'list-article' %}">View all articles</a>
+									<a class="view-all" style="margin-left:40px" href="{% url 'list-article' %}">View all articles</a>
 								</h5>
 							{% endif %}
 						</div>

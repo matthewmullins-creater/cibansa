@@ -77,14 +77,14 @@ class RegistrationForm(forms.ModelForm):
 
 
 class ProfileEditForm(forms.ModelForm):
-    first_name = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder":"First Name"}))
-    last_name = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder":"Last Name"}))
+    first_name = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder":"First Name *"}))
+    last_name = forms.CharField(widget=forms.TextInput(attrs={"class":"form-control","placeholder":"Last Name *"}))
     phone = forms.IntegerField(required=False,widget=forms.TextInput(attrs={"class":"form-control",
                                                                          "placeholder":"Phone"}))
-    dob = forms.DateField(input_formats=['%Y-%m-%d'],widget=forms.TextInput(attrs={"placeholder":"Date of birth 1990-07-16",
+    dob = forms.DateField(input_formats=['%Y-%m-%d'],widget=forms.TextInput(attrs={"placeholder":"Date of birth 1990-07-16 *",
                                                                          "class":"form-control"}))
     country = forms.CharField(required=False,widget=forms.TextInput(attrs={"class":"form-control",
-                                                                           "placeholder":"Country"}))
+                                                                           "placeholder":"Country "}))
     city = forms.CharField(required=False,widget=forms.TextInput(attrs={"class":"form-control",
                                                                         "placeholder":"City"}))
     gender = forms.ChoiceField(choices=[("male","Male"),("female","Female")],

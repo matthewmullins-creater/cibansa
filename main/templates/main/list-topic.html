@@ -52,7 +52,7 @@
 							{% if request.resolver_match.url_name == "topic-search" %}
 								<h5>
 									{{ topics|length }} result{{ topics|length|pluralize }} found
-									<a style="margin-left:40px" href="{% url 'list-topic' slug=category.slug %}">View all topics</a>
+									<a class="view-all" style="margin-left:40px" href="{% url 'list-topic' slug=category.slug %}">View all topics</a>
 								</h5>
 							{% endif %}
 						</div>

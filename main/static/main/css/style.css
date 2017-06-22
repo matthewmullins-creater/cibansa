@@ -625,6 +625,11 @@ hr.style17:after {
   padding: 5px 10px;
   border-left-width: 2px;
 }
+
+.view-all:hover, .blockquote a:hover p{
+    color:#996699
+}
+
 .related p{
   color: #000;
 }
