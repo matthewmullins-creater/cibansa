@@ -119,7 +119,7 @@
 										<div style="padding-left: 29px;" data-ng-if="!rep.user_data.profile.has_photo">
 											<span  data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)"></span>
 										</div>
-										<div data-ng-if="rep.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)">
+										<div style="width: 75px;height: 75px;background: #ccc;text-align: center"data-ng-if="rep.user_data.profile.has_photo" data-ng-bind-html="trustedHtml(rep.user_data.profile_pix)">
 										</div>
 									</div>
 									<div class="col-xs-10">
