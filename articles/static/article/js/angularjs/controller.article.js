@@ -3,7 +3,29 @@
     var app = angular.module("cibansa")
 
     app.controller("ArticleController",function(ArticleService,$scope,$http,$sce){
+            $scope.tinymceOptions = {
+                plugins: "advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor colorpicker textpattern code",
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                file_picker_callback: function(callback, value, meta) {
+                  if (meta.filetype == 'image') {
+                    var input = document.createElement('input')
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
 
+                    $(input).trigger('click');
+                    $(input).on('change', function() {
+                      var file = this.files[0];
+                      var reader = new FileReader();
+                      reader.onload = function(e) {
+                        callback(e.target.result, {
+                          alt: ''
+                        });
+                      };
+                      reader.readAsDataURL(file);
+                    });
+                  }
+                },
+              };
             $scope.init = function(a){
                 articleService = new ArticleService()
 
@@ -46,7 +68,7 @@
 //
             $scope.postReply = function(ac,$index){
                 $scope.aObj.replySubmitted =true
-                var replyComment = jQuery("#replyComment"+$index).val()
+                var replyComment = ac.replyComment
                 if(replyComment){
                      $http.post(Django.url("article-api:article-post-comment-reply"),
                         {comment:ac.id,user:Django.user.id,content:replyComment})

@@ -1,3 +1,3 @@
 (function(){
-    var app =angular.module("cibansa",['ngSanitize'])
+    var app =angular.module("cibansa",['ngSanitize','ui.tinymce'])
 })()

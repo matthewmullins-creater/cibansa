@@ -60,6 +60,11 @@ class CbAnswersSerializer(serializers.ModelSerializer):
     answer_likes = serializers.SerializerMethodField()
     user_data = serializers.SerializerMethodField()
     has_liked = serializers.SerializerMethodField()
+    # model_name = serializers.SerializerMethodField()
+
+
+    # def get_model_name(self,obj):
+    #     return "{0}{1}".format("replyComment",obj.id)
 
     def get_user_data(self,obj):
         user = CbUserSerializer(obj.user).data

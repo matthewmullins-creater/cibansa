@@ -969,3 +969,8 @@ errorlist{
 .comment-desc{
    white-space: pre-line;
 }
+.comment-desc img{
+    max-width:100%;
+    max-height:100%;
+
+}

@@ -74,7 +74,8 @@
 				</div>
 				<div class="comment-view">
 					<div class="comment-box">
-						<textarea rows="5" class="form-control" placeholder="type comment" data-ng-model="comment"></textarea>
+						<textarea rows="5" ui-tinymce="tinymceOptions" class="form-control" placeholder="type comment" data-ng-model="comment"></textarea>
+						<!--<textarea rows="5" class="form-control" placeholder="type comment" data-ng-model="comment"></textarea>-->
 					</div>
 					<div class="post clearfix">
 						{% if request.user.is_authenticated %}
@@ -99,7 +100,7 @@
 										</div>
 							</div>
 							<div class="col-xs-10">
-								<p class="comment-desc">{$ ac.comment $}</p>
+								<p class="comment-desc" data-ng-bind-html="trustedHtml(ac.comment)"></p>
 								<div class="like-btn">
 									<a style="cursor:pointer" data-ng-click="likeArticleComment(ac)">
 										<i class="fa fa-heart" data-ng-class="{'like-btn-i':ac.has_liked==true}" aria-hidden="true"></i>
@@ -123,7 +124,7 @@
 										</div>
 									</div>
 									<div class="col-xs-10">
-										<p class="comment-desc">{$ rep.content $}</p>
+										<p class="comment-desc" data-ng-bind-html="trustedHtml(rep.content)"></p>
 										<div class="like-btn">
 											<a style="cursor:pointer" data-ng-click="likeCommentReply(rep)">
 												<i class="fa fa-heart" data-ng-class="{'like-btn-i':rep.has_liked==true}" aria-hidden="true"></i>
@@ -137,7 +138,8 @@
 						</div>
 						<div class="reply-box" id="reply{$ $index $}" style="display:none">
 											<div class="comment-box">
-												<textarea rows="5" class="form-control" placeholder="type comment" id="replyComment{$ $index $}"></textarea>
+												<textarea rows="5" ui-tinymce="tinymceOptions" class="form-control" placeholder="type comment" data-ng-model="ac.replyComment"></textarea>
+												<!--<textarea rows="5" class="form-control" placeholder="type comment" id="replyComment{$ $index $}"></textarea>-->
 											</div>
 											<div class="post clearfix">
 												<button data-ng-click="postReply(ac,$index)" class="btn btn-purple pull-right">
