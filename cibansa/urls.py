@@ -20,6 +20,8 @@ from django.conf.urls import include
 from filebrowser.sites import site
 from django.conf import settings
 from django.conf.urls.static import static
+from django.conf.urls import handler400, handler403, handler404, handler500
+
 
 
 urlpatterns = [
@@ -48,3 +50,8 @@ urlpatterns = [
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^djangojs/', include('djangojs.urls')),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+
+handler400 = 'main.views.bad_request'
+handler403 = 'main.views.permission_denied'
+handler404 = 'main.views.page_not_found'
+handler500 = 'main.views.server_error'
