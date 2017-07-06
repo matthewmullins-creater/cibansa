@@ -295,3 +295,6 @@ REST_FRAMEWORK = {
 TINYMCE_DEFAULT_CONFIG = {
     "editor_deselector": "mceNoEditor",
 }
+
+
+
