@@ -24,13 +24,19 @@ class CbArticleAdminForm(forms.ModelForm):
             for t in self.instance.article_tags.all():
                 tags.append(t.tag.name)
             self.fields["attached_tags"].initial = ", ".join(tags)
+        users = [("", "Select user")]
+        # self.fields["owner"] = self.request.user.id
+        for c in User.objects.filter(is_superuser=True, is_staff=True, is_active=True):
+            users.append((c.id, c.name))
+        self.fields["user"].choices = users
 
     title = forms.CharField(label="Title *",max_length=255,widget=forms.TextInput(attrs={"style":"width: 300px;","autocomplete":"off"}))
     # category = forms.Select(choices=CbCategory.objects.only("name"))
     category = forms.ChoiceField(label="Category *")
     image = forms.ImageField(required=False,label="Image (max size 2MB, recommended dimension 1200 x 435) ")
     content = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}),label="Content *")
-    user = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
+    # user = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
+    user = forms.Select(choices=[])
     meta_data = forms.CharField(required=False,widget=forms.Textarea(attrs={"class": "mceNoEditor"}))
     is_visible = forms.BooleanField(required=False)
     attached_tags = forms.CharField(widget=forms.Textarea, required=False)
