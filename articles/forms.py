@@ -27,7 +27,7 @@ class CbArticleAdminForm(forms.ModelForm):
         users = [("", "Select user")]
         # self.fields["owner"] = self.request.user.id
         for c in User.objects.filter(is_superuser=True, is_staff=True, is_active=True):
-            users.append((c.id, c.name))
+            users.append((c.id, c))
         self.fields["user"].choices = users
 
     title = forms.CharField(label="Title *",max_length=255,widget=forms.TextInput(attrs={"style":"width: 300px;","autocomplete":"off"}))
