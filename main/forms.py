@@ -13,12 +13,21 @@ from django.db.models import Q
 
 
 class CbCategoryForm(forms.ModelForm):
+
+    def __init__(self,*args,**kwargs):
+        super(CbCategoryForm,self).__init__(*args,**kwargs)
+        users = [("", "Select category")]
+        # self.fields["owner"] = self.request.user.id
+        for c in User.objects.filter(is_superuser=True, is_staff=True,is_active=True):
+            users.append((c.id, c.name))
+        self.fields["owner"].choices = users
+
     name = forms.CharField(max_length=255,label="Name *")
     image = forms.ImageField(required=False, label="Image (max size 2MB, 500 x 280) ")
     description = forms.CharField(max_length=1024, required=False,widget=forms.Textarea)
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
     # owner = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_superuser=True,is_staff=True))
-    owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
+    owner = forms.Select(choices=[])
     is_visible = forms.BooleanField(required=False)
     tag = forms.CharField(
         label='Type tag name',
