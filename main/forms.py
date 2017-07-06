@@ -233,13 +233,14 @@ class CbQuestionForm(forms.ModelForm):
         for c in CbCategory.objects.filter(is_visible=True).only("name"):
             CATEGORIES.append((c.id,c.name))
         self.fields["category"].choices = CATEGORIES
+
         TOPICS=[("","Select Topics")]
         topics = CbTopic.objects.filter(is_visible=True).only("title")
         for t in topics:
             TOPICS.append((t.id,t.title))
         self.fields["topic"].choices =TOPICS
 
-    category = forms.Select(choices=CbCategory.objects.filter(is_visible=True).only("name"))
+    category = forms.Select(choices=[])
     topic = forms.ChoiceField(error_messages={'required': 'Please select a topic'})
     # topic = AutoCompleteSelectField(
     #     lookup_class=TopicLookup,
