@@ -16,7 +16,7 @@ class CbCategoryForm(forms.ModelForm):
 
     def __init__(self,*args,**kwargs):
         super(CbCategoryForm,self).__init__(*args,**kwargs)
-        users = [("", "Select category")]
+        users = [("", "Select user")]
         # self.fields["owner"] = self.request.user.id
         for c in User.objects.filter(is_superuser=True, is_staff=True,is_active=True):
             users.append((c.id, c.name))
@@ -73,11 +73,26 @@ class CbCategoryForm(forms.ModelForm):
 
 
 class CbTopicAdminForm(forms.ModelForm):
-    category = forms.Select(choices=CbCategory.objects.only("name"))
+
+    def __init__(self,*args,**kwargs):
+        super(CbTopicAdminForm, self).__init__(*args, **kwargs)
+        super(CbQuestionAdminForm, self).__init__(*args, **kwargs)
+        CATEGORIES = [("", "Select category")]
+        for c in CbCategory.objects.only("name"):
+            CATEGORIES.append((c.id, c.name))
+        self.fields["category"].choices = CATEGORIES
+
+        users = [("", "Select user")]
+        # self.fields["owner"] = self.request.user.id
+        for c in User.objects.filter(is_superuser=True, is_staff=True, is_active=True):
+            users.append((c.id, c.name))
+        self.fields["owner"].choices = users
+
+    category = forms.Select(choices=[])
     title = forms.CharField(max_length=255, widget=forms.TextInput,label="Title *")
     image = forms.ImageField(required=False,label="Image (max size 2MB, 500 x 280) ")
     description = forms.CharField(widget=forms.Textarea,max_length=1024,label="Description *")
-    owner = forms.Select(choices=User.objects.filter(is_superuser=True,is_staff=True))
+    owner = forms.Select(choices=[])
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
     is_visible = forms.BooleanField(required=False)
     tag = forms.CharField(
@@ -160,6 +175,12 @@ class CbQuestionAdminForm(forms.ModelForm):
                 tags.append(t.tag.name)
             self.fields["attached_tags"].initial = ", ".join(tags)
 
+        users = [("", "Select user")]
+        # self.fields["owner"] = self.request.user.id
+        for c in User.objects.filter(is_superuser=True, is_staff=True, is_active=True):
+            users.append((c.id, c.name))
+        self.fields["owner"].choices = users
+
     category = forms.ChoiceField(label="Category *")
     # topic = forms.Select(choices=CbTopic.objects.only("title"))
     topic = AutoCompleteSelectField(
@@ -170,7 +191,7 @@ class CbQuestionAdminForm(forms.ModelForm):
     title = forms.CharField(widget=forms.TextInput,max_length=1024,label="Title *")
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}),
                                                             label="Description *")
-    owner = forms.Select(choices=User.objects.filter(is_superuser=True, is_staff=True))
+    owner = forms.Select(choices=[])
     is_deleted = forms.BooleanField(required=False)
     tag = forms.CharField(
         label='Type tag name',
