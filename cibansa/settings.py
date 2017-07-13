@@ -154,8 +154,8 @@ SOCIAL_AUTH_LINKEDIN_OAUTH2_EXTRA_DATA = [('id', 'id'),
                                    ('public-profile-url','public-profile-url')]
 
 
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '861523143860-fenmmm3lb5ggnojcmosv5ehnadvu0l9q.apps.googleusercontent.com'
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'WiWBJgJsGq1VCiBY0X4_2BxF'
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '23391481973-hp7q84s5bjboqlafi67p496ng4kiak44.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = "3XLX_-qPRcFMceYZKezi7SRT"
 GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 
 # Database
