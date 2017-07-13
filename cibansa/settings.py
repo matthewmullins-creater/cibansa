@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ax63jw!ryvkv2^om_-ml$x9_%-8bx@a0wvi8egu1olcd-se3bt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['127.0.0.1','139.59.45.173','boilingfrogs.co','boilingfrogs.co.in']
 
@@ -175,7 +175,7 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 #         'NAME': 'cibansa',
 #         'USER': 'CODE-WIZARD',
 #         'PASSWORD': '',
-#         'HOST': '127.0.0.1',
+#         'HOST': 'localhost',
 #         'PORT': '5432',
 #     }
 #  }
