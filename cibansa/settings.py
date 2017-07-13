@@ -128,8 +128,8 @@ SOCIAL_AUTH_PIPELINE =(
 SESSION_EXPIRE_AT_BROWSER_CLOSE =False
 
 
-SOCIAL_AUTH_FACEBOOK_KEY = "1715931628707357"
-SOCIAL_AUTH_FACEBOOK_SECRET = "2547ba56016f1be085e6edfcc630d52f"
+SOCIAL_AUTH_FACEBOOK_KEY = "414407242287298"
+SOCIAL_AUTH_FACEBOOK_SECRET = "b07fa11b5cdc88bab357bac84eda74f3"
 SOCIAL_AUTH_FACEBOOK_SCOPE = ['email',]
 SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
   'fields': 'id, name, email'
@@ -139,8 +139,8 @@ SOCIAL_AUTH_FACEBOOK_PROFILE_EXTRA_PARAMS = {
 # SOCIAL_AUTH_TWITTER_KEY = '5Fv32SSQ4D3A6QANTMB0OL0l1'
 # SOCIAL_AUTH_TWITTER_SECRET = 'qkfUQZRCQ1HiRWbXYFehPQmBWRmrzzYz6ul3OsyrG8lLNX9Mma'
 
-SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = 'pa545ucy4utd'
-SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'pCeeuYHPy5JNKmmS'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_KEY = '81q4r6843ldfoc'
+SOCIAL_AUTH_LINKEDIN_OAUTH2_SECRET = 'y7huYwBbWlvYDXpN'
 SOCIAL_AUTH_LINKEDIN_OAUTH2_SCOPE = ['r_basicprofile', 'r_emailaddress',"w_share"]
 # Add the fields so they will be requested from linkedin.
 SOCIAL_AUTH_LINKEDIN_OAUTH2_FIELD_SELECTORS = ['email-address','positions','summary', 'headline', 'industry','location','public-profile-url']
@@ -161,7 +161,7 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
-
+#
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.sqlite3',
@@ -230,15 +230,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 #Local host setting
-# PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#
-# STATIC_ROOT = '/static/'
-# STATIC_URL = '/static/'
-#
-# # Extra places for collectstatic to find static files.
-# STATICFILES_DIRS = (
-#     os.path.join(PROJECT_ROOT, 'static'),
-# )
+PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+STATIC_ROOT = '/static/'
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
+STATICFILES_DIRS = (
+    os.path.join(PROJECT_ROOT, 'static'),
+)
 
 # STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
