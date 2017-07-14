@@ -41,12 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'rest_framework',
     'djangojs',
     'widget_tweaks',
     'tinymce',
     'selectable',
-    'social_django',
     'django_cleanup',
     "accounts",
     "main",
@@ -255,8 +255,8 @@ STATICFILES_DIRS = (
     os.path.join(PROJECT_ROOT, 'static'),
 )
 
-MEDIA_ROOT =os.path.join(BASE_DIR,"media/")
-MEDIA_URL ='/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR,"media/")
+MEDIA_URL = '/media/'
 
 
 CONTACT_FORM_EMAIL = "achukwuebuka@regalix-inc.com"
