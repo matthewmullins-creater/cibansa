@@ -25,7 +25,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'ax63jw!ryvkv2^om_-ml$x9_%-8bx@a0wvi8egu1olcd-se3bt'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1','139.59.45.173','boilingfrogs.co','boilingfrogs.co.in']
 
@@ -185,7 +185,7 @@ DATABASES = {
         'NAME': 'd1kmb939e6u07e',
         'USER': 'tpjyuqfvbkfjzk',
         'PASSWORD': 'cb68ad15c3628d657cd49af95016f9ab4f2ec13a5f52a2033b153c64096fef83',
-        'HOST': 'localhost',
+        'HOST': 'boilingfrogs.co.in',
         'PORT': '5432',
     }
 }
