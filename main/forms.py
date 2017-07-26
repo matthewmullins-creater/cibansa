@@ -19,7 +19,7 @@ class CbCategoryForm(forms.ModelForm):
         users = [("", "Select user")]
         # self.fields["owner"] = self.request.user.id
         for c in User.objects.filter(is_superuser=True, is_staff=True,is_active=True):
-            users.append((c.id, c))
+            users.append((c.id, c.get_full_name()))
         self.fields["owner"].choices = users
 
     name = forms.CharField(max_length=255,label="Name *")
@@ -76,7 +76,6 @@ class CbTopicAdminForm(forms.ModelForm):
 
     def __init__(self,*args,**kwargs):
         super(CbTopicAdminForm, self).__init__(*args, **kwargs)
-        super(CbQuestionAdminForm, self).__init__(*args, **kwargs)
         CATEGORIES = [("", "Select category")]
         for c in CbCategory.objects.only("name"):
             CATEGORIES.append((c.id, c.name))
@@ -85,7 +84,7 @@ class CbTopicAdminForm(forms.ModelForm):
         users = [("", "Select user")]
         # self.fields["owner"] = self.request.user.id
         for c in User.objects.filter(is_superuser=True, is_staff=True, is_active=True):
-            users.append((c.id, c))
+            users.append((c.id, c.get_full_name()))
         self.fields["owner"].choices = users
 
     category = forms.Select(choices=[])
@@ -178,7 +177,7 @@ class CbQuestionAdminForm(forms.ModelForm):
         users = [("", "Select user")]
         # self.fields["owner"] = self.request.user.id
         for c in User.objects.filter(is_superuser=True, is_staff=True, is_active=True):
-            users.append((c.id, c.name))
+            users.append((c.id, c.get_full_name()))
         self.fields["owner"].choices = users
 
     category = forms.ChoiceField(label="Category *")
