@@ -9,8 +9,9 @@ try{
 
 jquery("script[src='/static/django_tinymce/jquery-1.9.1.min.js']").remove()
   tinymce.init({
-    selector: "textarea",
+    selector: ".tinymce",
     theme: "modern",
+//    editor_deselector: ".mceNoEditor",
     height:250,
     paste_data_images: true,
     plugins: [

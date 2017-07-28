@@ -3,7 +3,29 @@
     var app = angular.module("cibansa")
 
     app.controller("QuestionController",function(QuestionService,$scope,$http,$sce){
+            $scope.tinymceOptions = {
+                plugins: "advlist autolink lists link image charmap print preview hr anchor pagebreak searchreplace wordcount visualblocks visualchars code fullscreen insertdatetime media nonbreaking save table contextmenu directionality emoticons template paste textcolor colorpicker textpattern code",
+                toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image",
+                file_picker_callback: function(callback, value, meta) {
+                  if (meta.filetype == 'image') {
+                    var input = document.createElement('input')
+                    input.setAttribute('type', 'file');
+                    input.setAttribute('accept', 'image/*');
 
+                    $(input).trigger('click');
+                    $(input).on('change', function() {
+                      var file = this.files[0];
+                      var reader = new FileReader();
+                      reader.onload = function(e) {
+                        callback(e.target.result, {
+                          alt: ''
+                        });
+                      };
+                      reader.readAsDataURL(file);
+                    });
+                  }
+                },
+              };
             $scope.init = function(question){
                 questionService = new QuestionService()
                 questionService.getQuestion(question).then(
@@ -25,16 +47,19 @@
             }
 
             $scope.postAnswer = function(question){
-                $scope.qObj.answerSubmitted =true
-                $http.post(Django.url("question-api:question-post-answer"),
-                        {question:question,user:Django.user.id,comment:$scope.qObj.answerComment})
-                .then(function(response){
-                    $scope.qObj.answerSubmitted =false
-                    $scope.qObj.question_answers.push(response.data)
-                    $scope.qObj.answerComment=""
-                },function(response){
-                    $scope.qObj.answerSubmitted =false
-                })
+                if ($scope.qObj.answerComment){
+                    $scope.qObj.answerSubmitted =true
+                    $http.post(Django.url("question-api:question-post-answer"),
+                            {question:question,user:Django.user.id,comment:$scope.qObj.answerComment})
+                    .then(function(response){
+                        $scope.qObj.answerSubmitted =false
+                        $scope.qObj.question_answers.push(response.data)
+                        $scope.qObj.answerComment=""
+                    },function(response){
+                        $scope.qObj.answerSubmitted =false
+                    })
+                }
+
             }
 
             $scope.showReply = function($index,$event){
@@ -43,20 +68,24 @@
             }
 
             $scope.postReply = function(answer,$index){
-                $scope.qObj.replySubmitted =true
-                var replyComment = jQuery("#replyComment"+$index).val()
+                console.info(answer.model_name)
+                var replyComment = answer.model_name//jQuery("#replyComment"+$index).val()
 
-                $http.post(Django.url("question-api:question-post-answer-reply"),
+                if(replyComment){
+                    $scope.qObj.replySubmitted =true
+                    $http.post(Django.url("question-api:question-post-answer-reply"),
                         {answer:answer.id,user:Django.user.id,comment:replyComment})
-                .then(function(response){
-                    $scope.qObj.replySubmitted =false
-                    answer.answer_replies.push(response.data)
-                    jQuery("#replyComment"+$index).val("")
-                    jQuery("#reply"+$index).hide()
-                    jQuery("#replyBtn"+$index).show()
-                },function(response){
-                    $scope.qObj.replySubmitted =false
-                })
+                    .then(function(response){
+                        $scope.qObj.replySubmitted =false
+                        answer.answer_replies.push(response.data)
+                        jQuery("#replyComment"+$index).val("")
+                        jQuery("#reply"+$index).hide()
+                        jQuery("#replyBtn"+$index).show()
+                    },function(response){
+                        $scope.qObj.replySubmitted =false
+                    })
+                }
+
             }
 
             $scope.likeAnswer = function(answer){
