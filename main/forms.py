@@ -23,7 +23,7 @@ class CbCategoryForm(forms.ModelForm):
         self.fields["owner"].choices = users
 
     name = forms.CharField(max_length=255,label="Name *")
-    image = forms.ImageField(required=False, label="Image (max size 2MB, 500 x 280) ")
+    image = forms.ImageField(required=False, label="Image (max size 2MB) ")
     description = forms.CharField(max_length=1024, required=False,widget=forms.Textarea)
     meta_data = forms.CharField(required=False,widget=forms.Textarea)
     # owner = forms.ModelMultipleChoiceField(queryset=User.objects.filter(is_superuser=True,is_staff=True))
@@ -50,11 +50,11 @@ class CbCategoryForm(forms.ModelForm):
             # validate dimensions
             max_width = 500
             max_height = 280
-            if w > max_width or h > max_height:
-                raise forms.ValidationError(
-                    _('Please use an image that is smaller or equal to '
-                      '%s x %s pixels.' % (max_width, max_height)))
-            print(image.name)
+            # if w > max_width or h > max_height:
+            #     raise forms.ValidationError(
+            #         _('Please use an image that is smaller or equal to '
+            #           '%s x %s pixels.' % (max_width, max_height)))
+            # print(image.name)
             # validate content type
             fileName, fileExtension = os.path.splitext(image.name)
             print(fileExtension)

@@ -10,7 +10,7 @@ def category_image_path(instance,filename):
 
 class CbCategory(models.Model):
     name = models.CharField(max_length=255,unique=True)
-    image = models.ImageField(upload_to=category_image_path,default="default_category_img.png")
+    image = models.ImageField(upload_to=category_image_path,default="default_category_img.jpg")
     description = models.CharField(max_length=1024,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey("accounts.User",related_name="user_categories")
