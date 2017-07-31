@@ -10,6 +10,7 @@ def get_top_category():
     a = []
     for c in cat:
         question = c.category_questions.filter(is_deleted=False).count()
+        topic_count = c.category_topics.filter(is_visible=True).count()
         discussion = 0
         for q in c.category_questions.filter(is_deleted=False):
 
@@ -17,7 +18,7 @@ def get_top_category():
             for k in q.question_answers.all():
                 discussion += k.answer_replies.count()
 
-        d = {"topic_count": c.topic_count,"question_count":question,"category_name":c.name,"slug":c.slug,
+        d = {"topic_count": topic_count,"question_count":question,"category_name":c.name,"slug":c.slug,
              "discussion":discussion,"url": c.image.url}
         a.append(d)
 
