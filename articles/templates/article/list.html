@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% block title %} Boiling Frogs - Articles  {% endblock %}
+{% block title %} Boiling Frogs - Blog  {% endblock %}
 {% block body %}
 
 
@@ -41,7 +41,7 @@
                              <div class="chips chips-initial" style="min-height: 11px;"></div>
                             <div class="chip-container">
                                      <div class="chip">
-                                        <a href="{% url 'list-article' %}">All Articles</a>
+                                        <a href="{% url 'list-article' %}">All Posts</a>
                                         </div>
                                     {% for c in category %}
                                         <div class="chip">
@@ -56,17 +56,17 @@
 							{% if request.resolver_match.url_name == "search-article" %}
 								<h5>
 									{{ articles|length }} result{{ articles|length|pluralize }} found
-									<a class="view-all" style="margin-left:40px" href="{% url 'list-article' %}">View all articles</a>
+									<a class="view-all" style="margin-left:40px" href="{% url 'list-article' %}">View all posts</a>
 								</h5>
 							{% endif %}
 						</div>
 						<section id="article">
                             {% for a in articles %}
-                                <div class="col-md-4">
+                                <div class="col-md-3">
                                     <a href="{% url 'view-article' id=a.id %}">
                                         <div class="well round_container">
                                             <div class="img-content" style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ a.image.url }}')">
-                                                <h3>{{ a.title }}</h3>
+                                                <h4>{{ a.title|truncatechars:25 }}</h4>
                                             </div>
                                             <div class="desc-content">
                                                 <div class="row">
@@ -81,7 +81,7 @@
                                                             </div>
                                                         {% endif %}
                                                     </div>
-                                                    <div class="col-xs-8">
+                                                    <div class="col-xs-9">
                                                         <ul class="detail">
                                                             <li>{{ a.user }}</li>
                                                             <li>category : <span>{{ a.category }}</span></li>
@@ -102,7 +102,7 @@
                                     </a>
                                 </div>
                                  {% empty %}
-                                        <h4>No article found.</h4>
+                                        <h4>No post found.</h4>
                                 {% endfor %}
                         </section>
 

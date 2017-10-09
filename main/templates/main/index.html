@@ -63,13 +63,13 @@
 	<section id="article">
 		<div class="container">
 			<div class="row">
-				<h2 class="content_head">articles</h2>
+				<h2 class="content_head">Blog</h2>
 				{% for a in articles %}
 				<div class="col-md-3">
 					<a href="{% url 'view-article' id=a.id %}">
 						<div class="well round_container">
 							<div class="img-content" style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ a.image.url }}')">
-								<h3>{{ a.title }}</h3>
+								<h4>{{ a.title|truncatechars:25 }}</h4>
 							</div>
 							<div class="desc-content">
 								<div class="row">
@@ -84,7 +84,7 @@
 											</div>
 										{% endif %}
 									</div>
-									<div class="col-xs-8">
+									<div class="col-xs-9">
 										<ul class="detail">
 											<li>{{ a.user }}</li>
 											<li>category : <span>{{ a.category }}</span></li>
@@ -106,13 +106,13 @@
 				</div>
 				{% empty %}
 					<div class="text-center">
-						<h4>No article</h4>
+						<h4>No posts found.</h4>
 					</div>
 				{% endfor %}
 
 			</div>
 			{% if articles %}
-				<div class="text-center"><h4><a style="color:#994099" class="view-all" href="{% url 'list-article' %}">View more articles</a></h4></div>
+				<div class="text-center"><h4><a style="color:#994099" class="view-all" href="{% url 'list-article' %}">View more posts</a></h4></div>
 
 				{% endif %}
 		</div>
@@ -122,8 +122,8 @@
 		<div class="container">
 			<h1 class="content_head">about us</h1>
 			<p style="text-align: justify;">
-				Before telling us, let&rsquo;s share a small story which might tell more about us,
-				There was once a frog which fell into a container of water, the water was on a electric heater.
+				Let&rsquo;s share a small story which might tell more about us,
+				There was once a frog which fell into a container of water, the container was on a electric heater.
 				The frog did not attempt to jump out of the container as it adapted itself to the raising
 				temperature accordingly and stayed in it. As the temperature of the water started rising
 				and reached its boiling point, the frog was no longer able to adapt. The frog tried to jump out
@@ -136,7 +136,7 @@
 				<li class="Mu SP" style="color: #ffffff;">If we are not sure on what needs to be done, <strong>CONSULT</strong>.</li>
 				<li class="Mu SP" style="color: #ffffff;">If the skill you possess is becoming obsolete <strong>REDEFINE</strong>.</li>
 				<li class="Mu SP" style="color: #ffffff;">If the current job doesn&rsquo;t meet your career goal <strong>REFINE</strong> and <strong>RE-INSTATE</strong>.&nbsp;</li>
-				<li class="Mu SP" style="color: #ffffff;">Create a next version of yourself and be <strong>RELEVANT</strong> to growing market trends may be your own version of 2.0</li>
+				<li class="Mu SP" style="color: #ffffff;">Create a next version of yourself and be <strong>RELEVANT</strong> to growing market trends may be your own version of 2.0.</li>
 				</ul>
 			</p>
 
