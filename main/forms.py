@@ -8,6 +8,8 @@ from PIL import Image
 from django.utils.translation import ugettext as _
 import os
 from django.db.models import Q
+from django.forms import Textarea
+
 # from  ast import literal_eval
 # from django.db import transaction
 
@@ -187,7 +189,8 @@ class CbQuestionAdminForm(forms.ModelForm):
         widget=AutoComboboxSelectWidget,
         label = "Topic *"
     )
-    title = forms.CharField(widget=forms.TextInput,max_length=1024,label="Title *")
+    # title = forms.CharField(widget=forms.TextInput,max_length=1024,label="Title *")
+    title = forms.CharField(widget=forms.Textarea, max_length=1024,label="Title *")
     description = forms.CharField(widget=TinyMCE(attrs={'cols': 80, 'rows': 600,"class":"tinymce"}),
                                                             label="Description *")
     owner = forms.Select(choices=[])
