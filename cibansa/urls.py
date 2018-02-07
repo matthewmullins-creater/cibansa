@@ -47,6 +47,7 @@ urlpatterns = [
     url(r'^social/', include('social_django.urls', namespace='social')),
     url(r'^selectable/', include('selectable.urls')),
     url(r'^blog/',include("articles.urls")),
+    url(r'^courses/',include("courses.urls")),
     url(r'^tinymce/', include('tinymce.urls')),
     url(r'^djangojs/', include('djangojs.urls')),
 ]+static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)

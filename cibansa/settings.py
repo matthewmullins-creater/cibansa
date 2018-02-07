@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     "accounts",
     "main",
     "articles",
+    "courses",
 ]
 
 MIDDLEWARE = [
@@ -258,14 +259,15 @@ STATICFILES_DIRS = (
 MEDIA_ROOT = os.path.join(BASE_DIR,"media/")
 MEDIA_URL = '/media/'
 
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
-CONTACT_FORM_EMAIL = "achukwuebuka@regalix-inc.com"
+CONTACT_FORM_EMAIL = "info@boilingfrogs.in"
 
-EMAIL_HOST = 'sg2plcpnl0027.prod.sin2.secureserver.net'
+EMAIL_HOST = 'smtp.gmail.com'
 
-EMAIL_HOST_USER = 'iuloko@monchest.com'
+EMAIL_HOST_USER = 'boilingfrogs2015@gmail.com'
 
-EMAIL_HOST_PASSWORD = 'Lovingly4'
+EMAIL_HOST_PASSWORD = '12iso*help'
 
 EMAIL_PORT = 465
 

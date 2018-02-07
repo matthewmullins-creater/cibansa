@@ -12,9 +12,7 @@
 	{% endblock %}
 
 
-		<title>{% block title %} Welcome to Boiling Frogs {% endblock %}</title>
-
-
+	<title>{% block title %} Welcome to Boiling Frogs {% endblock %}</title>
 
 	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://cdn.rawgit.com/konpa/devicon/4f6a4b08efdad6bb29f9cc801f5c07e263b39907/devicon.min.css">
@@ -50,21 +48,21 @@
 
 <body>
 
-	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="navbar navbar-default navbar-fixed-top" role="navigation">
 		<div id="mobileContainer">
 			<div class="navbar-header">
 				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-	          <span class="sr-only">Toggle navigation</span>
-	          <span class="icon-bar"></span>
-	          <span class="icon-bar"></span>
-	          <span class="icon-bar"></span>
-	        </button>
+			  <span class="sr-only">Toggle navigation</span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			  <span class="icon-bar"></span>
+			</button>
 				<a class="navbar-brand" href="{% url 'home-page' %}">Boiling Frogs</a>
 			</div>
 			<div class="navbar-collapse collapse navbar-right">
 				{% if not request.user.is_authenticated %}
 				<ul class="nav navbar-nav">
-					<li><a href="#" data-toggle="modal" data-target="#signIn"><i class="fa fa-lock" aria-hidden="true"></i> login</a></li>
+					<!--<li><a href="#" data-toggle="modal" data-target="#signIn"><i class="fa fa-lock" aria-hidden="true"></i> login</a></li>-->
 				</ul>
 				{% else %}
 				<ul class="nav navbar-nav">
@@ -78,58 +76,58 @@
 
 	<!-- signIn modal -->
   <div class="modal fade" id="signIn" role="dialog">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-body form-layout">
-        	<button type="button" class="close" data-dismiss="modal">&times;</button>
-        	<div class="social">
-            <h3 class="modal-title">login</h3>
-            <p class="text-center">with your social account</p>
-            <div class="row">
-            	<div class="col-xs-4">
-            		<a href='{% url "social:begin" "google-oauth2" %}' class="btn btn-default gplus"><i class="fa fa-google-plus" aria-hidden="true"></i> <span class="visible">google+</span></a>
-            	</div>
-            	<div class="col-xs-4">
-            		<a href='{% url "social:begin" "facebook" %}' class="btn btn-default fb"><i class="fa fa-facebook" aria-hidden="true"></i> <span class="visible">facebook</span></a>
-            	</div>
-            	<div class="col-xs-4">
-            		<a href='{% url "social:begin" "linkedin-oauth2" %}' class="btn btn-default linked"><i class="fa fa-linkedin" aria-hidden="true"></i> <span class="visible">linked in</span></a>
-            	</div>
-            </div>
+	<div class="modal-dialog">
+	  <div class="modal-content">
+		<div class="modal-body form-layout">
+			<button type="button" class="close" data-dismiss="modal">&times;</button>
+			<div class="social">
+			<h3 class="modal-title">login</h3>
+			<p class="text-center">with your social account</p>
+			<div class="row">
+				<div class="col-xs-4">
+					<a href='{% url "social:begin" "google-oauth2" %}' class="btn btn-default gplus"><i class="fa fa-google-plus" aria-hidden="true"></i> <span class="visible">google+</span></a>
+				</div>
+				<div class="col-xs-4">
+					<a href='{% url "social:begin" "facebook" %}' class="btn btn-default fb"><i class="fa fa-facebook" aria-hidden="true"></i> <span class="visible">facebook</span></a>
+				</div>
+				<div class="col-xs-4">
+					<a href='{% url "social:begin" "linkedin-oauth2" %}' class="btn btn-default linked"><i class="fa fa-linkedin" aria-hidden="true"></i> <span class="visible">linked in</span></a>
+				</div>
+			</div>
 						<hr class="style17">
-          </div>
-          <form action="{% url 'account-login' %}" method="post">
+		  </div>
+		  <form action="{% url 'account-login' %}" method="post">
 			  {% csrf_token %}
 
 			  <div class="form-group">
-            <input type="email"  name="email" class="form-control" placeholder="Email">
-          </div>
+			<input type="email"  name="email" class="form-control" placeholder="Email">
+		  </div>
 
-          <div class="form-group">
-            <input type="password"  name="password" class="form-control" placeholder="Password">
-          </div>
+		  <div class="form-group">
+			<input type="password"  name="password" class="form-control" placeholder="Password">
+		  </div>
 
-          <div class="checkbox">
-				    <label><input type="checkbox" name="keep_me" > Keep me signed in</label>
+		  <div class="checkbox">
+					<label><input type="checkbox" name="keep_me" > Keep me signed in</label>
 				  </div>
-          <a href="{% url 'forgot-password' %}" class="right">Forgot your password?</a>
+		  <a href="{% url 'forgot-password' %}" class="right">Forgot your password?</a>
 		<input type="hidden" name="next" value="{{ request.get_full_path }}">
-          <div class="login-btn">
-            <button type="submit" class="btn btn-primary btn-block" style="margin-top: 1em;margin-bottom: 1em;">Login</button>
-            <div class="row">
-            	<div class="col-md-6">
-            		<a href="#" id="toggle_signUp">Not a member? Sign Up</a>
-            	</div>
-            	<div class="col-md-6">
-            		<a href="{% url 'forgot-password' %}" id="toggle_signUp">Forgot password</a> <br>
-            		<!--<a href="">Problem loging in?</a>-->
-            	</div>
-            </div>
-          </div>
+		  <div class="login-btn">
+			<button type="submit" class="btn btn-primary btn-block" style="margin-top: 1em;margin-bottom: 1em;">Login</button>
+			<div class="row">
+				<div class="col-md-6">
+					<a href="#" id="toggle_signUp">Not a member? Sign Up</a>
+				</div>
+				<div class="col-md-6">
+					<a href="{% url 'forgot-password' %}" id="toggle_signUp">Forgot password</a> <br>
+					<!--<a href="">Problem loging in?</a>-->
+				</div>
+			</div>
+		  </div>
 		  </form>
-        </div>
-      </div>
-    </div>
+		</div>
+	  </div>
+	</div>
   </div>
   <!-- signUp modal -->
   <div class="modal fade" id="signUp" role="dialog">
@@ -180,14 +178,14 @@
 		<div class="container">
 		 	<div class="row">
 		 		<div class="col-xs-6">
-		 			<p class="cap">Boiling Frogs &copy; 2017. all rights reserved</p>
+		 			<p class="cap">Boiling Frogs &copy; 2018. all rights reserved</p>
 		 		</div>
 		 		<div class="col-xs-6">
 		 			<div class="contact-info">
 		 				<div class="social-btn">
 		 					<a href="" class="facebook"><i class="fa fa-facebook" aria-hidden="true"></i></a>
-							<a href="" class="tw"><i class="fa fa-twitter" aria-hidden="true"></i></a>
-							<a href="" class="gp"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+							<!--<a href="" class="tw"><i class="fa fa-twitter" aria-hidden="true"></i></a>-->
+							<!--<a href="" class="gp"><i class="fa fa-google-plus" aria-hidden="true"></i></a>-->
 							<a href="" class="li"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
 		 				</div>
 		 			</div>

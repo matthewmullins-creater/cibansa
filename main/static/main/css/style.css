@@ -5,7 +5,7 @@ body {
   font-size: 14px;
   line-height: 1.7;
   color: #333;
-  background: #fff;
+  background: #F5F5F5;
   overflow-x: hidden;
 }
 body,
@@ -19,6 +19,16 @@ p{
   font-size: 14px;
   text-align: left;
 }
+.text-block {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: black;
+    color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+}
+
 a {
   color: #333;
   text-transform: capitalize;
@@ -69,12 +79,20 @@ a:hover, a:active, a:focus {
   color: #99cc00;
 }
 .content_head{
-  margin-top: 20px;
-  margin-bottom: 20px;
+  margin-top: 10px;
+  margin-bottom: 10px;
   text-align: center;
   color: #99cc00;
   font-weight: bold;
   text-transform: uppercase;
+}
+.content_summary{
+  margin-top: 20px;
+  margin-bottom: 20px;
+  text-align: center;
+  color: #ffffff;
+  font-size: 18px;
+  font-weight: bold;
 }
 .nav .open > a, 
 .nav .open > a:hover, 
@@ -255,13 +273,13 @@ hr.style17:after {
 }
 #course-container{
   position: relative;
-  background-image: url('../img/bg.jpg');
+  background-image: linear-gradient(to bottom, rgba(55, 55, 55, 0.7), rgba(55, 55, 55, 0.7)), url('../img/bg.jpg');
   background-size: cover;
   background-attachment: fixed;
   background-repeat: no-repeat;
 }
 .overlay{
-  background-color: rgba(0,0,0,0.7);
+  background-color: rgba(0,0,0,0.1);
   z-index: 0;
   position: absolute;
   bottom: 0;
@@ -388,6 +406,81 @@ hr.style17:after {
 #article .round_container:hover .visitor li:first-child{
   color: #ff2c2c;
 }
+/* ---------------------------------------------------- courses ---------------------------------------------------- */
+#courses, #about, #contact, #footer-container{
+  padding-top: 0.5em;
+  padding-bottom: 0.5em;
+}
+#courses .round_container{
+  -webkit-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+  -moz-box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+  box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.5);
+  transition: all 0.3s;
+}
+#courses .round_container:hover{
+  -webkit-box-shadow: 0px 2px 10px 1px rgba(133,128,133,1);
+  -moz-box-shadow: 0px 2px 10px 1px rgba(133,128,133,1);
+  box-shadow: 0px 2px 10px 1px rgba(133,128,133,1);
+}
+#courses .round_container:hover .overlay{
+  display: block;
+}
+#courses .round_container .img-content{
+ /* background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('../img/art-1.jpg');*/
+  background-size: cover;
+  text-align: left;
+  padding: 1.5em 0.5em;
+  color: #fff;
+}
+#courses .round_container .desc-content{
+  text-align: center;
+  background-color: #fff;
+  border-radius: 0 0 10px 10px;
+}
+#courses .round_container .desc-content .detail{
+  padding-top: 0;
+  padding-left: 0.5em;
+  color: #333;
+  text-align: left;
+}
+#courses .round_container .visitor li{
+  display: inline-block;
+  font-size: 16px;
+  padding-top: 3px;
+}
+#courses .read{
+  transition: all 0.5s;
+  padding-top: 1em;
+}
+#courses .read a{
+  float: center;
+}
+#courses .read .visitor{
+  float: right;
+}
+#courses .round_container .visitor li{
+  display: inline-block;
+  font-size: 16px;
+  transition: all 0.5s;
+}
+#courses .read .btn-default{
+  background-color: #994099;
+  color: #fff;
+  border-color: #888;
+  border-radius: 30px;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+
+#courses .round_container:hover .btn-default{
+  background-color: #aaa;
+  color: #fff;
+  border-color: transparent;
+}
+#courses .round_container:hover .visitor li:first-child{
+  color: #ff2c2c;
+}
+
 /* ---------------------------------------------------- about ---------------------------------------------------- */
 #about{
   background-image: linear-gradient(to bottom, rgba(55, 55, 55, 0.7), rgba(55, 55, 55, 0.7)), url('../img/bg.jpg');
@@ -514,11 +607,17 @@ hr.style17:after {
 }
 /* ---------------------------------------------------- questions ---------------------------------------------------- */
 #green-header{
-  background-color: #99cc00;
-  padding: 2em;
-  padding-top: 4em;
+  /*background-color: #99cc00;*/
+  padding: 1em;
+  padding-top: 2.5em;
+  padding-bottom: 0.5em;
+  background-color: #000; /* This is the purple color on front page*/
+  border-color: transparent;
+  text-align: left
+/*  border-bottom: 1px solid #fff !important;*/
+
 }
-#question, #discussion, #article-detail{
+#question, #discussion, #article-detail #courses-detail{
   /*margin-top: -11em;*/
   margin-bottom: 3em;
 }
@@ -605,7 +704,7 @@ hr.style17:after {
   margin-top: 1em;
   border-bottom-color: #aaa;
 }
-.answer-desc, .comment-box, .comment-view, .article-img, .more-article{
+.answer-desc, .comment-box, .comment-view, .article-img, .more-article, .courses-img, .more-courses{
   margin-top: 2em;
 }
 .like-btn-i{
@@ -736,6 +835,81 @@ hr.style17:after {
   padding-top: 0;
   padding-bottom: 0;
 }
+
+/* ---------------------------------------------------- courses-detail ---------------------------------------------------- */
+#courses-detail .well{
+  background-color: #fff;
+}
+#courses-detail .detail{
+  padding-top: 0;
+}
+#courses-detail .social-btn{
+  background-color: #eee;
+  padding: 1em;
+  border-radius: 5px;
+}
+#courses-detail .social-btn a{
+  display: inline-block;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  background-color: #fff;
+  border-radius: 50%;
+  font-size: 20px;
+  color: #333;
+  text-align: center;
+  line-height: 35px;
+  margin-right: 3px;
+  margin-bottom: 0;
+  transition: 0.5s;
+}
+#courses-detail .social-btn .fa-share-alt{
+  background-color: transparent;
+  border-radius: 0;
+  font-size: 24px;
+  padding-right: 0.4em;
+  margin-right: 0.4em;
+  border-right: 1px solid #bbb;
+}
+#courses-detail .social-btn a.facebook{
+  background-color: #3b5998;
+  color: #fff;
+}
+#courses-detail .social-btn a.facebook:hover, #courses-detail .social-btn a.facebook:focus{
+  background-color: #3b5998;
+  color: #fff;
+}
+#courses-detail .social-btn a.tw{
+  background-color: #0084b4;
+  color: #fff;
+}
+#courses-detail .social-btn a.tw:hover, #courses-detail .social-btn a.tw:focus{
+  background-color: #0084b4;
+  color: #fff;
+}
+#courses-detail .social-btn a.gp{
+  background-color: #d34836;
+  color: #fff;
+}
+#courses-detail .social-btn a.gp:hover, #courses-detail .social-btn a.gp:focus{
+  background-color: #d34836;
+  color: #fff;
+}
+#courses-detail .social-btn a.li{
+  background-color: #0077B5;
+  color: #fff;
+}
+#courses-detail .social-btn a.li:hover, #courses-detail .social-btn a.li:focus{
+  background-color: #0077B5;
+  color: #fff;
+}
+.more-courses{
+  padding-top: 1em;
+}
+.more-courses > #courses {
+  padding-top: 0;
+  padding-bottom: 0;
+}
 /* ---------------------------------------------------- material chips ---------------------------------------------------- */
 .chip {
   display: inline-block;
@@ -823,8 +997,8 @@ hr.style17:after {
 }
 /* ---------------------------------------------------- footer ---------------------------------------------------- */
 #footerwrap {
-  padding-top: 40px;
-  padding-bottom: 40px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   background: #292c2f;
   /* margin-top: 4em; */
 }
