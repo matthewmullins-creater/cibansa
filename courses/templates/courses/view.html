@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Boiling Frogs - {{ courses.title }}{% endblock %}
+
+{% block body %}
+{% load js %}
+{% django_js %}
+<section id="green-header" class="body-container">
+		<div class="container" style="align: left">
+			<h4 class="filter" style="color: #fff;margin-top: 10px;">
+				Courses / {{ courses.title }}
+			</h4>
+		</div>
+</section>
+
+	<section id="courses-detail" data-ng-controller="CoursesController as aObj" data-ng-init="init({{ courses.id }})" data-ng-cloak>
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-8">
+
+				</div>
+			</div>
+
+			<div class="well">
+				<div class="course-container">
+					<!--<div class="courses-img">-->
+						<!--<img src="{{ courses.image.url }}" class="img-responsive">-->
+					<!--</div>-->
+					<div><h2>{{ courses.title }}</h2></div>
+					<div class="answer-desc ">
+						{{ courses.content|safe }}
+					</div>
+				</div>
+
+				</div>
+				<div class="more-courses">
+					<div id="courses">
+						<h4 class="page-header"><strong>more courses</strong></h4>
+						<div class="row">
+							{% for a in more_courses %}
+								<div class="col-md-3">
+									<a href="{% url 'view-course' id=a.id %}">
+										<div class="well round_container">
+											<div class="img-content" style="text-align: center; background-image:linear-gradient(to bottom,
+											 rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ a.image.url }}')">
+												<h2>{{ a.title|truncatechars:35 }}</h2>
+											</div>
+											<div class="desc-content">
+												<div class="read">
+													<a href="{% url 'view-course' id=a.id %}" class="btn btn-default">read more</a>
+													<div class="clear"></div>
+												</div>
+											</div>
+										</div>
+									</a>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+{% block extras %}
+
+	<script src="{% static 'article/js/angularjs/service.article.js' %}"></script>
+	<script src="{% static 'article/js/angularjs/controller.article.js' %}"></script>
+{% endblock %}
+{% endblock %}
