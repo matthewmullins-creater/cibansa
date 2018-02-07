@@ -16,6 +16,8 @@ from django.template.loader import get_template
 from django.core.mail import EmailMessage
 from articles.models import CbArticle
 
+from courses.util import new_courses
+
 # Create your views here.
 
 
@@ -28,6 +30,7 @@ def index(request):
     categories = util.get_top_category()
     articles = new_articles()
     form_class = ContactForm
+    courses = new_courses()
 
     if request.method == 'POST':
         form = form_class(data=request.POST)
@@ -57,6 +60,7 @@ def index(request):
     context={
         "category_cards": categories,
         "articles": articles,
+        "courses": courses,
         'form': form_class,
     }
     return render(request,"main/index.html",context)
