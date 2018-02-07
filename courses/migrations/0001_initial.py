@@ -37,17 +37,4 @@ class Migration(migrations.Migration):
                 'db_table': 'cb_courses',
             },
         ),
-        migrations.CreateModel(
-            name='CbCoursesTags',
-            fields=[
-                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('updated_at', models.DateTimeField(auto_now=True)),
-                ('courses', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='courses_tags', to='courses.CbCourses')),
-                ('tag', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='main.CbTag')),
-            ],
-            options={
-                'db_table': 'cb_courses_tags',
-            },
-        ),
     ]
