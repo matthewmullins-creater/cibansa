@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import authenticate
 from accounts.models import User,CbUserProfile
 from django.db import transaction,IntegrityError
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import gettext_lazy as _
 from PIL import Image
 import  os
 
@@ -13,7 +13,7 @@ my_default_errors = {
 
 
 class AuthenticationForm(forms.Form):
-    """
+    """                                                                                                                                  
         Login form
     """
     email = forms.EmailField(widget=forms.widgets.TextInput,error_messages=my_default_errors)

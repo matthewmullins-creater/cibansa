@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from main.models import CbCategory,CbTag
 
 # Create your models here.
@@ -13,10 +12,10 @@ class CbCourses(models.Model):
     category = models.ForeignKey(CbCategory,on_delete=models.SET_NULL,null=True,related_name="category_courses")
     content = models.TextField()
     image = models.ImageField(default="courses_image.png",upload_to=upload_courses_image)
-    user = models.ForeignKey("accounts.User",related_name="user_courses")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_courses")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    meta_data = JSONField()
+    meta_data = models.JSONField()
     is_visible = models.BooleanField(default=True)
 
     def __str__(self):

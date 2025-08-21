@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from autoslug import AutoSlugField
 # Create your models here.
 
@@ -13,10 +12,10 @@ class CbCategory(models.Model):
     image = models.ImageField(upload_to=category_image_path,default="default_category_img.jpg")
     description = models.CharField(max_length=1024,null=True,blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey("accounts.User",related_name="user_categories")
+    owner = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_categories")
     updated_at = models.DateTimeField(auto_now=True)
     slug = AutoSlugField(populate_from="name",always_update=True,unique=True)
-    meta_data = JSONField(null=True,blank=True)
+    meta_data = models.JSONField(null=True,blank=True)
     is_visible = models.BooleanField(default=True)
 
     class Meta:
@@ -52,10 +51,10 @@ class CbTopic(models.Model):
     image = models.ImageField(upload_to=topic_image_path, default="default_topic_img.png")
     description = models.CharField(max_length=1024, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    owner = models.ForeignKey("accounts.User",related_name="user_topic")
+    owner = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_topic")
     updated_at = models.DateTimeField(auto_now=True)
     slug = AutoSlugField(populate_from="title",always_update=True,unique=True)
-    meta_data = JSONField(null=True, blank=True)
+    meta_data = models.JSONField(null=True, blank=True)
     is_visible = models.BooleanField(default=True)
 
     class Meta:
@@ -121,7 +120,7 @@ class CbQuestion(models.Model):
     category = models.ForeignKey(CbCategory, on_delete=models.CASCADE, related_name="category_questions")
     title = models.CharField(max_length=1024)
     description = models.TextField()
-    owner = models.ForeignKey("accounts.User", related_name="user_questions")
+    owner = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_questions")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     # status = models.BooleanField(default=True)
@@ -150,7 +149,7 @@ class CbQuestionTag(models.Model):
 
 
 class CbAnswer(models.Model):
-    user = models.ForeignKey("accounts.User",related_name="user_answer")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_answer")
     question = models.ForeignKey(CbQuestion, on_delete=models.CASCADE,related_name="question_answers")
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
@@ -162,7 +161,7 @@ class CbAnswer(models.Model):
 class CbAnswerReply(models.Model):
     answer = models.ForeignKey(CbAnswer,on_delete=models.CASCADE,related_name="answer_replies")
     comment = models.TextField()
-    user = models.ForeignKey("accounts.User")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -171,7 +170,7 @@ class CbAnswerReply(models.Model):
 
 class CbAnswerLike(models.Model):
     answer = models.ForeignKey(CbAnswer, on_delete=models.CASCADE,related_name="answer_likes")
-    user = models.ForeignKey("accounts.User")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -181,7 +180,7 @@ class CbAnswerLike(models.Model):
 
 class CbAnswerReplyLike(models.Model):
     answer_reply = models.ForeignKey(CbAnswerReply, on_delete=models.CASCADE,related_name="answer_reply_likes")
-    user = models.ForeignKey("accounts.User")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

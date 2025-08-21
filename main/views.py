@@ -7,7 +7,7 @@ from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.db.models import Q
 from django.http import HttpResponse,HttpResponseNotAllowed
 import json
-from django.core.urlresolvers import reverse
+from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from articles.util import new_articles
@@ -354,13 +354,13 @@ def question_auto_complete(request):
 #     return
 
 
-def bad_request(request):
+def bad_request(request, exception):
     return render(request,"main/error/bad_request.html",status=400)
 
-def permission_denied(request):
+def permission_denied(request, exception):
      return render(request,"main/error/permission_denied.html",status=403)
 
-def page_not_found(request):
+def page_not_found(request, exception):
     return render(request,"main/error/page_not_found.html",status=404)
 
 def server_error(request):

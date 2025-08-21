@@ -7,7 +7,7 @@ from main.models import CbCategory
 from tinymce.widgets import TinyMCE
 from PIL import Image
 import os
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 
 
 class CbArticleAdminForm(forms.ModelForm):

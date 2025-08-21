@@ -1,11 +1,11 @@
 from django.shortcuts import render,redirect,get_object_or_404
 from accounts.forms import AuthenticationForm,RegistrationForm,ForgotPasswordForm,PasswordResetForm,ProfileEditForm
 from django.contrib.auth import authenticate,login as django_login,authenticate,logout as django_logout
-from django.utils.http import is_safe_url
+from django.utils.http import url_has_allowed_host_and_scheme
 from django.contrib.auth.decorators import login_required
 from django.conf import settings
 from django.views import generic
-from django.core.urlresolvers import reverse,reverse_lazy
+from django.urls import reverse, reverse_lazy
 from accounts.models import CbTempPassword,User
 from accounts.util import send_password_reset_token
 from django.http import Http404
@@ -23,7 +23,7 @@ def login(request):
         Login view
     """
     redirect_to = request.POST.get("next",request.GET.get("next", 'home-page'))
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         if request.method == 'POST':
 
             form = AuthenticationForm(data=request.POST)
@@ -33,7 +33,7 @@ def login(request):
 
                 if user is not None:
                     if user.is_active:
-                        if not is_safe_url(url=redirect_to, host=request.get_host()):
+                        if not url_has_allowed_host_and_scheme(url=redirect_to, allowed_hosts={request.get_host()}):
                             redirect_to = "home-page"
                         if not request.POST.get("keep_me"):
                             request.session.set_expiry(0)
@@ -63,7 +63,7 @@ def register(request):
     """
 
     redirect_to = request.POST.get("next",'home-page')
-    if not request.user.is_authenticated():
+    if not request.user.is_authenticated:
         if request.method == "POST":
             form = RegistrationForm(data = request.POST)
             if form.is_valid():

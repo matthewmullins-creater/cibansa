@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from main.models import CbCategory,CbTag
 
 # Create your models here.
@@ -15,10 +14,10 @@ class CbArticle(models.Model):
     category = models.ForeignKey(CbCategory,on_delete=models.SET_NULL,null=True,related_name="category_article")
     content = models.TextField()
     image = models.ImageField(default="article_image.png",upload_to=upload_article_image)
-    user = models.ForeignKey("accounts.User",related_name="user_articles")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_articles")
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    meta_data = JSONField()
+    meta_data = models.JSONField()
     is_visible = models.BooleanField(default=True)
 
     def __str__(self):
@@ -40,8 +39,8 @@ class CbArticleTags(models.Model):
 
 class CbArticleComment(models.Model):
     comment = models.TextField()
-    user = models.ForeignKey("accounts.User",related_name="user_article_comments")
-    article = models.ForeignKey(CbArticle,related_name="article_comments")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_article_comments")
+    article = models.ForeignKey(CbArticle, on_delete=models.CASCADE, related_name="article_comments")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -49,9 +48,9 @@ class CbArticleComment(models.Model):
 
 
 class CbArticleCommentReply(models.Model):
-    comment = models.ForeignKey(CbArticleComment,related_name="comment_replies")
+    comment = models.ForeignKey(CbArticleComment, on_delete=models.CASCADE, related_name="comment_replies")
     content = models.TextField()
-    user = models.ForeignKey("accounts.User", related_name="user_article_cr")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_article_cr")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -60,7 +59,7 @@ class CbArticleCommentReply(models.Model):
 
 class CbArticleLike(models.Model):
     article = models.ForeignKey(CbArticle, on_delete=models.CASCADE,related_name="article_likes")
-    user = models.ForeignKey("accounts.User",related_name="user_article_likes")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_article_likes")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -69,7 +68,7 @@ class CbArticleLike(models.Model):
 
 class CbArticleCommentLike(models.Model):
     comment = models.ForeignKey(CbArticleComment, on_delete=models.CASCADE,related_name="article_comment_likes")
-    user = models.ForeignKey("accounts.User",related_name="user_article_comment_likes")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_article_comment_likes")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -78,7 +77,7 @@ class CbArticleCommentLike(models.Model):
 
 class CbArticleCommentReplyLikes(models.Model):
     comment_reply = models.ForeignKey(CbArticleCommentReply, on_delete=models.CASCADE,related_name="article_cr_likes")
-    user = models.ForeignKey("accounts.User", related_name="user_article_cr_likes")
+    user = models.ForeignKey("accounts.User", on_delete=models.CASCADE, related_name="user_article_cr_likes")
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

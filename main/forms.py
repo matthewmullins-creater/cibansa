@@ -5,7 +5,7 @@ from selectable.forms import AutoCompleteSelectMultipleWidget,AutoComboboxSelect
 from main.lookups import TagLookup,TopicLookup
 from tinymce.widgets import TinyMCE
 from PIL import Image
-from django.utils.translation import ugettext as _
+from django.utils.translation import gettext as _
 import os
 from django.db.models import Q
 from django.forms import Textarea

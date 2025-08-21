@@ -1,5 +1,4 @@
-from django.conf.urls import url
-from django.conf.urls import include
+from django.urls import path, include, re_path
 from main import api
 from main import views
 from rest_framework import routers
@@ -21,17 +20,17 @@ answer_reply_like.register(r'answer-reply-like',api.CbAnswerReplyLikeViewset,"an
 
 
 urlpatterns = [
-    url(r'^api/v1/',include(category.urls,namespace="category-api")),
-    url(r'^api/v1/',include(topics.urls,namespace="topic-api")),
-    url(r'^api/v1/',include(questions.urls,namespace="question-api")),
-    url(r'^api/v1/',include(answer_like.urls,namespace="answer-like-api")),
-    url(r'^api/v1/',include(answer_reply_like.urls,namespace="answer-reply-like-api")),
-    url(r'^topic-by-category',views.get_topic_by_category,name="topic-by-category"),
-    url(r'^tag-auto-complete',views.tag_search,name="tag-auto-complete"),
-    url(r'^tag-auto-complete',views.tag_search,name="tag-auto-complete"),
-    url(r'^question-auto-complete',views.question_auto_complete,name="question-auto-complete"),
-    url(r'^contact-thank-you',views.contact_thank_you,name="contact-thank-you"),
+    path('api/v1/',include(category.urls)),
+    path('api/v1/',include(topics.urls)),
+    path('api/v1/',include(questions.urls)),
+    path('api/v1/',include(answer_like.urls)),
+    path('api/v1/',include(answer_reply_like.urls)),
+    path('topic-by-category',views.get_topic_by_category,name="topic-by-category"),
+    path('tag-auto-complete',views.tag_search,name="tag-auto-complete"),
+    path('tag-auto-complete',views.tag_search,name="tag-auto-complete"),
+    path('question-auto-complete',views.question_auto_complete,name="question-auto-complete"),
+    path('contact-thank-you',views.contact_thank_you,name="contact-thank-you"),
 
-    # url(r'^category/(?P<slug>[\w|\W\-]+)/list-topic/',views.list_topic,name="list-topic"),
-    # url(r'^$',views.index,name="home-page"),
+    # path('category/(?P<slug>[\w|\W\-]+)/list-topic/',views.list_topic,name="list-topic"),
+    # path('',views.index,name="home-page"),
 ]

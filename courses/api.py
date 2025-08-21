@@ -3,7 +3,7 @@ from courses.serializers import CbCoursesSerializer
 from courses.models import CbCourses
 
 from rest_framework import permissions
-from rest_framework.decorators import list_route,detail_route
+from rest_framework.decorators import action
 from rest_framework.response import Response
 
 

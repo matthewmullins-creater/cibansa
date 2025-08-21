@@ -3,8 +3,6 @@
 {% block title %} Boiling Frogs - {{ article.title }}{% endblock %}
 
 {% block body %}
-{% load js %}
-{% django_js %}
 <section id="green-header" class="body-container">
 		<div class="container">
 			<h4 class="filter" style="color: #fff;margin-top: 10px;"><a style="color: #fff" href="/">Home</a> / <a style="color: #fff" href="{% url 'list-article' %}">Blog</a> / {{ article.title }}</h4>
