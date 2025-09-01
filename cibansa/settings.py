@@ -26,12 +26,17 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ax63jw!ryvkv2^om_-ml$x9_%-8bx@a0wvi8egu1olcd-se3bt'
+SECRET_KEY = os.environ.get('SECRET_KEY', 'ax63jw!ryvkv2^om_-ml$x9_%-8bx@a0wvi8egu1olcd-se3bt')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True').lower() in ('1', 'true', 'yes')
 
-ALLOWED_HOSTS = ['127.0.0.1','139.59.45.173','boilingfrogs.co','boilingfrogs.co.in']
+# Allow configuring hosts via env: space or comma separated
+_allowed = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1')
+if ',' in _allowed:
+    ALLOWED_HOSTS = [h.strip() for h in _allowed.split(',') if h.strip()]
+else:
+    ALLOWED_HOSTS = [h.strip() for h in _allowed.split() if h.strip()]
 
 
 # Application definition
@@ -133,12 +138,33 @@ GOOGLE_GEOCODE_API_KEY="AIzaSyAumPEW2If9WA63ERMFobZlN8Vy8ra_Nl0"
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+# Database
+# 1) If DATABASE_URL is provided (eg from docker-compose or hosting) use dj_database_url
+# 2) Otherwise allow explicit postgres env vars or fall back to sqlite3
+if os.environ.get('DATABASE_URL'):
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ.get('DATABASE_URL'), conn_max_age=600)
     }
-}
+else:
+    default_engine = os.environ.get('DATABASE_ENGINE', 'django.db.backends.sqlite3')
+    if default_engine == 'django.db.backends.sqlite3':
+        DATABASES = {
+            'default': {
+                'ENGINE': 'django.db.backends.sqlite3',
+                'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+            }
+        }
+    else:
+        DATABASES = {
+            'default': {
+                'ENGINE': default_engine,
+                'NAME': os.environ.get('DATABASE_NAME', 'cibansa'),
+                'USER': os.environ.get('DATABASE_USER', ''),
+                'PASSWORD': os.environ.get('DATABASE_PASSWORD', ''),
+                'HOST': os.environ.get('DATABASE_HOST', 'localhost'),
+                'PORT': os.environ.get('DATABASE_PORT', '5432'),
+            }
+        }
 
 # Commented out PostgreSQL configuration
 # DATABASES = {
