@@ -188,8 +188,16 @@ class CbAnswerReplyLike(models.Model):
         unique_together = (("answer_reply", "user"),)
 
 
+class CbContactSubmission(models.Model):
+    first_name = models.CharField(max_length=100)
+    last_name = models.CharField(max_length=100)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    email = models.EmailField()
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        db_table = "cb_contact_submission"
 
-
-
-
+    def __str__(self):
+        return f"{self.first_name} {self.last_name} - {self.email}"
