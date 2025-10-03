@@ -3,7 +3,7 @@
 {% block title %} Boiling Frogs - {{ article.title }}{% endblock %}
 
 {% block body %}
-<section id="green-header" class="body-container">
+	<section id="green-header" class="body-container">
 		<div class="container">
 			<h4 class="filter" style="color: #fff;margin-top: 10px;"><a style="color: #fff" href="/">Home</a> / <a style="color: #fff" href="{% url 'list-article' %}">Blog</a> / {{ article.title }}</h4>
 		</div>
@@ -16,7 +16,6 @@
 
 				</div>
 			</div>
-
 			<div class="well">
 				<div class="article-container">
 					<div class="author">
@@ -77,15 +76,15 @@
 					</div>
 					<div class="post clearfix">
 						{% if request.user.is_authenticated %}
-									<button data-ng-click="postComment()" class="btn btn-purple pull-right">
-										<i data-ng-show="aObj.commentSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-										<span class="sr-only">Loading...</span>post comment
-									</button>
-								{% else %}
-									<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
-										<i data-ng-show="qObj.answerSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-										<span class="sr-only">Loading...</span>post comment
-									</a>
+							<button data-ng-click="postComment()" class="btn btn-purple pull-right">
+								<i data-ng-show="aObj.commentSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+								<span class="sr-only">Loading...</span>post comment
+							</button>
+						{% else %}
+							<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
+								<i data-ng-show="qObj.answerSubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+								<span class="sr-only">Loading...</span>post comment
+							</a>
 						{% endif %}
 					</div>
 					<div class="top-brdr" data-ng-repeat="ac in aObj.article_comments track by $index">
@@ -94,8 +93,8 @@
 								<!--<div data-ng-if="!ac.user_data.profile.has_photo">-->
 											<!--&lt;!&ndash;{$ ac.user_data.profile_pix $}&ndash;&gt;-->
 										<!--</div>-->
-										<div style="width: 75px;height: 75px;" data-ng-bind-html="trustedHtml(ac.user_data.profile_pix)">
-										</div>
+								<div style="width: 75px;height: 75px;" data-ng-bind-html="trustedHtml(ac.user_data.profile_pix)">
+								</div>
 							</div>
 							<div class="col-xs-10">
 								<p class="comment-desc" data-ng-bind-html="trustedHtml(ac.comment)"></p>
@@ -106,8 +105,6 @@
 									</a>
 									{$ ac.created_at|date:"MMM, dd yy h:mm a" $}
 								</div>
-
-
 							</div>
 						</div>
 						<!-- nested comment -->
@@ -135,95 +132,88 @@
 							</div>
 						</div>
 						<div class="reply-box" id="reply{$ $index $}" style="display:none">
-											<div class="comment-box">
-												<textarea rows="5" ui-tinymce="tinymceOptions" class="form-control" placeholder="type comment" data-ng-model="ac.replyComment"></textarea>
-												<!--<textarea rows="5" class="form-control" placeholder="type comment" id="replyComment{$ $index $}"></textarea>-->
-											</div>
-											<div class="post clearfix">
-												<button data-ng-click="postReply(ac,$index)" class="btn btn-purple pull-right">
-													<i data-ng-show="aObj.replySubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
-													<span class="sr-only">Loading...</span>Reply
-												</button>
-											</div>
-								</div>
+							<div class="comment-box">
+								<textarea rows="5" ui-tinymce="tinymceOptions" class="form-control" placeholder="type comment" data-ng-model="ac.replyComment"></textarea>
+								<!--<textarea rows="5" class="form-control" placeholder="type comment" id="replyComment{$ $index $}"></textarea>-->
+							</div>
+							<div class="post clearfix">
+								<button data-ng-click="postReply(ac,$index)" class="btn btn-purple pull-right">
+									<i data-ng-show="aObj.replySubmitted" class="fa fa-circle-o-notch fa-spin fa-2x fa-fw"></i>
+									<span class="sr-only">Loading...</span>Reply
+								</button>
+							</div>
+						</div>
 						<div class="reply clearfix">
-									{% if request.user.is_authenticated %}
-											<button class="btn btn-purple pull-right" data-ng-click="showReply($index,$event)" id="replyBtn{$ $index $}">reply</button>
-									{% else %}
-										<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
-
-										<span class="sr-only">Loading...</span>reply
-									</a>
-									{% endif %}
-								</div>
+							{% if request.user.is_authenticated %}
+								<button class="btn btn-purple pull-right" data-ng-click="showReply($index,$event)" id="replyBtn{$ $index $}">reply</button>
+							{% else %}
+								<a href="#" data-toggle="modal" data-target="#signIn" class="btn btn-purple pull-right">
+									<span class="sr-only">Loading...</span>reply
+								</a>
+							{% endif %}
+						</div>
 					</div>
 					<h5>Tags</h5>
-			<div class="chip-container">
-
-							{% for t in article.article_tags.all %}
-								<div class="chip">
-									{{ t.tag.name }}
-								</div>
-							{% endfor %}
+					<div class="chip-container">
+						{% for t in article.article_tags.all %}
+							<div class="chip">
+								{{ t.tag.name }}
+							</div>
+						{% endfor %}
 					</div>
-
 				</div>
-				</div>
-				<div class="more-article">
-					<div id="article">
-						<h4 class="page-header">more posts</h4>
-						<div class="row">
-							{% for a in more_article %}
-				<div class="col-md-3">
-					<a href="{% url 'view-article' id=a.id %}">
-						<div class="well round_container">
-							<div class="img-content" style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ a.image.url }}')">
-								<h4>{{ a.title|truncatechars:25 }}</h4>
-							</div>
-							<div class="desc-content">
-								<div class="row">
-									<div class="col-xs-3">
-										{% if a.user.profile.has_photo %}
-											<div >
-												{{ a.user.get_profile_pix | safe }}
-											</div>
-										{% else %}
-											<div>
-												{{ a.user.get_profile_pix | safe }}
-											</div>
-										{% endif %}
+			</div>
+			<div class="more-article">
+				<div id="article">
+					<h4 class="page-header">more posts</h4>
+					<div class="row">
+						{% for a in more_article %}
+						<div class="col-md-3">
+							<a href="{% url 'view-article' id=a.id %}">
+								<div class="well round_container">
+									<div class="img-content" style="background-image:linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('{{ a.image.url }}')">
+										<h4>{{ a.title|truncatechars:25 }}</h4>
 									</div>
-									<div class="col-xs-9">
-										<ul class="detail">
-											<li>{{ a.user }}</li>
-											<li>category  : <span>{{ a.category }}</span></li>
-											<li>posted on : <span>{{ a.created_at |date:"M, d y" }}</span></li>
-										</ul>
+									<div class="desc-content">
+										<div class="row">
+											<div class="col-xs-3">
+												{% if a.user.profile.has_photo %}
+													<div >
+														{{ a.user.get_profile_pix | safe }}
+													</div>
+												{% else %}
+													<div>
+														{{ a.user.get_profile_pix | safe }}
+													</div>
+												{% endif %}
+											</div>
+											<div class="col-xs-9">
+												<ul class="detail">
+													<li>{{ a.user }}</li>
+													<li>category  : <span>{{ a.category }}</span></li>
+													<li>posted on : <span>{{ a.created_at |date:"M, d y" }}</span></li>
+												</ul>
+											</div>
+										</div>
+										<div class="read">
+											<a href="{% url 'view-article' id=a.id %}" class="btn btn-default">read more</a>
+											<ul class="visitor">
+												<li><i class="fa fa-heart" aria-hidden="true"></i></li>
+												<li>{{ a.article_likes.count }}</li>
+											</ul>
+											<div class="clear"></div>
+										</div>
 									</div>
 								</div>
-								<div class="read">
-									<a href="{% url 'view-article' id=a.id %}" class="btn btn-default">read more</a>
-									<ul class="visitor">
-										<li><i class="fa fa-heart" aria-hidden="true"></i></li>
-										<li>{{ a.article_likes.count }}</li>
-									</ul>
-									<div class="clear"></div>
-								</div>
-							</div>
+							</a>
 						</div>
-					</a>
-				</div>
-				{% endfor %}
-
-
-						</div>
+						{% endfor %}
 					</div>
 				</div>
 			</div>
 		</div>
 	</section>
 {% block extras %}
-
 	<script src="{% static 'article/js/angularjs/service.article.js' %}"></script>
 	<script src="{% static 'article/js/angularjs/controller.article.js' %}"></script>
 {% endblock %}
