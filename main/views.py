@@ -1,7 +1,7 @@
 from django.shortcuts import render,redirect
 from main import util
 from django.shortcuts import get_object_or_404
-from main.models import CbCategory,CbQuestion,CbTopic,CbTag,CbQuestionTag,CbTopicTags
+from main.models import CbCategory, CbQuestion, CbTopic, CbTag, CbQuestionTag, CbTopicTags, CbContactSubmission
 from main.forms import CbQuestionForm
 from django.core.paginator import Paginator,EmptyPage,PageNotAnInteger
 from django.db.models import Q
@@ -35,27 +35,38 @@ def index(request):
     if request.method == 'POST':
         form = form_class(data=request.POST)
         if form.is_valid():
-            first_name = request.POST.get('first_name', '')
-            last_name = request.POST.get('last_name', '')
-            phone = request.POST.get("phone","")
-            email = request.POST.get('email', '')
-            form_content = request.POST.get('content', '')
-            # contact information
+            # Save form data to database
+            contact_submission = CbContactSubmission(
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+                phone=form.cleaned_data['phone'],
+                email=form.cleaned_data['email'],
+                content=form.cleaned_data['content']
+            )
+            contact_submission.save()
+
+            # Send email notification
+            first_name = form.cleaned_data['first_name']
+            last_name = form.cleaned_data['last_name']
+            phone = form.cleaned_data['phone']
+            email = form.cleaned_data['email']
+            form_content = form.cleaned_data['content']
+            
             template =get_template('main/emails/contact_template.txt')
             context ={
-                'contact_name': "{} {}".format(first_name,last_name),
+                'contact_name': "{} {}".format(first_name, last_name),
                 'phone': phone,
                 'contact_email': email,
                 'form_content': form_content,
             }
             content = template.render(context)
-            email = EmailMessage(
+            email_notification = EmailMessage(
                 "New contact form submission",
                 content,
                 to=[settings.CONTACT_FORM_EMAIL],
                 reply_to=[email]
             )
-            email.send()
+            email_notification.send()
             return redirect('contact-thank-you')
     context={
         "category_cards": categories,
@@ -365,6 +376,3 @@ def page_not_found(request, exception):
 
 def server_error(request):
     return render(request,"main/error/server_error.html",status=500)
-
-
-
